@@ -1,0 +1,18 @@
+<idea-plugin>
+    <id>gray_team.kotoed_plugin</id>
+    <name>Kotoed plugin</name>
+    <vendor email="neon-pf@yandex.ru">gray_team</vendor>
+
+    <description><![CDATA[
+    plugin for kotoed system
+    ]]></description>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+
+    <actions>
+
+    </actions>
+</idea-plugin>
