@@ -1,6 +1,9 @@
 package core;
 
 import com.saffrontech.vertx.EventBusBridge;
+import core.comment.Comment;
+import core.parser.Parser;
+import core.sumbission.Submission;
 import io.vertx.core.MultiMap;
 import io.vertx.core.json.JsonObject;
 import org.apache.http.HttpResponse;
@@ -14,24 +17,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static core.Address.*;
 
 public class Main {
 
-    private static String getCookieFromHeaders(final String headers) {
-        String prefix = "Set-Cookie: ";
-        String postfix = ";";
-        int beginIndex = headers.indexOf(prefix) + prefix.length();
-        int endIndex = headers.indexOf(postfix);
-        return headers.substring(beginIndex, endIndex);
-    }
-
     public static void main(String[] args) throws IOException {
 
         String localDeneziedId = "admin";
         String localPassword = "adminadmin";
-
 
         String stringRequest = new JsonObject()
                 .put(DENIZEN_ID, localDeneziedId)
@@ -50,16 +46,32 @@ public class Main {
             System.out.println(line);
         }
 
-        String cookie = getCookieFromHeaders(Arrays.toString(response.getAllHeaders()));
-        System.out.println(cookie);
-
+        String stringOfHeaders = Arrays.toString(response.getAllHeaders());
+        String cookie = Parser.getCookieFromHeaders(stringOfHeaders);
 
         MultiMap headers = MultiMap.caseInsensitiveMultiMap();
         headers.add("Cookie", cookie);
 
         EventBusBridge.connect(URI.create(URL_LOCAL_EVENTBUS), headers, eb -> {
-            eb.send(URL_EVENTBUS_COMMENTS, new JsonObject().put("id", 7672), reply -> {
-                System.out.println(reply.body());
+
+            int submissionNumber = 7672;
+            JsonObject submission = new JsonObject().put("id", submissionNumber);
+            eb.send(URL_EVENTBUS_COMMENTS, submission, reply -> {
+                String comments = String.valueOf(reply.body());
+
+                List<Comment> commentsOfSubmission = Parser.getCommnets(comments);
+
+                // number of submission, comment list for this submission
+                Map<Integer, List<Comment>> allCommnets;
+
+            });
+
+
+            JsonObject submissionList = new JsonObject().put("TODO", "TODO");
+            eb.send(URL_EVENTBUS_SUBMISSIONS, submissionList, reply -> {
+                String submissions = String.valueOf(reply.body());
+                List<Submission> submissionsOfProject = Parser.getSubmissions(submissions);
+
             });
         });
     }
