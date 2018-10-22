@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,25 +23,29 @@ import static core.Address.*;
 public class Main {
 
     private static final String FILED_ID = "id";
-    private static final String FIELD_TEXT= "text";
+    private static final String FIELD_TEXT = "text";
     private static final String FILED_COOKIE = "Cookie";
     private static final String PAGE_SIZE = "page_size";
     private static final String CURRENT_PAGE = "current_page";
 
-    private static BufferedReader getReader(HttpResponse response) throws IOException {
+    private static BufferedReader getReader(@NotNull final HttpResponse response) throws IOException {
         return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     }
 
-    private static String getCookie(HttpClient client, String jsonMyself) throws IOException {
-        HttpPost postForCookies = new HttpPost(URL_LOCAL_LOGIN);
+    private static String getCookie(@NotNull final String url,
+                                    @NotNull final HttpClient client,
+                                    @NotNull final String jsonMyself) throws IOException {
+        HttpPost postForCookies = new HttpPost(url);
         postForCookies.setEntity(new StringEntity(jsonMyself));
         HttpResponse responseWithCookies = client.execute(postForCookies);
         String stringOfHeaders = Arrays.toString(responseWithCookies.getAllHeaders());
         return Parser.getCookieFromHeaders(stringOfHeaders);
     }
 
-    private static String getWhoAmI(HttpClient client, String jsonMyself) throws IOException {
-        HttpPost postWhoAmI = new HttpPost(URL_LOCAL_WHO_AM_I);
+    private static String getWhoAmI(@NotNull final String url,
+                                    @NotNull final HttpClient client,
+                                    @NotNull final String jsonMyself) throws IOException {
+        HttpPost postWhoAmI = new HttpPost(url);
         postWhoAmI.setEntity(new StringEntity(jsonMyself));
         HttpResponse whoAmI = client.execute(postWhoAmI);
         BufferedReader rd = getReader(whoAmI);
@@ -59,9 +64,8 @@ public class Main {
                 .put(PASSWORD, localPassword)
                 .toString();
 
-
-        String cookie = getCookie(client, jsonMyself);
-        String whoAmI = getWhoAmI(client, jsonMyself);
+        String cookie = getCookie(URL_LOCAL_LOGIN, client, jsonMyself);
+        String whoAmI = getWhoAmI(URL_LOCAL_WHO_AM_I, client, jsonMyself);
 
         MultiMap headers = MultiMap.caseInsensitiveMultiMap();
         headers.add(FILED_COOKIE, cookie);
@@ -75,7 +79,6 @@ public class Main {
                 String comments = String.valueOf(reply.body());
                 System.out.println(comments);
             });
-
 
             // got first 20 submissions of yourself
             /*int pageSize = 20;
