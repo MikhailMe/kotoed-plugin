@@ -1,6 +1,7 @@
 package core.parser;
 
 import core.comment.Comment;
+import core.course.Course;
 import core.sumbission.Submission;
 import io.vertx.core.json.JsonObject;
 
@@ -17,8 +18,13 @@ public class Parser {
         return headers.substring(beginIndex, endIndex);
     }
 
+    // TODO: 10/23/18 write implementation
+    public static List<Course> getCourses(String json) {
+        return new ArrayList<>();
+    }
+
     // TODO: 10/17/18 write implementation
-    public static List<Comment> getCommnets(String json) {
+    public static List<Comment> getComments(String json) {
 
         JsonObject jsonObject = new JsonObject(json);
 

@@ -18,7 +18,7 @@ allprojects {
 dependencies {
 
     // for work with eventbus bridge
-    implementation 'com.github.MikhailMe:vertx-eventbusbridge:1.4'
+    implementation 'com.github.MikhailMe:vertx-eventbusbridge:1.5'
 
     // for work with useful annotations
     implementation "org.projectlombok:lombok:1.16.16"

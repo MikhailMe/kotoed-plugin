@@ -13,7 +13,9 @@ public class Address {
     public static final String URL_GLOBAL_WHO_AM_I = "http://kotoed.icc.spbstu.ru:9000/auth/whoAmI";
     public static final String URL_GLOBAL_LOGIN = "http://kotoed.icc.spbstu.ru:9000/auth/login/doLogin";
 
+    public static final String URL_EVENTBUS_COURSES = "kotoed.api.course.search";
     public static final String URL_EVENTBUS_SUBMISSIONS = "kotoed.api.submission.list";
+    public static final String URL_EVENTBUS_SUBMISSIONS_FOR_COURSE = "kotoed.api.project.searchForCourse";
     public static final String URL_EVENTBUS_COMMENTS = "kotoed.api.submission.comments";
 
 }
