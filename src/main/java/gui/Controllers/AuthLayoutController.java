@@ -1,29 +1,21 @@
 package gui.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AuthLayoutController {
+public class AuthLayoutController{
     /*@FXML
-    private Button pressedButton;
+    private TextField username;
     @FXML
-    private Label label;*/
-    public AuthLayoutController() {
-    }
-    /*
+    private PasswordField password;
     @FXML
-    private void LogInButtonHandler(ActionEvent event)
-    {
-        label.setText("Button is pressed!");
-    }
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }*/
+    private Button signInButton;
+    @FXML
+    private Button signUpButton;*/
 }

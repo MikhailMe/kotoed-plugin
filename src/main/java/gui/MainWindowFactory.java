@@ -21,10 +21,11 @@ public class MainWindowFactory implements ToolWindowFactory {
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         jFXPanel = new JFXPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(jFXPanel, "inspector", false);
+        Content content = contentFactory.createContent(jFXPanel, "Authorize", false);
         toolWindow.getContentManager().addContent(content);
 
         FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setClassLoader(getClass().getClassLoader());
         fxmlLoader.setLocation(getClass().getResource("/layouts/AuthLayout.fxml"));
 
         Platform.setImplicitExit(false);
