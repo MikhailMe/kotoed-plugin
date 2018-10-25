@@ -9,20 +9,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonIgnoreProperties(value = { "icon" , "document"})
 public class Course {
 
-    public long id;
-    public String name;
-    public String state;
-    public String base_repo_url;
-    public String base_revision;
-    public long build_template_id;
+    private long id;
+    private String name;
+    private String state;
+    private String baseRepoUrl;
+    private String baseRevision;
+    private long buildTemplateId;
 
     @Override
     public String toString() {
         return "id = " + id + "\n" +
                 "name = " + name + "\n" +
                 "state = " + state + "\n" +
-                "base_repo_url = " + base_repo_url + "\n" +
-                "base_revision = " + base_revision + "\n" +
-                "build_template_id = " + build_template_id + "\n";
+                "baseRepoUrl = " + baseRepoUrl + "\n" +
+                "baseRevision = " + baseRevision + "\n" +
+                "buildTemplateId = " + buildTemplateId + "\n";
     }
+
 }

@@ -85,7 +85,6 @@ public class Main {
             for (Course course : courses) {
                 System.out.println(course.toString());
             }
-
         });
     }
 
@@ -131,7 +130,7 @@ public class Main {
         EventBusBridge.connect(URI.create(URL_LOCAL_EVENTBUS), headers, eb -> {
 
             // all courses in Kotoed
-            //getCourses(eb);
+            getCourses(eb);
 
             // all submissions of course with id == 8
             //getSubmissions(eb, 8);

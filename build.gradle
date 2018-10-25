@@ -1,4 +1,5 @@
 plugins {
+    id 'idea'
     id 'java'
     id 'org.jetbrains.intellij' version '0.3.12'
 }
@@ -13,6 +14,11 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
+}
+
+publishPlugin {
+    username intellijPublishUsername
+    password intellijPublishPassword
 }
 
 dependencies {
@@ -35,6 +41,9 @@ dependencies {
 
 intellij {
     version '2018.2.4'
+    plugins 'coverage'
+    pluginName = 'kotoed_plugin'
+    sandboxDirectory = "$project.buildDir/kotoedplugin-sandbox"
 }
 
 patchPluginXml {

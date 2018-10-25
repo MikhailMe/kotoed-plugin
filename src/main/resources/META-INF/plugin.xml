@@ -1,6 +1,7 @@
 <idea-plugin>
     <id>gray_team.kotoed_plugin</id>
     <name>Kotoed plugin</name>
+    <version>0.0.2</version>
     <vendor email="neon-pf@yandex.ru">gray_team</vendor>
 
     <description><![CDATA[

@@ -1,2 +1,3 @@
 rootProject.name = 'kotoed_plugin'
-
+rootProject.intellijPublishUsername="kotoed"
+rootProject.intellijPublishPassword="kotoed"
