@@ -70,12 +70,22 @@ public class Main {
         return IOUtils.toString(rd);
     }
 
+    // TODO: 10/25/2018 Think about: "how use courses outside scope this method"
     private static void getCourses(@NotNull final EventBusBridge eb) {
         JsonObject message = new JsonObject().put(FIELD_TEXT, "");
         eb.send(URL_EVENTBUS_COURSES, message, reply -> {
             String jsonCourses = String.valueOf(reply.body());
-            System.out.println(jsonCourses);
-            //courses = Parser.getCourses(jsonCourses);
+            
+            try {
+                courses = Parser.getCourses(jsonCourses);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            for (Course course : courses) {
+                System.out.println(course.toString());
+            }
+
         });
     }
 
@@ -122,6 +132,7 @@ public class Main {
 
             // all courses in Kotoed
             //getCourses(eb);
+
             // all submissions of course with id == 8
             //getSubmissions(eb, 8);
 
