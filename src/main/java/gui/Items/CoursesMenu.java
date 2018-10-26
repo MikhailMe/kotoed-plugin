@@ -32,9 +32,10 @@ public class CoursesMenu extends VBox implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
+        String iconImage = "http://kotoed.icc.spbstu.ru:9000/static/img/kotoed3.png";
+        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
+        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
+        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
+        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
     }
 }

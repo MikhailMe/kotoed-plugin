@@ -39,7 +39,7 @@ public class Course extends HBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         courseName.setText(_name);
-        courseIcon.setImage(new Image(getClass().getResourceAsStream(_icon)));
+        courseIcon.setImage(new Image(_icon));
         this.setOnMouseEntered((event -> {
             _oldStyle = this.getStyle();
             this.setStyle("-fx-background-color: lightblue;");
