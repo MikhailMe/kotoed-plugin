@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static gui.Utils.Strings.Buttons.SIGN_IN_BUTTON;
+import static gui.Utils.Strings.Buttons.SIGN_UP_BUTTON;
+
 public class MainMenu implements Initializable {
     @FXML
     private Label topLabel;
@@ -25,35 +28,24 @@ public class MainMenu implements Initializable {
 
     private Button signInButton;
     private Button signUpButton;
-    private List<Node> childs;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        //vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        //vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
-        //vbox.getChildren().add(new Course("/Icons/kotoed3.png","Kotlin"));
         ReloadMenu();
     }
     public void ReloadMenu()
     {
         vbox.getChildren().clear();
-        signInButton = new Button("Sign In");
-        signInButton.setOnMouseClicked((event -> {
-            childs = new ArrayList<Node>();
+        LoadButton(signInButton,SIGN_IN_BUTTON,new SignInMenu(this));
+        LoadButton(signUpButton,SIGN_UP_BUTTON,new SignUpMenu(this));
+    }
+    public void LoadButton(Button button,String buttonName, Node child){
+        button = new Button(buttonName);
+        button.setOnMouseClicked((event -> {
             vbox.getChildren().clear();
-            vbox.getChildren().add(new SignInMenu(this));
+            vbox.getChildren().add(child);
         }));
-        signUpButton = new Button("Sign Up");
-        signUpButton.setOnMouseClicked((event -> {
-            vbox.getChildren().clear();
-            vbox.getChildren().add(new SignUpMenu(this));
-        }));
-
-        signInButton.setMaxWidth(Double.MAX_VALUE);
-        signUpButton.setMaxWidth(Double.MAX_VALUE);
-
-        vbox.getChildren().add(signInButton);
-        vbox.getChildren().add(signUpButton);
+        button.setMaxWidth(Double.MAX_VALUE);
+        vbox.getChildren().add(button);
     }
 }

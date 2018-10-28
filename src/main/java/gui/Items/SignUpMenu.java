@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.Utils.Strings.Views.SIGN_UP_MENU_VIEW;
+import static gui.Utils.Strings.Views.VIEWS_DIR;
+import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+
 public class SignUpMenu extends VBox implements Initializable {
     @FXML
     private TextField usernameField;
@@ -31,7 +35,7 @@ public class SignUpMenu extends VBox implements Initializable {
 
     public SignUpMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
-        FXMLLoader l = new FXMLLoader(getClass().getResource("/Views/RegisterView.fxml"));
+        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + SIGN_UP_MENU_VIEW + VIEWS_FORMAT));
         l.setController(this);
         l.setRoot(this);
         try {

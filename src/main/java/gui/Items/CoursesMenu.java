@@ -12,14 +12,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static gui.Utils.Strings.Stabs.COURSE_NAME;
+import static gui.Utils.Strings.Stabs.ICON_URL;
+import static gui.Utils.Strings.Views.COURSES_VIEW;
+import static gui.Utils.Strings.Views.VIEWS_DIR;
+import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+
 public class CoursesMenu extends VBox implements Initializable {
     @FXML
     private VBox vbox;
-    private ArrayList<gui.Stabs.Course> stringSet;
+
     private MainMenu mainMenu;
+
     public CoursesMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
-        FXMLLoader l = new FXMLLoader(getClass().getResource("/Views/CoursesView.fxml"));
+        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSES_VIEW + VIEWS_FORMAT));
         l.setController(this);
         l.setRoot(this);
         try {
@@ -32,10 +39,9 @@ public class CoursesMenu extends VBox implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String iconImage = "http://kotoed.icc.spbstu.ru:9000/static/img/kotoed3.png";
-        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
-        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
-        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
-        vbox.getChildren().add(new Course(iconImage,"Kotlin"));
+        vbox.getChildren().add(new Course(ICON_URL,COURSE_NAME));
+        vbox.getChildren().add(new Course(ICON_URL,COURSE_NAME));
+        vbox.getChildren().add(new Course(ICON_URL,COURSE_NAME));
+        vbox.getChildren().add(new Course(ICON_URL,COURSE_NAME));
     }
 }

@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.Utils.Strings.Views.COURSE_VIEW;
+import static gui.Utils.Strings.Views.VIEWS_DIR;
+import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+
 public class Course extends HBox implements Initializable {
     @FXML
     private ImageView courseIcon;
@@ -25,7 +29,7 @@ public class Course extends HBox implements Initializable {
     public Course(String icon, String name) {
         _name = name;
         _icon = icon;
-        FXMLLoader l = new FXMLLoader(getClass().getResource("/Views/Course.fxml"));
+        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSE_VIEW + VIEWS_FORMAT));
         l.setController(this);
         l.setRoot(this);
         try {
