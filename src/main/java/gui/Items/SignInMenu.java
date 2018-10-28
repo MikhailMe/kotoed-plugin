@@ -30,7 +30,7 @@ public class SignInMenu extends VBox implements Initializable{
     @FXML
     private Button backButton;
 
-    private MainMenu mainMenu;
+    public MainMenu mainMenu;
 
     public SignInMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
@@ -53,10 +53,14 @@ public class SignInMenu extends VBox implements Initializable{
                 if(passwordField.getText().equals(CREDENTIALS)) {
                     mainMenu.statusBar.setText(WELCOME);
                     mainMenu.vbox.getChildren().clear();
-                    mainMenu.vbox.getChildren().add(new CoursesMenu(mainMenu));
+                    mainMenu.vbox.getChildren().add(new CoursesMenu(this));
                     return;
                 }
             mainMenu.statusBar.setText(AUTH_ERROR);
         }));
+    }
+
+    public void Reload(){
+        //TODO implement reload: push all child to array before clearing and then load on Reload
     }
 }

@@ -9,8 +9,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static gui.Utils.Strings.Buttons.SIGN_IN_BUTTON;
@@ -36,11 +34,11 @@ public class MainMenu implements Initializable {
     public void ReloadMenu()
     {
         vbox.getChildren().clear();
-        LoadButton(signInButton,SIGN_IN_BUTTON,new SignInMenu(this));
-        LoadButton(signUpButton,SIGN_UP_BUTTON,new SignUpMenu(this));
+        LoadButton(SIGN_IN_BUTTON,new SignInMenu(this));
+        LoadButton(SIGN_UP_BUTTON,new SignUpMenu(this));
     }
-    public void LoadButton(Button button,String buttonName, Node child){
-        button = new Button(buttonName);
+    public void LoadButton(String buttonName, Node child){
+        Button button = new Button(buttonName);
         button.setOnMouseClicked((event -> {
             vbox.getChildren().clear();
             vbox.getChildren().add(child);
