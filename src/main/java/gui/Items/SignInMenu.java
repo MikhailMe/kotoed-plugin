@@ -12,14 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.Utils.Strings.Messages.AUTH_ERROR;
-import static gui.Utils.Strings.Messages.WELCOME;
-import static gui.Utils.Strings.Stabs.CREDENTIALS;
-import static gui.Utils.Strings.Views.SIGN_IN_MENU_VIEW;
-import static gui.Utils.Strings.Views.VIEWS_DIR;
-import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+import static gui.Utils.Strings.*;
 
-public class SignInMenu extends VBox implements Initializable{
+public class SignInMenu extends VBox implements Initializable {
+
     //TODO: 24.10.2018 implement authorization
     @FXML
     private TextField usernameField;
@@ -34,13 +30,12 @@ public class SignInMenu extends VBox implements Initializable{
 
     public SignInMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
-        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + SIGN_IN_MENU_VIEW + VIEWS_FORMAT));
-        l.setController(this);
-        l.setRoot(this);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(VIEWS_DIR + SIGN_IN_MENU_VIEW + VIEWS_FORMAT));
+        fxmlLoader.setController(this);
+        fxmlLoader.setRoot(this);
         try {
-            l.load();
-        }
-        catch (IOException e) {
+            fxmlLoader.load();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -49,8 +44,8 @@ public class SignInMenu extends VBox implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnMouseClicked((event -> mainMenu.ReloadMenu()));
         signInButton.setOnMouseClicked((event -> {
-            if(usernameField.getText().equals(CREDENTIALS))
-                if(passwordField.getText().equals(CREDENTIALS)) {
+            if (usernameField.getText().equals(CREDENTIALS))
+                if (passwordField.getText().equals(CREDENTIALS)) {
                     mainMenu.statusBar.setText(WELCOME);
                     mainMenu.vbox.getChildren().clear();
                     mainMenu.vbox.getChildren().add(new CoursesMenu(this));
@@ -60,7 +55,7 @@ public class SignInMenu extends VBox implements Initializable{
         }));
     }
 
-    public void Reload(){
+    public void Reload() {
         //TODO implement reload: push all child to array before clearing and then load on Reload
     }
 }

@@ -12,13 +12,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static gui.Utils.Strings.MainScene.MAIN_SCENE;
-import static gui.Utils.Strings.MainScene.MAIN_SCENE_LABEL;
+import static gui.Utils.Strings.*;
 
 public class MainWindowFactory implements ToolWindowFactory {
-    public static  JFXPanel jFXPanel;
+
+    public static JFXPanel jFXPanel;
+
     @Override
-    public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+    public void createToolWindowContent(@NotNull final Project project,
+                                        @NotNull final ToolWindow toolWindow) {
         jFXPanel = new JFXPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(jFXPanel, MAIN_SCENE_LABEL, false);
@@ -29,7 +31,5 @@ public class MainWindowFactory implements ToolWindowFactory {
             e.printStackTrace();
         }
     }
-
-    // TODO: 10/23/2018 make gui great again
 
 }

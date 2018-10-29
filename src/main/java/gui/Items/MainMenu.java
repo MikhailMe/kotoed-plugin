@@ -7,14 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.Utils.Strings.Buttons.SIGN_IN_BUTTON;
-import static gui.Utils.Strings.Buttons.SIGN_UP_BUTTON;
+import static gui.Utils.Strings.*;
 
 public class MainMenu implements Initializable {
+
     @FXML
     private Label topLabel;
     @FXML
@@ -25,19 +26,22 @@ public class MainMenu implements Initializable {
     public VBox vbox;
 
     private Button signInButton;
+
     private Button signUpButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ReloadMenu();
     }
-    public void ReloadMenu()
-    {
+
+    public void ReloadMenu() {
         vbox.getChildren().clear();
-        LoadButton(SIGN_IN_BUTTON,new SignInMenu(this));
-        LoadButton(SIGN_UP_BUTTON,new SignUpMenu(this));
+        LoadButton(SIGN_IN_BUTTON, new SignInMenu(this));
+        LoadButton(SIGN_UP_BUTTON, new SignUpMenu(this));
     }
-    public void LoadButton(String buttonName, Node child){
+
+    public void LoadButton(@NotNull final String buttonName,
+                           Node child) {
         Button button = new Button(buttonName);
         button.setOnMouseClicked((event -> {
             vbox.getChildren().clear();

@@ -7,47 +7,48 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.Utils.Strings.Views.COURSE_VIEW;
-import static gui.Utils.Strings.Views.VIEWS_DIR;
-import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+import static gui.Utils.Strings.*;
 
 public class Course extends HBox implements Initializable {
-    @FXML
-    private ImageView courseIcon;
+
     @FXML
     private Label courseName;
 
-    private String _name;
-    private String _icon;
-    private String _oldStyle;
+    @FXML
+    private ImageView courseIcon;
 
-    public Course(String icon, String name) {
-        _name = name;
-        _icon = icon;
-        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSE_VIEW + VIEWS_FORMAT));
-        l.setController(this);
-        l.setRoot(this);
+    private String name;
+    private String icon;
+    private String oldStyle;
+
+    public Course(@NotNull final String icon,
+                  @NotNull final String name) {
+        this.name = name;
+        this.icon = icon;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSE_VIEW + VIEWS_FORMAT));
+        fxmlLoader.setController(this);
+        fxmlLoader.setRoot(this);
         try {
-            l.load();
-        }
-        catch (IOException e) {
+            fxmlLoader.load();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        courseName.setText(_name);
-        courseIcon.setImage(new Image(_icon));
+        courseName.setText(name);
+        courseIcon.setImage(new Image(icon));
         this.setOnMouseEntered((event -> {
-            _oldStyle = this.getStyle();
-            this.setStyle("-fx-background-color: lightblue;");
+            oldStyle = this.getStyle();
+            this.setStyle(STYLE);
         }));
-        this.setOnMouseExited((event -> this.setStyle(_oldStyle)));
+        this.setOnMouseExited((event -> this.setStyle(oldStyle)));
     }
 }

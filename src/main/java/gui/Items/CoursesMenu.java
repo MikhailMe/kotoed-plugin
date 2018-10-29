@@ -10,13 +10,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.Utils.Strings.Stabs.COURSE_NAME;
-import static gui.Utils.Strings.Stabs.ICON_URL;
-import static gui.Utils.Strings.Views.COURSES_VIEW;
-import static gui.Utils.Strings.Views.VIEWS_DIR;
-import static gui.Utils.Strings.Views.VIEWS_FORMAT;
+import static gui.Utils.Strings.*;
 
 public class CoursesMenu extends VBox implements Initializable {
+
     @FXML
     private VBox vbox;
     @FXML
@@ -26,13 +23,12 @@ public class CoursesMenu extends VBox implements Initializable {
 
     public CoursesMenu(SignInMenu signInMenu) {
         this.signInMenu = signInMenu;
-        FXMLLoader l = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSES_VIEW + VIEWS_FORMAT));
-        l.setController(this);
-        l.setRoot(this);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSES_VIEW + VIEWS_FORMAT));
+        fxmlLoader.setController(this);
+        fxmlLoader.setRoot(this);
         try {
-            l.load();
-        }
-        catch (IOException e) {
+            fxmlLoader.load();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -40,9 +36,7 @@ public class CoursesMenu extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++)
-            vbox.getChildren().add(new Course(ICON_URL,COURSE_NAME));
-        backButton.setOnMouseClicked((event -> {
-            signInMenu.Reload();
-        }));
+            vbox.getChildren().add(new Course(ICON_URL, COURSE_NAME));
+        backButton.setOnMouseClicked((event -> signInMenu.Reload()));
     }
 }
