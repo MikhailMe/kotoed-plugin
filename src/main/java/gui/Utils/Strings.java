@@ -11,8 +11,8 @@ public class Strings {
     public static final String VIEWS_FORMAT = ".fxml";
     public static final String COURSE_VIEW = "/Course";
     public static final String COURSES_VIEW = "/CoursesView";
-    public static final String SIGN_IN_MENU_VIEW = "/AuthView";
-    public static final String SIGN_UP_MENU_VIEW = "/RegisterView";
+    public static final String SIGN_IN_MENU_VIEW = "/SignInView";
+    public static final String SIGN_UP_MENU_VIEW = "/SignUpView";
 
     // stab section
     public static final String CREDENTIALS = "admin";

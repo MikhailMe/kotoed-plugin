@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Data
 @JsonDeserialize
-@JsonIgnoreProperties(value = { "icon" , "document"})
+@JsonIgnoreProperties(value = {"icon", "document"})
 public class Course {
 
     private long id;
@@ -15,6 +15,14 @@ public class Course {
     private String baseRepoUrl;
     private String baseRevision;
     private long buildTemplateId;
+
+    public Course(long id,
+                  String name,
+                  String state) {
+        this.id = id;
+        this.name = name;
+        this.state = state;
+    }
 
     @Override
     public String toString() {
@@ -25,5 +33,4 @@ public class Course {
                 "baseRevision = " + baseRevision + "\n" +
                 "buildTemplateId = " + buildTemplateId + "\n";
     }
-
 }

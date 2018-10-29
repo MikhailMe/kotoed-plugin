@@ -16,11 +16,6 @@ allprojects {
     }
 }
 
-publishPlugin {
-    username intellijPublishUsername
-    password intellijPublishPassword
-}
-
 dependencies {
 
     // for work with eventbus bridge
