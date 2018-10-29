@@ -118,22 +118,22 @@ public class Main {
         HttpClient client = HttpClientBuilder.create().build();
 
         // This is a local example that is added by my hands
-        String localDenizen = "punsh";
-        String localPassword = "punsh";
+        String localDenizen = "mikhailme";
+        String localPassword = "qwerty12345";
         String jsonMyself = getMyself(localDenizen, localPassword);
 
-        String cookie = getCookie(URL_LOCAL_LOGIN, client, jsonMyself);
-        String whoAmI = getWhoAmI(URL_LOCAL_WHO_AM_I, client, jsonMyself);
+        String cookie = getCookie(URL_GLOBAL_LOGIN, client, jsonMyself);
+        String whoAmI = getWhoAmI(URL_GLOBAL_WHO_AM_I, client, jsonMyself);
 
         MultiMap headers = MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
 
-        EventBusBridge.connect(URI.create(URL_LOCAL_EVENTBUS), headers, eb -> {
+        EventBusBridge.connect(URI.create(URL_GLOBAL_EVENTBUS), headers, eb -> {
 
             // all courses in Kotoed
-            getCourses(eb);
+            //getCourses(eb);
 
             // all submissions of course with id == 8
-            //getSubmissions(eb, 8);
+            getSubmissions(eb, 8);
 
             // all comments of submission with id == 8608
             //getComments(eb, 8608);

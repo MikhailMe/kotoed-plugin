@@ -21,6 +21,10 @@ public class Submission {
     private String repoType;
     //private List<Long> openSubmissions;
 
+    public Submission() {
+
+    }
+
     @Override
     public String toString() {
         return "id = " + id + "\n" +
