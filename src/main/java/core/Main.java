@@ -109,8 +109,14 @@ public class Main {
                 .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, courseId));
         eb.send(URL_EVENTBUS_SUBMISSIONS_FOR_COURSE, message, reply -> {
             String jsonSubmissions = String.valueOf(reply.body());
-            System.out.println(jsonSubmissions);
-            //submissionsForCourse = Parser.getSubmissions(jsonSubmissions);
+            try {
+                submissionsForCourse = Parser.getSubmissions(jsonSubmissions);
+                for (Submission submission : submissionsForCourse)
+                    System.out.println(submission);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         });
     }
 
@@ -130,10 +136,10 @@ public class Main {
         EventBusBridge.connect(URI.create(URL_LOCAL_EVENTBUS), headers, eb -> {
 
             // all courses in Kotoed
-            getCourses(eb);
+            //getCourses(eb);
 
             // all submissions of course with id == 8
-            //getSubmissions(eb, 8);
+            getSubmissions(eb, 8);
 
             // all comments of submission with id == 8608
             //getComments(eb, 8608);
