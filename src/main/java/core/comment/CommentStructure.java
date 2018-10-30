@@ -29,4 +29,8 @@ public class CommentStructure {
 
     private String denizenId;
 
+    public CommentStructure() {
+
+    }
+
 }

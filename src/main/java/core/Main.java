@@ -1,28 +1,20 @@
 package core;
 
+import com.saffrontech.vertx.EventBusBridge;
 import core.comment.Comment;
 import core.course.Course;
 import core.parser.Parser;
+import core.rest.Sender;
 import core.sumbission.Submission;
 import io.vertx.core.MultiMap;
-import org.apache.http.HttpResponse;
 import io.vertx.core.json.JsonObject;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
-import org.apache.http.client.HttpClient;
-import org.apache.http.entity.StringEntity;
-import com.saffrontech.vertx.EventBusBridge;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
-import static core.Address.*;
+import static core.Util.Address.*;
 
 public class Main {
 
@@ -38,38 +30,6 @@ public class Main {
     private static List<Comment> commentsForSubmission;
     private static List<Submission> submissionsForCourse;
 
-    private static String getMyself(@NotNull final String denizen,
-                                    @NotNull final String password) {
-        return new JsonObject()
-                .put(DENIZEN_ID, denizen)
-                .put(PASSWORD, password)
-                .toString();
-    }
-
-    private static BufferedReader getReader(@NotNull final HttpResponse response) throws IOException {
-        return new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-    }
-
-    private static String getCookie(@NotNull final String url,
-                                    @NotNull final HttpClient client,
-                                    @NotNull final String jsonMyself) throws IOException {
-        HttpPost postForCookies = new HttpPost(url);
-        postForCookies.setEntity(new StringEntity(jsonMyself));
-        HttpResponse responseWithCookies = client.execute(postForCookies);
-        String stringOfHeaders = Arrays.toString(responseWithCookies.getAllHeaders());
-        return Parser.getCookieFromHeaders(stringOfHeaders);
-    }
-
-    private static String getWhoAmI(@NotNull final String url,
-                                    @NotNull final HttpClient client,
-                                    @NotNull final String jsonMyself) throws IOException {
-        HttpPost postWhoAmI = new HttpPost(url);
-        postWhoAmI.setEntity(new StringEntity(jsonMyself));
-        HttpResponse whoAmI = client.execute(postWhoAmI);
-        BufferedReader rd = getReader(whoAmI);
-        return IOUtils.toString(rd);
-    }
-
     // TODO: 10/25/2018 Think about: "how use courses outside scope this method"
     private static void getCourses(@NotNull final EventBusBridge eb) {
         JsonObject message = new JsonObject().put(FIELD_TEXT, "");
@@ -78,12 +38,12 @@ public class Main {
             
             try {
                 courses = Parser.getCourses(jsonCourses);
+
+                for (Course course : courses)
+                    System.out.println(course);
+
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-            for (Course course : courses) {
-                System.out.println(course.toString());
             }
         });
     }
@@ -115,15 +75,14 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpClient client = HttpClientBuilder.create().build();
 
-        // This is a local example that is added by my hands
-        String localDenizen = "mikhailme";
-        String localPassword = "qwerty12345";
-        String jsonMyself = getMyself(localDenizen, localPassword);
+        String configuration = "GLOBAL";
+        String localDenizen = "punsh";
+        String localPassword = "punsh";
 
-        String cookie = getCookie(URL_GLOBAL_LOGIN, client, jsonMyself);
-        String whoAmI = getWhoAmI(URL_GLOBAL_WHO_AM_I, client, jsonMyself);
+        Sender sender = new Sender(configuration);
+        String cookie = sender.signIn(localDenizen, localPassword);
+        String whoAmI = sender.getWhoAmI();
 
         MultiMap headers = MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
 
@@ -133,7 +92,7 @@ public class Main {
             //getCourses(eb);
 
             // all submissions of course with id == 8
-            getSubmissions(eb, 8);
+            //getSubmissions(eb, 8);
 
             // all comments of submission with id == 8608
             //getComments(eb, 8608);

@@ -7,4 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize
 public class Project {
 
+    public Project() {
+
+    }
+
 }
