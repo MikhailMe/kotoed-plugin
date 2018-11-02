@@ -10,7 +10,7 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Kotoed" anchor="right" factoryClass="gui.MainWindowFactory"/>
+        <toolWindow id="Kotoed" anchor="right" factoryClass="plugin.gui.MainWindowFactory"/>
     </extensions>
 
     <actions>
