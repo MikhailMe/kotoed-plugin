@@ -3,6 +3,7 @@ package gui.Items;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -46,12 +47,10 @@ public class SignInMenu extends VBox implements Initializable {
         signInButton.setOnMouseClicked((event -> {
             if (usernameField.getText().equals(CREDENTIALS))
                 if (passwordField.getText().equals(CREDENTIALS)) {
-                    mainMenu.statusBar.setText(WELCOME);
                     mainMenu.vbox.getChildren().clear();
-                    mainMenu.vbox.getChildren().add(new CoursesMenu(this));
+                    //mainMenu.vbox.getChildren().add(new CoursesList(this));
                     return;
                 }
-            mainMenu.statusBar.setText(AUTH_ERROR);
         }));
     }
 

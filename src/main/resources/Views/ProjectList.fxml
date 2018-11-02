@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox maxHeight="-Infinity" minHeight="-Infinity">
+         <children>
+            <Label prefWidth="100.0" text="Poject Name" />
+            <Label text="Project Source" />
+         </children>
+      </HBox>
+      <VBox fx:id="projectList" />
+   </children>
+</fx:root>

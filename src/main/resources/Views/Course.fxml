@@ -12,5 +12,6 @@
          <font>
             <Font size="18.0" />
          </font></Label>
+      <Label fx:id="statusText" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" text="Closed" />
    </children>
 </fx:root>

@@ -12,17 +12,15 @@ import java.util.ResourceBundle;
 
 import static gui.Utils.Strings.*;
 
-public class CoursesMenu extends VBox implements Initializable {
+public class CoursesList extends VBox implements Initializable {
 
     @FXML
     private VBox vbox;
     @FXML
     private Button backButton;
 
-    private SignInMenu signInMenu;
 
-    public CoursesMenu(SignInMenu signInMenu) {
-        this.signInMenu = signInMenu;
+    public CoursesList() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(VIEWS_DIR + COURSES_VIEW + VIEWS_FORMAT));
         fxmlLoader.setController(this);
         fxmlLoader.setRoot(this);
@@ -35,8 +33,14 @@ public class CoursesMenu extends VBox implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        for (int i = 0; i < 10; i++)
-            vbox.getChildren().add(new Course(ICON_URL, COURSE_NAME));
-        backButton.setOnMouseClicked((event -> signInMenu.Reload()));
+        for (int i = 0; i < 10; i++) {
+            Course course = new Course(ICON_URL, COURSE_NAME, COURSE_STATUS);
+            vbox.getChildren().add(course);
+            course.setOnMouseClicked((event) -> {
+                //this.signInMenu.vbox.getChildren().clear();
+                //this.signInMenu.vbox.getChildren().add(new ProjectList());
+            });
+        }
+        //backButton.setOnMouseClicked((event -> signInMenu.Reload()));
     }
 }
