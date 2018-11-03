@@ -5,6 +5,7 @@ import plugin.core.comment.Comment;
 import plugin.core.project.Project;
 import plugin.core.sumbission.Submission;
 import org.jetbrains.annotations.NotNull;
+import plugin.core.comment.CommentsJsonMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -51,8 +52,9 @@ public class Parser {
 
     public static List<Comment> getComments(@NotNull final String json) {
         try {
-            return mapper.readValue(json, new TypeReference<List<Comment>>() {
-            });
+            // TODO: 11/03/2018 handle situation with error getting comment and empty comments
+            CommentsJsonMapper commentsMapper = mapper.readValue(json, CommentsJsonMapper.class);
+            return commentsMapper.getCommentsFromJson();
         } catch (IOException e) {
             e.printStackTrace();
         }

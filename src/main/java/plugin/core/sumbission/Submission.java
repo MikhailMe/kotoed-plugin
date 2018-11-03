@@ -1,8 +1,8 @@
 package plugin.core.sumbission;
 
+import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Data;
 
 @Data
 @JsonDeserialize
@@ -16,7 +16,6 @@ public class Submission {
     private String repoUrl;
     private long courseId;
     private String repoType;
-    //private List<Long> openSubmissions;
 
     public Submission() {
 
@@ -31,6 +30,5 @@ public class Submission {
                 "repoUrl = " + repoUrl + "\n" +
                 "courseId = " + courseId + "\n" +
                 "repoType = " + repoType;// + "\n" +
-        //"openSubmissions = " + openSubmissions.toString();
     }
 }

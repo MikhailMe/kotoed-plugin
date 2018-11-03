@@ -16,7 +16,10 @@ allprojects {
     }
 }
 
+apply plugin: 'idea'
+
 dependencies {
+
 
     // for work with eventbus bridge
     implementation 'com.github.MikhailMe:vertx-eventbusbridge:1.5'
@@ -32,6 +35,8 @@ dependencies {
 
     // for tests
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
 }
 
 intellij {
