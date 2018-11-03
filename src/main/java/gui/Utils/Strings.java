@@ -13,4 +13,7 @@ public class Strings {
     public static final String PASSWORD_TEXT = "Password:";
     public static final String REPEAT_PASSWORD_TEXT = "Repeat password:";
     public static final String EMAIL_TEXT = "Email:";
+
+    public static final String OPEN_ICON = "/Icons/open.png";
+    public static final String CLOSED_ICON = "/Icons/closed.png";
 }
