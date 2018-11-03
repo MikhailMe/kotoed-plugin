@@ -23,8 +23,8 @@ public class Parser {
     }
 
     public static String getCookieFromHeaders(@NotNull final String headers) {
-        String prefix = "Set-Cookie: ";
-        String postfix = ";";
+        final String prefix = "Set-Cookie: ";
+        final String postfix = ";";
         int beginIndex = headers.indexOf(prefix) + prefix.length();
         int endIndex = headers.indexOf(postfix);
         return headers.substring(beginIndex, endIndex);

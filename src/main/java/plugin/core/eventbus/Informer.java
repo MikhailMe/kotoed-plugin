@@ -95,9 +95,6 @@ public class Informer {
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
             eb.send(URL_EVENTBUS_COMMENTS, message, reply -> {
                 String jsonComments = String.valueOf(reply.body());
-
-                System.out.println(jsonComments);
-
                 CompletableFuture<List<Comment>> cf = new CompletableFuture<>();
                 cf.complete(Objects.requireNonNull(Parser.getComments(jsonComments)));
                 commentsList.addAll(cf.getNow(null));

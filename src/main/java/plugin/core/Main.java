@@ -2,7 +2,7 @@ package plugin.core;
 
 import io.vertx.core.MultiMap;
 import plugin.core.rest.Sender;
-import plugin.core.Util.Address;
+import plugin.core.util.Address;
 import plugin.core.course.Course;
 import plugin.core.comment.Comment;
 import plugin.core.project.Project;
@@ -18,8 +18,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String denizen = "vovasq";
-        String password = "vovas123";
+        String denizen = "punsh";
+        String password = "punsh";
 
         Sender sender = new Sender(CONFIGURATION);
         String cookie = sender.signIn(denizen, password);
@@ -41,7 +41,7 @@ public class Main {
         submissions.forEach(System.out::println);*/
 
         List<Comment> comments = new ArrayList<>();
-        informer.getComments(9312, comments);
+        informer.getComments(1111, comments);
         comments.forEach(System.out::println);
 
     }

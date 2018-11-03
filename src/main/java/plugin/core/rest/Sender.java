@@ -23,9 +23,7 @@ import static plugin.core.util.Address.*;
 public class Sender {
 
     private String urlSignIn;
-
     private String urlSignUp;
-
     private String urlWhoAmI;
 
     @Getter
