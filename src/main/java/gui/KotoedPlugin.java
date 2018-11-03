@@ -14,9 +14,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static gui.Utils.Strings.CREDENTIALS;
+import static gui.Utils.Strings.*;
 
-public class Main implements ToolWindowFactory {
+public class KotoedPlugin implements ToolWindowFactory {
 
     private JPanel panel;
     private JPanel toolbar;
@@ -30,14 +30,18 @@ public class Main implements ToolWindowFactory {
 
     private int buttonNumber = 0;
 
-    public Main() {
+    public KotoedPlugin() {
         signInButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) { onSignInButtonPressed(); }
+            public void actionPerformed(ActionEvent actionEvent) {
+                onSignInButtonPressed();
+            }
         });
         signUpButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) { onSignUpButtonPressed(); }
+            public void actionPerformed(ActionEvent actionEvent) {
+                onSignUpButtonPressed();
+            }
         });
     }
 
@@ -49,7 +53,7 @@ public class Main implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(content);
     }
 
-    public void LoadTree(){
+    public void LoadTree(DefaultMutableTreeNode incomeTree){
         //Current stab for tree
         //waiting for back to get data
         //create the root node
@@ -79,17 +83,7 @@ public class Main implements ToolWindowFactory {
     }
 
     public void onSignInButtonPressed(){
-        SignIn sign = new SignIn();
-
-        if (sign.username.equals(CREDENTIALS))
-            if (sign.password.equals(CREDENTIALS)) {
-                LoadTree();
-                return;
-            }
-        JOptionPane.showMessageDialog(null,
-                "Username or password is incorrect!",
-                "Authorize error",
-                JOptionPane.ERROR_MESSAGE);
+        SignIn sign = new SignIn(this);
     }
     public void onSignUpButtonPressed(){
         SignUp dialog = new SignUp();

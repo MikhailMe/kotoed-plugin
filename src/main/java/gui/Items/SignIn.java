@@ -1,9 +1,10 @@
 package gui.Items;
 
+import gui.KotoedPlugin;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.*;
 
 import static gui.Utils.Strings.*;
@@ -15,10 +16,10 @@ public class SignIn extends JDialog {
     private JButton signInButton;
     private JButton cancelButton;
 
-    public String username;
-    public String password;
+    private KotoedPlugin kotoedPlugin;
 
-    public SignIn() {
+    public SignIn(KotoedPlugin kotoedPlugin) {
+        this.kotoedPlugin = kotoedPlugin;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
@@ -64,10 +65,16 @@ public class SignIn extends JDialog {
     }
 
     private void onSignIn() {
-        // add your code here
-        username = usernameField.getText();
-        password = passwordField.getText();
-        dispose();
+        if (usernameField.getText().equals(CREDENTIALS))
+            if (passwordField.getText().equals(CREDENTIALS)) {
+                this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
+                dispose();
+                return;
+            }
+        JOptionPane.showMessageDialog(null,
+                AUTH_ERROR_MESSAGE,
+                AUTH_ERROR,
+                JOptionPane.ERROR_MESSAGE);
     }
 
     private void onCancel() {
