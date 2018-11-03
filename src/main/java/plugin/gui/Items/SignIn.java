@@ -1,18 +1,23 @@
-package gui.Items;
+package plugin.gui.Items;
 
-import gui.KotoedPlugin;
+import plugin.gui.KotoedPlugin;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import static gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.*;
 
 public class SignIn extends JDialog {
+
     private JPanel contentPane;
+
     private JTextField usernameField;
     private JPasswordField passwordField;
+
     private JButton signInButton;
     private JButton cancelButton;
 
@@ -24,17 +29,9 @@ public class SignIn extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
 
-        signInButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSignIn();
-            }
-        });
+        signInButton.addActionListener(e -> onSignIn());
 
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        cancelButton.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -45,11 +42,9 @@ public class SignIn extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         setTitle(SIGN_IN);
 

@@ -1,16 +1,16 @@
-package gui;
+package plugin.gui;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import gui.Items.SignIn;
-import gui.Items.SignUp;
-import gui.Stabs.CourseNode;
-import gui.Stabs.ProjectNode;
-import gui.Stabs.SubmissionNode;
-import gui.Utils.CustomTreeRenderer;
+import plugin.gui.Items.SignIn;
+import plugin.gui.Items.SignUp;
+import plugin.gui.Stabs.CourseNode;
+import plugin.gui.Stabs.ProjectNode;
+import plugin.gui.Stabs.SubmissionNode;
+import plugin.gui.Utils.CustomTreeRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

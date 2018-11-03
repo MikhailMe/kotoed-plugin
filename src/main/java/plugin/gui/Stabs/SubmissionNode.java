@@ -1,4 +1,4 @@
-package gui.Stabs;
+package plugin.gui.Stabs;
 
 public class SubmissionNode {
     public String text;

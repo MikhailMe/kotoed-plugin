@@ -1,37 +1,34 @@
-package gui.Items;
+package plugin.gui.Items;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import static gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.*;
 
 public class SignUp extends JDialog {
+
     private JPanel contentPane;
+
     private JTextField usernameField;
     private JTextField emailField;
+
     private JPasswordField passwordField;
-    private JPasswordField repeatPasswordField;
-    private JButton signInButton;
+    private JPasswordField confirmPasswordField;
+
+    private JButton signUpButton;
     private JButton cancelButton;
 
     public SignUp() {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(signInButton);
+        getRootPane().setDefaultButton(signUpButton);
 
-        signInButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        signUpButton.addActionListener(e -> onOK());
+        cancelButton.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -42,11 +39,10 @@ public class SignUp extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e ->
+                        onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         setTitle(SIGN_UP);
 
@@ -59,8 +55,8 @@ public class SignUp extends JDialog {
         PromptSupport.setPrompt(PASSWORD_TEXT, passwordField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, passwordField);
 
-        PromptSupport.setPrompt(REPEAT_PASSWORD_TEXT, repeatPasswordField);
-        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, repeatPasswordField);
+        PromptSupport.setPrompt(CONFIRM_PASSWORD_TEXT, confirmPasswordField);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, confirmPasswordField);
 
         this.pack();
         this.setLocationRelativeTo(null);
@@ -68,7 +64,6 @@ public class SignUp extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
         dispose();
     }
 

@@ -1,6 +1,9 @@
 package plugin.gui.Utils;
 
 public class Strings {
+
+    public static final String LOCAL = "LOCAL";
+    public static final String GLOBAL = "GLOBAL";
     public static final String CREDENTIALS = "admin";
 
     public static final String SIGN_IN = "Sign In";
@@ -9,10 +12,10 @@ public class Strings {
     public static final String AUTH_ERROR = "Authorize error";
     public static final String AUTH_ERROR_MESSAGE = "Username or password is incorrect!";
 
+    public static final String EMAIL_TEXT = "Email:";
     public static final String USERNAME_TEXT = "Username:";
     public static final String PASSWORD_TEXT = "Password:";
-    public static final String REPEAT_PASSWORD_TEXT = "Repeat password:";
-    public static final String EMAIL_TEXT = "Email:";
+    public static final String CONFIRM_PASSWORD_TEXT = "Confirm password:";
 
     public static final String OPEN_ICON = "/Icons/open.png";
     public static final String CLOSED_ICON = "/Icons/closed.png";

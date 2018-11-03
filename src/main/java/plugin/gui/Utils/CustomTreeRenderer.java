@@ -1,21 +1,23 @@
-package gui.Utils;
+package plugin.gui.Utils;
 
-import core.course.Course;
-import gui.Stabs.CourseNode;
-import gui.Stabs.ProjectNode;
-import gui.Stabs.SubmissionNode;
+import plugin.gui.Stabs.CourseNode;
+import plugin.gui.Stabs.ProjectNode;
+import plugin.gui.Stabs.SubmissionNode;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import java.awt.*;
 
-import static gui.Utils.Strings.CLOSED_ICON;
-import static gui.Utils.Strings.OPEN_ICON;
+import static plugin.gui.Utils.Strings.OPEN_ICON;
+import static plugin.gui.Utils.Strings.CLOSED_ICON;
 
 public class CustomTreeRenderer extends DefaultTreeCellRenderer {
-    private static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
+
     private ImageIcon icon;
+
+    private static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
+
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {

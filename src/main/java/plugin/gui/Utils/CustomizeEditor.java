@@ -1,4 +1,4 @@
-package gui.Utils;
+package plugin.gui.Utils;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 
 public class CustomizeEditor extends AnAction {
+
     @Override
     public void update(AnActionEvent e) {
         //Get required data keys
@@ -19,6 +20,7 @@ public class CustomizeEditor extends AnAction {
         e.getPresentation().setVisible(project != null && editor != null &&
                 editor.getSelectionModel().hasSelection());
     }
+
     @Override
     public void actionPerformed(AnActionEvent e) {
         //Get all the required data from data keys
