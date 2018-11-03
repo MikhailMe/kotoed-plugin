@@ -16,10 +16,6 @@ public class Course {
     private String baseRevision;
     private long buildTemplateId;
 
-    public Course() {
-
-    }
-
     public Course(long id,
                   String name,
                   String state) {

@@ -4,11 +4,12 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data  public class ByLineMapper{
-//    private List<CommentsMapper> comments;
-    private List<Comment> comments;
-    private long line;
-    ByLineMapper(){
+@Data
+class ByLineMapper {
 
+    private long line;
+    private List<Comment> comments;
+
+    ByLineMapper() {
     }
 }

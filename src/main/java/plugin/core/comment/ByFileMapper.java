@@ -1,17 +1,15 @@
 package plugin.core.comment;
 
-
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ByFileMapper{
+public class ByFileMapper {
 
-    private List<ByLineMapper> by_line;
     private String filename;
-    public ByFileMapper(){
+    private List<ByLineMapper> byLine;
 
+    public ByFileMapper() {
     }
-
 }

@@ -1,18 +1,16 @@
 package plugin.core;
 
 import io.vertx.core.MultiMap;
-import plugin.core.Util.Address;
-import plugin.core.comment.Comment;
-import plugin.core.course.Course;
-import plugin.core.eventbus.Informer;
-import plugin.core.project.Project;
 import plugin.core.rest.Sender;
+import plugin.core.Util.Address;
+import plugin.core.course.Course;
+import plugin.core.comment.Comment;
+import plugin.core.project.Project;
+import plugin.core.eventbus.Informer;
 import plugin.core.sumbission.Submission;
 
-import javax.xml.bind.annotation.XmlElementDecl;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -29,10 +27,10 @@ public class Main {
         MultiMap headers = sender.getHeaders(cookie);
 
         Informer informer = new Informer(CONFIGURATION, headers);
-//
-//        List<Course> courses = new ArrayList<>();
-//        informer.getCourses(courses);
-//        courses.forEach(System.out::println);
+
+        /*List<Course> courses = new ArrayList<>();
+        informer.getCourses(courses);
+        courses.forEach(System.out::println);*/
 
         /*List<Project> projects = new ArrayList<>();
         informer.getProjects(projects);
