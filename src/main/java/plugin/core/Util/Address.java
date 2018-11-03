@@ -2,6 +2,9 @@ package plugin.core.Util;
 
 public class Address {
 
+    public static final String LOCAL = "LOCAL";
+    public static final String GLOBAL = "GLOBAL";
+
     public static final String DENIZEN_ID = "denizen_id";
     public static final String PASSWORD = "password";
 
@@ -16,8 +19,7 @@ public class Address {
     public static final String URL_GLOBAL_SIGN_UP = "http://kotoed.icc.spbstu.ru:9000/auth/login/doSignUp";
 
     public static final String URL_EVENTBUS_COURSES = "kotoed.api.course.search";
-    public static final String URL_EVENTBUS_SUBMISSIONS = "kotoed.api.submission.list";
-    public static final String URL_EVENTBUS_SUBMISSIONS_FOR_COURSE = "kotoed.api.project.searchForCourse";
     public static final String URL_EVENTBUS_COMMENTS = "kotoed.api.submission.comments";
+    public static final String URL_EVENTBUS_SUBMISSIONS_FOR_COURSE = "kotoed.api.project.searchForCourse";
 
 }

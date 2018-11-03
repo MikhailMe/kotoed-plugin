@@ -1,19 +1,20 @@
 package plugin.core.parser;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import plugin.core.comment.Comment;
 import plugin.core.course.Course;
+import plugin.core.comment.Comment;
+import plugin.core.project.Project;
 import plugin.core.sumbission.Submission;
 import org.jetbrains.annotations.NotNull;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
-import java.io.IOException;
 import java.util.List;
+import java.io.IOException;
 
 public class Parser {
 
-    private static ObjectMapper mapper;
+    private static final ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper();
@@ -28,7 +29,7 @@ public class Parser {
         return headers.substring(beginIndex, endIndex);
     }
 
-    public static List<Course> getCourses(@NotNull final String json)  {
+    public static List<Course> getCourses(@NotNull final String json) {
         try {
             return mapper.readValue(json, new TypeReference<List<Course>>() {
             });
@@ -38,15 +39,33 @@ public class Parser {
         return null;
     }
 
-    // TODO: 10/17/18 fix this implementation, cause it may more difficulty
-    public static List<Comment> getComments(@NotNull final String json) throws IOException {
-        return mapper.readValue(json, new TypeReference<List<Comment>>() {
-        });
+    public static List<Project> getProjects(@NotNull final String json) {
+        try {
+            return mapper.readValue(json, new TypeReference<List<Project>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    // TODO: 10/25/2018 check it out
-    public static List<Submission> getSubmissions(@NotNull final String json) throws IOException {
-        return mapper.readValue(json, new TypeReference<List<Submission>>() {
-        });
+    public static List<Comment> getComments(@NotNull final String json) {
+        try {
+            return mapper.readValue(json, new TypeReference<List<Comment>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Submission> getSubmissions(@NotNull final String json) {
+        try {
+            return mapper.readValue(json, new TypeReference<List<Submission>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
