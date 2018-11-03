@@ -1,4 +1,4 @@
-package plugin.core.Util;
+package plugin.core.util;
 
 public class Address {
 

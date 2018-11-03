@@ -18,7 +18,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-import static plugin.core.Util.Address.*;
+import static plugin.core.util.Address.*;
 
 public class Sender {
 

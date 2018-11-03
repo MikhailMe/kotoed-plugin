@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-import static plugin.core.Util.Address.*;
+import static plugin.core.util.Address.*;
 
 public class Informer {
 
