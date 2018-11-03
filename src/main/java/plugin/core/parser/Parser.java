@@ -1,5 +1,6 @@
 package plugin.core.parser;
 
+import plugin.core.comment.CommentsJsonMapper;
 import plugin.core.course.Course;
 import plugin.core.comment.Comment;
 import plugin.core.project.Project;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 
@@ -51,8 +53,12 @@ public class Parser {
 
     public static List<Comment> getComments(@NotNull final String json) {
         try {
-            return mapper.readValue(json, new TypeReference<List<Comment>>() {
-            });
+
+
+// TODO: 11/03/2018 handle situation with error getting comment and empty comments
+            CommentsJsonMapper commentsMapper = mapper.readValue(json, CommentsJsonMapper.class);
+            return commentsMapper.getCommentsFromJson();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
