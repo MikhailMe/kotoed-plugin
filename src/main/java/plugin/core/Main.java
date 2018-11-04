@@ -18,8 +18,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String denizen = "punsh";
-        String password = "punsh";
+//        String denizen = "punsh";
+//        String password = "punsh";
+        String denizen = "vovasq";
+        String password = "vovas123";
+
 
         Sender sender = new Sender(CONFIGURATION);
         String cookie = sender.signIn(denizen, password);
@@ -28,9 +31,9 @@ public class Main {
 
         Informer informer = new Informer(CONFIGURATION, headers);
 
-        /*List<Course> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
         informer.getCourses(courses);
-        courses.forEach(System.out::println);*/
+        courses.forEach(System.out::println);
 
         /*List<Project> projects = new ArrayList<>();
         informer.getProjects(projects);
@@ -40,9 +43,9 @@ public class Main {
         informer.getSubmissions(8, 20, 0, submissions);
         submissions.forEach(System.out::println);*/
 
-        List<Comment> comments = new ArrayList<>();
-        informer.getComments(1111, comments);
-        comments.forEach(System.out::println);
+//        List<Comment> comments = new ArrayList<>();
+//        informer.getComments(9312, comments);
+//        comments.forEach(System.out::println);
 
     }
 

@@ -58,6 +58,7 @@ public class Informer {
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
             eb.send(URL_EVENTBUS_COURSES, message, reply -> {
                 String jsonCourses = String.valueOf(reply.body());
+//                System.out.println(jsonCourses);
                 CompletableFuture<List<Course>> cf = new CompletableFuture<>();
                 cf.complete(Objects.requireNonNull(Parser.getCourses(jsonCourses)));
                 courseList.addAll(cf.getNow(null));
