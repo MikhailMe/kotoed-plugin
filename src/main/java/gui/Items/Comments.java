@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static gui.Utils.Strings.*;
+
 public class Comments extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -29,7 +31,7 @@ public class Comments extends JDialog {
 
     private SubmissionNode submission;
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern(TIME_PATERN);
     LocalDateTime now = LocalDateTime.now();
 
     public Comments(ArrayList<Comment> messages, SubmissionNode submission) {
@@ -57,13 +59,13 @@ public class Comments extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder("Comment text:");
+        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
-        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder("Comments for:" + submission.toString());
+        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR + submission.toString());
         commentPanel.setBorder(commentPanelTitledBorder);
 
-        setTitle("Comments");
+        setTitle(COMMENTS);
 
         addComments();
 
