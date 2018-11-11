@@ -14,9 +14,5 @@
     </extensions>
 
     <actions>
-        <action id="gui.CustomizeEditor" class="gui.Utils.CustomizeEditor" text="Editor Basics"
-                description="Illustrates how to plug an action in">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
     </actions>
 </idea-plugin>
