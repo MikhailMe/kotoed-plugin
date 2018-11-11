@@ -31,21 +31,31 @@ public class Main {
 
         Informer informer = new Informer(CONFIGURATION, headers);
 
+        System.out.println("******************Courses*****************************************************");
+
+
         List<Course> courses = new ArrayList<>();
         informer.getCourses(courses);
         courses.forEach(System.out::println);
 
-        /*List<Project> projects = new ArrayList<>();
-        informer.getProjects(projects);
-        projects.forEach(System.out::println);*/
+// Projects mapping is not ready yet
+//        System.out.println("******************Projects****************************************************");
+//        List<Project> projects = new ArrayList<>();
+//        informer.getProjects(projects);
+//        projects.forEach(System.out::println);
 
-        /*List<Submission> submissions = new ArrayList<>();
+
+        System.out.println("******************Submissions*************************************************");
+
+        List<Submission> submissions = new ArrayList<>();
         informer.getSubmissions(8, 20, 0, submissions);
-        submissions.forEach(System.out::println);*/
+        submissions.forEach(System.out::println);
 
-//        List<Comment> comments = new ArrayList<>();
-//        informer.getComments(9312, comments);
-//        comments.forEach(System.out::println);
+        System.out.println("******************Comments****************************************************");
+
+        List<Comment> comments = new ArrayList<>();
+        informer.getComments(9312, comments);
+        comments.forEach(System.out::println);
 
     }
 
