@@ -35,7 +35,6 @@ public class Sender {
     private static final String FIELD_COOKIE = "Cookie";
 
     public Sender(@NotNull final String configuration) {
-
         this.client = HttpClientBuilder.create().build();
 
         if (configuration.equals(GLOBAL)) {
@@ -73,9 +72,8 @@ public class Sender {
         return null;
     }
 
-    @NotNull
     public String getWhoAmI() {
-        return Objects.requireNonNull(getWhoAmI(jsonMyself));
+        return jsonMyself == null ? null : Objects.requireNonNull(getWhoAmI(jsonMyself));
     }
 
     private String getWhoAmI(@NotNull final String jsonMyself) {
@@ -115,5 +113,4 @@ public class Sender {
     public MultiMap getHeaders(String cookie) {
         return MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
     }
-
 }

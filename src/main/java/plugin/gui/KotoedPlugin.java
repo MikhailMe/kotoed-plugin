@@ -34,18 +34,8 @@ public class KotoedPlugin implements ToolWindowFactory {
     private int buttonNumber = 0;
 
     public KotoedPlugin() {
-        signInButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                onSignInButtonPressed();
-            }
-        });
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                onSignUpButtonPressed();
-            }
-        });
+        signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
+        signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
     }
 
     @Override
