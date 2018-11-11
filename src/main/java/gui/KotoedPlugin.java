@@ -1,18 +1,27 @@
 package gui;
 
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DataConstants;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.HighlighterLayer;
-import com.intellij.openapi.editor.markup.MarkupModel;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
+import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.*;
+import com.intellij.openapi.editor.markup.*;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.ui.playback.commands.ActionCommand;
+import com.intellij.openapi.util.ActionCallback;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.psi.JavaDirectoryService;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.impl.file.PsiDirectoryFactory;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import gui.Items.Comments;
@@ -29,10 +38,8 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
 
 import static gui.Utils.Strings.*;
@@ -50,6 +57,8 @@ public class KotoedPlugin implements ToolWindowFactory {
 
     private ToolWindow myToolWindow;
 
+    public static Project project;
+
     private int buttonNumber = 0;
 
     public KotoedPlugin() {
@@ -65,6 +74,15 @@ public class KotoedPlugin implements ToolWindowFactory {
                 onSignUpButtonPressed();
             }
         });
+        /*button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+            }
+        });*/
+
+        getProject();
     }
 
     @Override
@@ -73,6 +91,11 @@ public class KotoedPlugin implements ToolWindowFactory {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(panel, "Kotoed Swing Test", false);
         toolWindow.getContentManager().addContent(content);
+    }
+    private void getProject(){
+        DataContext dataContext = DataManager.getInstance().getDataContext();
+        while(project == null)
+            project = (Project) dataContext.getData(DataConstants.PROJECT);
     }
 
     public void LoadTree(DefaultMutableTreeNode incomeTree){
@@ -149,5 +172,8 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
     public void onSignUpButtonPressed(){
         SignUp dialog = new SignUp();
+    }
+    public void testButton(){
+
     }
 }

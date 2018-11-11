@@ -35,5 +35,6 @@ public class CustomizeEditor extends AnAction {
                 document.replaceString(start, end, "Replacement")
         );
         selectionModel.removeSelection();
+        System.out.println("called");
     }
 }

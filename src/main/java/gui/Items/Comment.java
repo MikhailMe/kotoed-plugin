@@ -1,11 +1,25 @@
 package gui.Items;
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import gui.KotoedPlugin;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 public class Comment extends JPanel{
     private JPanel panel1;
@@ -27,31 +41,52 @@ public class Comment extends JPanel{
         this.setBackground(color);
 
         this.addMouseListener(new MouseAdapter() {
-            /*@Override
-            public void mouseEntered(MouseEvent e) {
-                oldColor = panel1.getBackground();
-                panel1.setBackground(Color.LIGHT_GRAY);
-                textArea.setBackground(Color.LIGHT_GRAY);
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                panel1.setBackground(oldColor);
-                textArea.setBackground(oldColor);
-            }*/
         });
         textArea.addMouseListener(new MouseAdapter() {
-            /*@Override
-            public void mouseEntered(MouseEvent e) {
-                oldColor = textArea.getBackground();
-                textArea.setBackground(Color.LIGHT_GRAY);
-            }
+        });
+
+        panel1.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseExited(MouseEvent e) {
-                textArea.setBackground(oldColor);
-            }*/
+            public void mouseClicked(MouseEvent e) {
+                if( e.getClickCount() == 2) {
+                    openFileInEditor(comment.fileName,comment.lineNumber);
+                }
+            }
         });
 
         this.setVisible(true);
 
+    }
+
+    private void openFileInEditor(String fileName,int lineNumber){
+        if(KotoedPlugin.project == null)
+            System.out.println("project null error");
+        Editor editor = FileEditorManager.getInstance(KotoedPlugin.project).getSelectedTextEditor();
+
+        if( editor == null )
+            return ;
+        int totalLineCount = editor.getDocument().getLineCount();
+
+        if( lineNumber > totalLineCount )
+            return ;
+
+        Document document = editor.getDocument();
+        int startOffset = document.getLineStartOffset(lineNumber - 1);
+        int endOffset = document.getLineEndOffset(lineNumber);
+
+        SelectionModel selectionModel = editor.getSelectionModel();
+        selectionModel.setSelection(startOffset,endOffset);
+
+        File file = new File(KotoedPlugin.project.getBasePath()+ "/src/" + fileName);
+
+        if (!file.exists()) {
+            System.out.println("File [" + file + "] not found");
+        } else {
+            System.out.println("File found");
+        }
+
+        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
+        FileEditorManager.getInstance(KotoedPlugin.project).openFile(virtualFile,true);
+        return ;
     }
 }

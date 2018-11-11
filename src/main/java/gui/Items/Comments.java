@@ -80,10 +80,16 @@ public class Comments extends JDialog {
         localPanel.setBackground(color);
         localPanel.setLayout(new BoxLayout(localPanel,BoxLayout.Y_AXIS));
         //Stab
-        for (int i =0; i < 10;i++)
+        /*for (int i =0; i < 10;i++)
             localPanel.add(new gui.Items.Comment(
                     new gui.Stabs.Comment("Username" + i,dtf.format(now),"Some rangom message: " + genRandomString(128),12)
-            ));
+            ));*/
+        localPanel.add(new gui.Items.Comment(
+                        new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Main.java"))
+                );
+        localPanel.add(new gui.Items.Comment(
+                new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Test.java"))
+        );
         pane = new JBScrollPane(localPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -114,7 +120,7 @@ public class Comments extends JDialog {
     private void onSend() {
         // add your code here
       localPanel.add(new gui.Items.Comment(
-              new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12)
+              new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12,"Main.java")
       ));
       commentPanel.revalidate();
         pane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {

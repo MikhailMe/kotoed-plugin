@@ -7,12 +7,14 @@ public class Comment{
     public String date;
     public String text;
     public int lineNumber;
+    public String fileName;
 
-    public Comment(String userName, String date, String text, int lineNumber) {
+    public Comment(String userName, String date, String text, int lineNumber,String fileName) {
         this.userName = userName;
         this.date = date;
         this.text = text;
         this.lineNumber = lineNumber;
+        this.fileName = fileName;
     }
 
 }
