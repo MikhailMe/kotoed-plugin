@@ -41,6 +41,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static gui.Utils.Strings.*;
 
@@ -54,6 +55,8 @@ public class KotoedPlugin implements ToolWindowFactory {
     private JPanel treePanel;
     private JPanel infoPanel;
     private JPanel toolbar;
+
+    public static JButton test;
 
     private ToolWindow myToolWindow;
 
@@ -74,17 +77,14 @@ public class KotoedPlugin implements ToolWindowFactory {
                 onSignUpButtonPressed();
             }
         });
-        /*button3.addActionListener(new ActionListener() {
+        button3.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-
+            public void actionPerformed(ActionEvent actionEvent) {
+                DataContext dataContext = DataManager.getInstance().getDataContext();
+                project = (Project) dataContext.getData(DataConstants.PROJECT);
             }
-        });*/
-
-        getProject();
+        });
     }
-
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         myToolWindow = toolWindow;
@@ -92,10 +92,9 @@ public class KotoedPlugin implements ToolWindowFactory {
         Content content = contentFactory.createContent(panel, "Kotoed Swing Test", false);
         toolWindow.getContentManager().addContent(content);
     }
-    private void getProject(){
+    private Project getProject(){
         DataContext dataContext = DataManager.getInstance().getDataContext();
-        while(project == null)
-            project = (Project) dataContext.getData(DataConstants.PROJECT);
+        return (Project) dataContext.getData(DataConstants.PROJECT);
     }
 
     public void LoadTree(DefaultMutableTreeNode incomeTree){
@@ -141,6 +140,8 @@ public class KotoedPlugin implements ToolWindowFactory {
         treePanel.add(new JScrollPane(tree));
         treePanel.validate();
         treePanel.repaint();
+
+        test = button3;
     }
     private void parseObject (Object obj){
         if (obj instanceof CourseNode) {

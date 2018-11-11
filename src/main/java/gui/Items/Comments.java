@@ -1,8 +1,13 @@
 package gui.Items;
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import core.comment.Comment;
 import core.sumbission.Submission;
+import gui.KotoedPlugin;
 import gui.Stabs.SubmissionNode;
 
 import javax.swing.*;
@@ -13,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static gui.Utils.Strings.*;
 
@@ -29,12 +35,15 @@ public class Comments extends JDialog {
 
     private Color color = Color.WHITE;
 
+    private Project project;
+
     private SubmissionNode submission;
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern(TIME_PATERN);
     LocalDateTime now = LocalDateTime.now();
 
     public Comments(ArrayList<Comment> messages, SubmissionNode submission) {
+        KotoedPlugin.test.doClick();
         this.submission = submission;
         setContentPane(contentPane);
         setModal(true);
@@ -74,21 +83,21 @@ public class Comments extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+    }
+    private Project getProject(){
+        DataContext dataContext = DataManager.getInstance().getDataContext();
+        return (Project) dataContext.getData(DataConstants.PROJECT);
     }
     private void addComments(){
         localPanel = new JPanel();
         localPanel.setBackground(color);
         localPanel.setLayout(new BoxLayout(localPanel,BoxLayout.Y_AXIS));
-        //Stab
-        /*for (int i =0; i < 10;i++)
-            localPanel.add(new gui.Items.Comment(
-                    new gui.Stabs.Comment("Username" + i,dtf.format(now),"Some rangom message: " + genRandomString(128),12)
-            ));*/
         localPanel.add(new gui.Items.Comment(
-                        new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Main.java"))
+                        new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Main.java"), KotoedPlugin.project)
                 );
         localPanel.add(new gui.Items.Comment(
-                new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Test.java"))
+                new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Test.java"),KotoedPlugin.project)
         );
         pane = new JBScrollPane(localPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -120,7 +129,7 @@ public class Comments extends JDialog {
     private void onSend() {
         // add your code here
       localPanel.add(new gui.Items.Comment(
-              new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12,"Main.java")
+              new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12,"Main.java"),KotoedPlugin.project
       ));
       commentPanel.revalidate();
         pane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {

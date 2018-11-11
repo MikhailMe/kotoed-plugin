@@ -3,6 +3,7 @@ package gui.Items;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataConstants;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
@@ -11,6 +12,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import gui.KotoedPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -20,15 +22,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class Comment extends JPanel{
     private JPanel panel1;
     private JTextArea textArea;
     private Color color = Color.WHITE;
 
+    //private Project project;
+
     private Color oldColor;
-    public Comment(gui.Stabs.Comment comment){
+    public Comment(gui.Stabs.Comment comment, Project project){
         super();
+        //this.project = project;
         textArea.setText(comment.text);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -49,19 +55,29 @@ public class Comment extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if( e.getClickCount() == 2) {
-                    openFileInEditor(comment.fileName,comment.lineNumber);
+                    openFileInEditor(comment.fileName,comment.lineNumber, project);
+                }
+            }
+        });
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if( e.getClickCount() == 2) {
+                    openFileInEditor(comment.fileName,comment.lineNumber, project);
                 }
             }
         });
 
+
         this.setVisible(true);
 
     }
+    private void openFileInEditor(String fileName,int lineNumber,@NotNull Project project){
 
-    private void openFileInEditor(String fileName,int lineNumber){
-        if(KotoedPlugin.project == null)
+        if(project == null)
             System.out.println("project null error");
-        Editor editor = FileEditorManager.getInstance(KotoedPlugin.project).getSelectedTextEditor();
+
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
         if( editor == null )
             return ;
@@ -77,7 +93,7 @@ public class Comment extends JPanel{
         SelectionModel selectionModel = editor.getSelectionModel();
         selectionModel.setSelection(startOffset,endOffset);
 
-        File file = new File(KotoedPlugin.project.getBasePath()+ "/src/" + fileName);
+        File file = new File(project.getBasePath()+ "/src/" + fileName);
 
         if (!file.exists()) {
             System.out.println("File [" + file + "] not found");
@@ -86,7 +102,7 @@ public class Comment extends JPanel{
         }
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-        FileEditorManager.getInstance(KotoedPlugin.project).openFile(virtualFile,true);
+        FileEditorManager.getInstance(project).openFile(virtualFile,true);
         return ;
     }
 }
