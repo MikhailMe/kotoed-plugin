@@ -19,4 +19,11 @@ public class Strings {
 
     public static final String OPEN_ICON = "/Icons/open.png";
     public static final String CLOSED_ICON = "/Icons/closed.png";
+
+    //Comments class
+    public static final String COMMENT_TEXT = "Comment text:";
+    public static final String COMMENT_FOR = "Comments for:";
+    public static final String COMMENTS = "Comments";
+
+    public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
 }
