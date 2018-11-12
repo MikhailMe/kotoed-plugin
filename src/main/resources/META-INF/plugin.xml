@@ -10,11 +10,11 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Kotoed" anchor="right" factoryClass="plugin.gui.KotoedPlugin"/>
+        <toolWindow id="Kotoed" anchor="right" factoryClass="gui.KotoedPlugin"/>
     </extensions>
 
     <actions>
-        <action id="plugin.gui.CustomizeEditor" class="plugin.gui.Utils.CustomizeEditor" text="Editor Basics"
+        <action id="plugin.gui.CustomizeEditor" class="gui.Utils.CustomizeEditor" text="Editor Basics"
                 description="Illustrates how to plug an action in">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
