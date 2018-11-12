@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 
 public class CustomizeEditor extends AnAction {
+
     @Override
     public void update(AnActionEvent e) {
         //Get required data keys

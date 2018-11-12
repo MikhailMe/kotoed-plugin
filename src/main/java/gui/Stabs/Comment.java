@@ -1,15 +1,22 @@
 package gui.Stabs;
 
-import javax.swing.*;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
-public class Comment{
-    public String userName;
-    public String date;
-    public String text;
-    public int lineNumber;
-    public String fileName;
+@Data
+public class Comment {
 
-    public Comment(String userName, String date, String text, int lineNumber,String fileName) {
+    private String userName;
+    private String date;
+    private String text;
+    private int lineNumber;
+    private String fileName;
+
+    public Comment(@NotNull final String userName,
+                   @NotNull final String date,
+                   @NotNull final String text,
+                   final int lineNumber,
+                   @NotNull final String fileName) {
         this.userName = userName;
         this.date = date;
         this.text = text;

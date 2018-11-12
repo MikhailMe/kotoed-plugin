@@ -1,10 +1,16 @@
 package gui.Stabs;
 
-public class ProjectNode {
-    public String name;
-    public String source;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
-    public ProjectNode(String name, String source) {
+@Data
+public class ProjectNode {
+
+    private String name;
+    private String source;
+
+    public ProjectNode(@NotNull final String name,
+                       @NotNull final String source) {
         this.name = name;
         this.source = source;
     }

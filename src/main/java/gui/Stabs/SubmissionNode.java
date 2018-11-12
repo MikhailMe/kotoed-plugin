@@ -1,11 +1,22 @@
 package gui.Stabs;
 
-public class SubmissionNode {
-    public String text;
-    public int number;
-    public boolean status;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
-    public SubmissionNode(String text, int number, boolean status) {
+@Data
+public class SubmissionNode {
+
+    private String text;
+    private int number;
+    private boolean status;
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public SubmissionNode(@NotNull final String text,
+                          final int number,
+                          boolean status) {
         this.text = text;
         this.number = number;
         this.status = status;

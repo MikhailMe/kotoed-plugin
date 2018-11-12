@@ -51,10 +51,12 @@ public class Sender {
 
     public String signIn(@NotNull final String denizen,
                          @NotNull final String password) throws IOException {
+        jsonMyself = null;
         this.jsonMyself = new JsonObject()
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
+        System.out.println("after creating json");
         return getCookie(jsonMyself);
     }
 

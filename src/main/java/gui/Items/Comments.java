@@ -1,126 +1,129 @@
 package gui.Items;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.components.JBScrollPane;
-import core.comment.Comment;
-import core.sumbission.Submission;
 import gui.KotoedPlugin;
 import gui.Stabs.SubmissionNode;
+import org.apache.commons.lang.RandomStringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
+import javax.swing.border.TitledBorder;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import static gui.Utils.Strings.*;
 
 public class Comments extends JDialog {
-    private JPanel contentPane;
+
     private JButton buttonOK;
-    private JPanel commentPanel;
     private JTextArea textArea;
-    private JScrollPane scrollPane;
+    private JPanel contentPane;
+    private JPanel commentPanel;
     private JPanel commentHolder;
+    private JScrollPane scrollPane;
 
     private int prevMax;
     private SubmissionNode submission;
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern(TIME_PATERN);
-    LocalDateTime now = LocalDateTime.now();
-
-    public Comments(ArrayList<Comment> messages, SubmissionNode submission) {
+    public Comments(@NotNull SubmissionNode submission) {
         KotoedPlugin.cheatButton.doClick();
         this.submission = submission;
-        registerActions();
+
+        // this information must be take from Denizen object
+        String userName = "Username";
+        String date = DateTimeFormatter.ofPattern(TIME_PATERN).format(LocalDateTime.now());
+        String text = "Some random message: " + RandomStringUtils.randomAlphanumeric(128);
+        String fileName = "Main.java";
+        int lineNumber = 12;
+
+        registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
-        addComments();
+        addComments(userName, date, text, fileName, lineNumber);
         setParentParams();
     }
-    private void registerActions(){
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSend();
-            }
-        });
+
+    private void registerActions(@NotNull String userName,
+                                 @NotNull String date,
+                                 @NotNull String text,
+                                 @NotNull String fileName,
+                                 final int lineNumber) {
+        buttonOK.addActionListener(e -> onSend(userName, date, text, fileName, lineNumber));
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    private void setParentParams(){
+
+    private void setParentParams() {
         setTitle(COMMENTS);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
         setResizable(false);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    private void addBorders(){
+
+    private void addBorders() {
         TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
         TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR + submission.toString());
         commentHolder.setBorder(commentPanelTitledBorder);
     }
-    private void addComments(){
-        commentPanel.setLayout(new BoxLayout(commentPanel,BoxLayout.Y_AXIS));
-        commentPanel.add(new gui.Items.Comment(
-                        new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Main.java"), KotoedPlugin.project)
-                );
-        commentPanel.add(new gui.Items.Comment(
-                new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Test.java"),KotoedPlugin.project)
-        );
+
+    private void addComments(@NotNull String userName,
+                             @NotNull String date,
+                             @NotNull String text,
+                             @NotNull String fileName,
+                             final int lineNumber) {
+        commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
+
+        // create first comment
+        gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
+        commentPanel.add(new gui.Items.Comment(stabComment, KotoedPlugin.project));
+
+        // create second comment
+        stabComment.setText("Some random message: " + RandomStringUtils.randomAlphanumeric(128));
+        stabComment.setFileName("Test.java");
+        commentPanel.add(new gui.Items.Comment(stabComment, KotoedPlugin.project));
+
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         JScrollBar bar = scrollPane.getVerticalScrollBar();
         prevMax = bar.getMaximum();
     }
-    private String genRandomString(int len) {
 
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        String generatedString = buffer.toString();
-
-        return generatedString;
-    }
-    private void onSend() {
-        commentPanel.add(new gui.Items.Comment(
-              new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12,"Main.java"),KotoedPlugin.project
-      ));
-      commentPanel.revalidate();
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                if(e.getAdjustable().getMaximum() != prevMax) {
-                    e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-                    prevMax = e.getAdjustable().getMaximum();
-                }
+    private void onSend(@NotNull String userName,
+                        @NotNull String date,
+                        @NotNull String text,
+                        @NotNull String fileName,
+                        final int lineNumber) {
+        gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
+        stabComment.setText(textArea.getText());
+        commentPanel.add(new gui.Items.Comment(stabComment, KotoedPlugin.project));
+        commentPanel.revalidate();
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+            if (e.getAdjustable().getMaximum() != prevMax) {
+                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+                prevMax = e.getAdjustable().getMaximum();
             }
         });
+        textArea.setText("");
+    }
+
+    private gui.Stabs.Comment createStabComment(@NotNull String userName,
+                                                @NotNull String date,
+                                                @NotNull String text,
+                                                @NotNull String fileName,
+                                                final int lineNumber) {
+        return new gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
     private void onCancel() {

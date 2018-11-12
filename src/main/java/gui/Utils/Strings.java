@@ -23,4 +23,13 @@ public class Strings {
     public static final String COMMENTS = "Comments";
 
     public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
+
+    public static final String RED = "red";
+    public static final String BLUE = "blue";
+    public static final String ORANGE = "orange";
+    public static final String BRACKET_OPEN = " [";
+    public static final String BRACKET_CLOSE = "]";
+    public static final String HTML_OPEN = "<html>";
+    public static final String HTML_CLOSE = "</html>";
+    public static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
 }
