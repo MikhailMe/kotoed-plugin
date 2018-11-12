@@ -27,89 +27,71 @@ public class Comments extends JDialog {
     private JButton buttonOK;
     private JPanel commentPanel;
     private JTextArea textArea;
-
-    private JPanel localPanel;
-    private JBScrollPane pane;
+    private JScrollPane scrollPane;
+    private JPanel commentHolder;
 
     private int prevMax;
-
-    private Color color = Color.WHITE;
-
-    private Project project;
-
     private SubmissionNode submission;
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern(TIME_PATERN);
     LocalDateTime now = LocalDateTime.now();
 
     public Comments(ArrayList<Comment> messages, SubmissionNode submission) {
-        KotoedPlugin.test.doClick();
+        KotoedPlugin.cheatButton.doClick();
         this.submission = submission;
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-
+        registerActions();
+        addBorders();
+        addComments();
+        setParentParams();
+    }
+    private void registerActions(){
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onSend();
             }
         });
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
-        // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+    private void setParentParams(){
+        setTitle(COMMENTS);
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
+        setResizable(false);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+    private void addBorders(){
         TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
         TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR + submission.toString());
-        commentPanel.setBorder(commentPanelTitledBorder);
-
-        setTitle(COMMENTS);
-
-        addComments();
-
-        this.setResizable(false);
-
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
-
-    }
-    private Project getProject(){
-        DataContext dataContext = DataManager.getInstance().getDataContext();
-        return (Project) dataContext.getData(DataConstants.PROJECT);
+        commentHolder.setBorder(commentPanelTitledBorder);
     }
     private void addComments(){
-        localPanel = new JPanel();
-        localPanel.setBackground(color);
-        localPanel.setLayout(new BoxLayout(localPanel,BoxLayout.Y_AXIS));
-        localPanel.add(new gui.Items.Comment(
+        commentPanel.setLayout(new BoxLayout(commentPanel,BoxLayout.Y_AXIS));
+        commentPanel.add(new gui.Items.Comment(
                         new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Main.java"), KotoedPlugin.project)
                 );
-        localPanel.add(new gui.Items.Comment(
+        commentPanel.add(new gui.Items.Comment(
                 new gui.Stabs.Comment("Username1",dtf.format(now),"Some rangom message: " + genRandomString(128),12,"Test.java"),KotoedPlugin.project)
         );
-        pane = new JBScrollPane(localPanel,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        pane.getVerticalScrollBar().setUnitIncrement(35);
-        pane.setBorder(BorderFactory.createEmptyBorder());
-        pane.setBackground(color);
-        JScrollBar bar = pane.getVerticalScrollBar();
-        bar.setValue(bar.getMinimum());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(35);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        JScrollBar bar = scrollPane.getVerticalScrollBar();
         prevMax = bar.getMaximum();
-        commentPanel.add(pane);
-        commentPanel.setBackground(color);
     }
     private String genRandomString(int len) {
 
@@ -127,12 +109,11 @@ public class Comments extends JDialog {
         return generatedString;
     }
     private void onSend() {
-        // add your code here
-      localPanel.add(new gui.Items.Comment(
+        commentPanel.add(new gui.Items.Comment(
               new gui.Stabs.Comment("Username",dtf.format(now),textArea.getText(),12,"Main.java"),KotoedPlugin.project
       ));
       commentPanel.revalidate();
-        pane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 if(e.getAdjustable().getMaximum() != prevMax) {
                     e.getAdjustable().setValue(e.getAdjustable().getMaximum());
@@ -143,7 +124,6 @@ public class Comments extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 }

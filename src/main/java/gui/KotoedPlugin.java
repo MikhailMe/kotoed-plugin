@@ -48,7 +48,7 @@ import static gui.Utils.Strings.*;
 public class KotoedPlugin implements ToolWindowFactory {
 
     private JPanel panel;
-    private JButton button3;
+    public static JButton cheatButton;
     private JButton signInButton;
     private JButton signUpButton;
     private JTree tree;
@@ -56,14 +56,9 @@ public class KotoedPlugin implements ToolWindowFactory {
     private JPanel infoPanel;
     private JPanel toolbar;
 
-    public static JButton test;
-
     private ToolWindow myToolWindow;
 
     public static Project project;
-
-    private int buttonNumber = 0;
-
     public KotoedPlugin() {
         signInButton.addActionListener(new ActionListener() {
             @Override
@@ -77,7 +72,8 @@ public class KotoedPlugin implements ToolWindowFactory {
                 onSignUpButtonPressed();
             }
         });
-        button3.addActionListener(new ActionListener() {
+        cheatButton = new JButton();
+        cheatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 DataContext dataContext = DataManager.getInstance().getDataContext();
@@ -92,18 +88,9 @@ public class KotoedPlugin implements ToolWindowFactory {
         Content content = contentFactory.createContent(panel, "Kotoed Swing Test", false);
         toolWindow.getContentManager().addContent(content);
     }
-    private Project getProject(){
-        DataContext dataContext = DataManager.getInstance().getDataContext();
-        return (Project) dataContext.getData(DataConstants.PROJECT);
-    }
-
     public void LoadTree(DefaultMutableTreeNode incomeTree){
-        //Current stab for tree
-        //waiting for back to get data
-        //create the root node
-
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        //create the child nodes
+
         DefaultMutableTreeNode kotlinNode = new DefaultMutableTreeNode(new CourseNode("Kotlin","icon", "Open"));
         for (int i = 0; i < 10; i++) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(new ProjectNode("Kotlin project" + i, "git_url"));
@@ -119,7 +106,7 @@ public class KotoedPlugin implements ToolWindowFactory {
                 node.add(new DefaultMutableTreeNode(new SubmissionNode("SubmissionNode #" + j*i, j*i, false)));
             javaNode.add(node);
         }
-        //add the child nodes to the root node
+
         root.add(kotlinNode);
         root.add(javaNode);
 
@@ -140,8 +127,6 @@ public class KotoedPlugin implements ToolWindowFactory {
         treePanel.add(new JScrollPane(tree));
         treePanel.validate();
         treePanel.repaint();
-
-        test = button3;
     }
     private void parseObject (Object obj){
         if (obj instanceof CourseNode) {
@@ -149,7 +134,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         } else if (obj instanceof ProjectNode) {
             nodeClickedTwice((ProjectNode)obj);
         } else if (obj instanceof SubmissionNode) {
-            Comments comments = new Comments(new ArrayList<>(),(SubmissionNode)obj);
+            new Comments(new ArrayList<>(),(SubmissionNode)obj);
         } else {
         }
     }
@@ -158,9 +143,6 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
     private void nodeClickedTwice(ProjectNode project){
         displayInfo(project.toString());
-    }
-    private void nodeClickedTwice(SubmissionNode submission){
-        displayInfo(submission.toString());
     }
     private void displayInfo(String text){
         JOptionPane.showMessageDialog(null,
@@ -173,8 +155,5 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
     public void onSignUpButtonPressed(){
         SignUp dialog = new SignUp();
-    }
-    public void testButton(){
-
     }
 }
