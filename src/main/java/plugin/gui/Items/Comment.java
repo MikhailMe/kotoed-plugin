@@ -1,4 +1,4 @@
-package gui.Items;
+package plugin.gui.Items;
 
 import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public class Comment extends JPanel {
     private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
-    public Comment(@NotNull gui.Stabs.Comment comment,
+    public Comment(@NotNull plugin.gui.Stabs.Comment comment,
                    @NotNull Project project) {
         super();
         textArea.setText(comment.getText());

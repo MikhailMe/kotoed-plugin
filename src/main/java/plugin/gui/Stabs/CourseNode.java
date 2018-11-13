@@ -1,12 +1,14 @@
 package plugin.gui.Stabs;
 
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+@Data
 public class CourseNode {
 
-    public String name;
-    public String fileIcon;
-    public String status;
+    private String name;
+    private String fileIcon;
+    private String status;
 
     public CourseNode(@NotNull final String name,
                       @NotNull final String fileIcon,
@@ -16,7 +18,7 @@ public class CourseNode {
         this.status = status;
     }
 
-    public String toString() {
+    public String toString(){
         return name + " " + fileIcon;
     }
 }

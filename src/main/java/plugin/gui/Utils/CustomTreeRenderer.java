@@ -1,15 +1,15 @@
-package gui.Utils;
+package plugin.gui.Utils;
 
-import gui.Stabs.CourseNode;
-import gui.Stabs.ProjectNode;
-import gui.Stabs.SubmissionNode;
+import plugin.gui.Stabs.CourseNode;
+import plugin.gui.Stabs.ProjectNode;
+import plugin.gui.Stabs.SubmissionNode;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import static gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.*;
 
 public class CustomTreeRenderer extends DefaultTreeCellRenderer {
 

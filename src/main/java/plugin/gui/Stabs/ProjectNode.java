@@ -1,4 +1,4 @@
-package gui.Stabs;
+package plugin.gui.Stabs;
 
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;

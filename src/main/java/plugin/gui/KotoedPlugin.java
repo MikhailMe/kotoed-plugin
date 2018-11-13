@@ -1,4 +1,4 @@
-package gui;
+package plugin.gui;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
@@ -7,13 +7,13 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import gui.Items.Comments;
-import gui.Items.SignInWindow;
-import gui.Items.SignUpWindow;
-import gui.Stabs.CourseNode;
-import gui.Stabs.ProjectNode;
-import gui.Stabs.SubmissionNode;
-import gui.Utils.CustomTreeRenderer;
+import plugin.gui.Items.Comments;
+import plugin.gui.Items.SignInWindow;
+import plugin.gui.Items.SignUpWindow;
+import plugin.gui.Stabs.CourseNode;
+import plugin.gui.Stabs.ProjectNode;
+import plugin.gui.Stabs.SubmissionNode;
+import plugin.gui.Utils.CustomTreeRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

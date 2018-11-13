@@ -1,30 +1,28 @@
-package gui.Items;
+package plugin.gui.Items;
 
-import gui.KotoedPlugin;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
-import static gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.*;
 
-public class SignInWindow extends JDialog {
-
+public class SignUpWindow extends JDialog {
     private JPanel contentPane;
     private JTextField usernameField;
+    private JTextField emailField;
     private JPasswordField passwordField;
+    private JPasswordField repeatPasswordField;
     private JButton signInButton;
     private JButton cancelButton;
-    private KotoedPlugin kotoedPlugin;
 
-    public SignInWindow(KotoedPlugin kotoedPlugin) {
-        this.kotoedPlugin = kotoedPlugin;
+    public SignUpWindow() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
 
-        signInButton.addActionListener(e -> onSignIn());
+        signInButton.addActionListener(e -> onOK());
+
         cancelButton.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
@@ -37,38 +35,34 @@ public class SignInWindow extends JDialog {
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e ->
-                onCancel(),
+                        onCancel(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        setTitle(SIGN_IN);
+        setTitle(SIGN_UP);
 
         PromptSupport.setPrompt(USERNAME_TEXT, usernameField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, usernameField);
 
+        PromptSupport.setPrompt(EMAIL_TEXT, emailField);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, emailField);
+
         PromptSupport.setPrompt(PASSWORD_TEXT, passwordField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, passwordField);
+
+        PromptSupport.setPrompt(REPEAT_PASSWORD_TEXT, repeatPasswordField);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, repeatPasswordField);
 
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    private void onSignIn() {
-        if (usernameField.getText().equals(CREDENTIALS))
-            if (passwordField.getText().equals(CREDENTIALS)) {
-                this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
-                dispose();
-                return;
-            }
-        JOptionPane.showMessageDialog(null,
-                AUTH_ERROR_MESSAGE,
-                AUTH_ERROR,
-                JOptionPane.ERROR_MESSAGE);
+    private void onOK() {
+        dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 }
