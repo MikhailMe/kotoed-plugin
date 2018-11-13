@@ -124,6 +124,6 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
 
     public void onSignUpButtonPressed() {
-        SignUpWindow dialog = new SignUpWindow();
+        SignUpWindow dialog = new SignUpWindow(this);
     }
 }
