@@ -19,7 +19,12 @@ public class Address {
     public static final String URL_GLOBAL_SIGN_UP = "http://kotoed.icc.spbstu.ru:9000/auth/login/doSignUp";
 
     public static final String URL_EVENTBUS_COURSES = "kotoed.api.course.search";
+    public static final String URL_EVENTBUS_READ_PROJECT = "kotoed.api.project.read";
+    public static final String URL_EVENTBUS_CREATE_PROJECT = "kotoed.api.project.create";
     public static final String URL_EVENTBUS_COMMENTS = "kotoed.api.submission.comments";
+    public static final String URL_EVENTBUS_CREATE_SUBMISSION = "kotoed.api.submission.create";
+    public static final String URL_EVENTBUS_COUNT_PROJECTS = "kotoed.api.project.searchForCourse.count";
     public static final String URL_EVENTBUS_SUBMISSIONS_FOR_COURSE = "kotoed.api.project.searchForCourse";
+
 
 }

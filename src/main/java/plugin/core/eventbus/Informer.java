@@ -1,20 +1,21 @@
 package plugin.core.eventbus;
 
-import com.saffrontech.vertx.EventBusBridge;
 import io.vertx.core.MultiMap;
-import io.vertx.core.json.JsonObject;
-import org.jetbrains.annotations.NotNull;
-import plugin.core.comment.Comment;
 import plugin.core.course.Course;
 import plugin.core.parser.Parser;
 import plugin.core.project.Project;
+import plugin.core.comment.Comment;
+import io.vertx.core.json.JsonObject;
 import plugin.core.sumbission.Submission;
+import org.jetbrains.annotations.NotNull;
+import com.saffrontech.vertx.EventBusBridge;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 
 import static plugin.core.util.Address.*;
 
@@ -52,15 +53,17 @@ public class Informer {
     }
 
     @NotNull
-    public List<Course> getCourses(@NotNull final List<Course> courseList) {
+    public List<Course> getCourses() {
         JsonObject message = new JsonObject().put(FIELD_TEXT, EMPTY_STRING);
         CountDownLatch latch = new CountDownLatch(1);
+        final List<Course> courseList = new ArrayList<>();
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
             eb.send(URL_EVENTBUS_COURSES, message, reply -> {
                 String jsonCourses = String.valueOf(reply.body());
                 CompletableFuture<List<Course>> cf = new CompletableFuture<>();
                 cf.complete(Objects.requireNonNull(Parser.getCourses(jsonCourses)));
                 courseList.addAll(cf.getNow(null));
+                eb.close();
                 latch.countDown();
             });
         });
@@ -68,11 +71,12 @@ public class Informer {
         return courseList;
     }
 
-    // FIXME: 11/3/2018
+    // FIXME
     @NotNull
-    public List<Project> getProjects(@NotNull final List<Project> projectList) {
+    public List<Project> getProjects() {
         JsonObject message = new JsonObject().put(FIELD_ID, EMPTY_STRING);
         CountDownLatch latch = new CountDownLatch(1);
+        final List<Project> projectList = new ArrayList<>();
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
             // FIXME: 11/3/2018 change URL_TO_EVENTBUS
             eb.send("URL_TO_EVENTBUS", message, reply -> {
@@ -80,6 +84,7 @@ public class Informer {
                 CompletableFuture<List<Project>> cf = new CompletableFuture<>();
                 cf.complete(Objects.requireNonNull(Parser.getProjects(jsonProjects)));
                 projectList.addAll(cf.getNow(null));
+                eb.close();
                 latch.countDown();
             });
         });
@@ -88,16 +93,42 @@ public class Informer {
     }
 
     @NotNull
-    public List<Comment> getComments(final int submissionNumber,
-                                     @NotNull final List<Comment> commentsList) {
+    public List<Submission> getSubmissions(final int courseId,
+                                           final int pageSize,
+                                           final int currentPage) {
+        JsonObject message = new JsonObject()
+                .put(FIELD_TEXT, "")
+                .put(FIELD_PAGE_SIZE, pageSize)
+                .put(FIELD_CURRENT_PAGE, currentPage)
+                .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, courseId));
+        CountDownLatch latch = new CountDownLatch(1);
+        final List<Submission> submissionList = new ArrayList<>();
+        EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
+            eb.send(URL_EVENTBUS_SUBMISSIONS_FOR_COURSE, message, reply -> {
+                String jsonSubmissions = String.valueOf(reply.body());
+                CompletableFuture<List<Submission>> cf = new CompletableFuture<>();
+                cf.complete(Objects.requireNonNull(Parser.getSubmissions(jsonSubmissions)));
+                submissionList.addAll(cf.getNow(null));
+                eb.close();
+                latch.countDown();
+            });
+        });
+        awaitLatch(latch);
+        return submissionList;
+    }
+
+    @NotNull
+    public List<Comment> getComments(final int submissionNumber) {
         JsonObject message = new JsonObject().put(FIELD_ID, submissionNumber);
         CountDownLatch latch = new CountDownLatch(1);
+        final List<Comment> commentsList = new ArrayList<>();
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
             eb.send(URL_EVENTBUS_COMMENTS, message, reply -> {
                 String jsonComments = String.valueOf(reply.body());
                 CompletableFuture<List<Comment>> cf = new CompletableFuture<>();
                 cf.complete(Objects.requireNonNull(Parser.getComments(jsonComments)));
                 commentsList.addAll(cf.getNow(null));
+                eb.close();
                 latch.countDown();
             });
         });
@@ -105,30 +136,64 @@ public class Informer {
         return commentsList;
     }
 
-    @NotNull
-    public List<Submission> getSubmissions(final int courseId,
-                                           final int pageSize,
-                                           final int currentPage,
-                                           @NotNull final List<Submission> submissionList) {
+    // FIXME: don't work
+    public void createSubmission() {
         JsonObject message = new JsonObject()
-                .put(FIELD_TEXT, "")
-                .put(FIELD_PAGE_SIZE, pageSize)
-                .put(FIELD_CURRENT_PAGE, currentPage)
-                .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, courseId));
+                .put("filter", "state in [\"pending\"]")
+                .put("find", new JsonObject().put("project_id", "524"))
+                .put("limit", 2)
+                .put("offset", 0)
+                .put("table", "submission");
         CountDownLatch latch = new CountDownLatch(1);
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
-            eb.send(URL_EVENTBUS_SUBMISSIONS_FOR_COURSE, message, reply -> {
-                String jsonSubmissions = String.valueOf(reply.body());
+            eb.send(URL_EVENTBUS_CREATE_SUBMISSION, message, reply -> {
+                String jsonCreateSubmission = String.valueOf(reply.body());
 
-                System.out.println(jsonSubmissions);
-
-                CompletableFuture<List<Submission>> cf = new CompletableFuture<>();
-                cf.complete(Objects.requireNonNull(Parser.getSubmissions(jsonSubmissions)));
-                submissionList.addAll(cf.getNow(null));
+                System.out.println(jsonCreateSubmission);
+                eb.close();
                 latch.countDown();
             });
         });
         awaitLatch(latch);
-        return submissionList;
     }
+
+    // FIXME: don't work
+    public void createProject() {
+        JsonObject message = new JsonObject()
+                .put("courseId", 8)
+                .put("deleted", false)
+                .put(DENIZEN_ID, 446)
+                .put("id", "")
+                .put("name", "punsh project")
+                .put("repoType", "git")
+                .put("repoUrl", "https://github.com/belyaev-mikhail/fp-practice-2018");
+        EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
+            eb.send(URL_EVENTBUS_CREATE_PROJECT, message, reply -> {
+                String jsonRead = String.valueOf(reply.body());
+                System.out.println(jsonRead);
+            });
+        });
+    }
+
+    public void readProject(final int projectId) {
+        JsonObject message = new JsonObject().put(FIELD_ID, projectId);
+        EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
+            eb.send(URL_EVENTBUS_READ_PROJECT, message, reply -> {
+                String jsonRead = String.valueOf(reply.body());
+                System.out.println(jsonRead);
+                eb.close();
+            });
+        });
+    }
+
+    public void countProjects() {
+        JsonObject message = new JsonObject().put(FIELD_TEXT, EMPTY_STRING);
+        EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> {
+            eb.send(URL_EVENTBUS_COUNT_PROJECTS, message, reply -> {
+                String jsonRead = String.valueOf(reply.body());
+                System.out.println(jsonRead);
+            });
+        });
+    }
+
 }

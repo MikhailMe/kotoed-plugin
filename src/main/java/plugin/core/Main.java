@@ -1,16 +1,18 @@
 package plugin.core;
 
 import io.vertx.core.MultiMap;
+import plugin.core.project.Project;
 import plugin.core.rest.Sender;
 import plugin.core.util.Address;
 import plugin.core.course.Course;
 import plugin.core.comment.Comment;
-import plugin.core.project.Project;
 import plugin.core.eventbus.Informer;
 import plugin.core.sumbission.Submission;
 
+import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Main {
 
@@ -28,21 +30,19 @@ public class Main {
 
         Informer informer = new Informer(CONFIGURATION, headers);
 
-        /*List<Course> courses = new ArrayList<>();
-        informer.getCourses(courses);
+        //informer.readProject(525);
+
+        /*List<Course> courses = informer.getCourses();
         courses.forEach(System.out::println);*/
 
-        /*List<Project> projects = new ArrayList<>();
-        informer.getProjects(projects);
+        /*List<Project> projects = informer.getProjects();
         projects.forEach(System.out::println);*/
 
-        /*List<Submission> submissions = new ArrayList<>();
-        informer.getSubmissions(8, 20, 0, submissions);
+        /*List<Submission> submissions = informer.getSubmissions(8, 20, 0);
         submissions.forEach(System.out::println);*/
 
-        List<Comment> comments = new ArrayList<>();
-        informer.getComments(1111, comments);
-        comments.forEach(System.out::println);
+        /*List<Comment> comments = informer.getComments(1111);
+        comments.forEach(System.out::println);*/
 
     }
 
