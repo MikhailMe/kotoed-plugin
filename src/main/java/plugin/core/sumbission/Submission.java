@@ -29,6 +29,6 @@ public class Submission {
                 "denizen = " + denizen.toString() + "\n" +
                 "repoUrl = " + repoUrl + "\n" +
                 "courseId = " + courseId + "\n" +
-                "repoType = " + repoType;// + "\n" +
+                "repoType = " + repoType + "\n";
     }
 }

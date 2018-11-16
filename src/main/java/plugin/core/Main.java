@@ -1,22 +1,19 @@
 package plugin.core;
 
 import io.vertx.core.MultiMap;
-import plugin.core.project.Project;
-import plugin.core.rest.Sender;
-import plugin.core.util.Address;
 import plugin.core.course.Course;
-import plugin.core.comment.Comment;
-import plugin.core.eventbus.Informer;
+import plugin.core.eventbus.InformersImpl.BaseInformer;
+import plugin.core.eventbus.InformersImpl.CreateInfromer;
+import plugin.core.rest.Sender;
 import plugin.core.sumbission.Submission;
+import plugin.core.util.Address;
+import plugin.core.eventbus.InformersImpl.GetInformer;
 
-import java.io.File;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class Main {
 
-    private static final String CONFIGURATION = Address.GLOBAL;
+    private static final String CONFIGURATION = Address.LOCAL;
 
     public static void main(String[] args) {
 
@@ -28,20 +25,23 @@ public class Main {
 
         MultiMap headers = sender.getHeaders(cookie);
 
-        Informer informer = new Informer(CONFIGURATION, headers);
+        /*CreateInfromer createInformer = new CreateInfromer(CONFIGURATION, headers);
+        createInformer.createProject();
+        createInformer.createSubmission();
+        createInformer.createComment();*/
 
-        //informer.readProject(525);
+        //GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
 
-        /*List<Course> courses = informer.getCourses();
+        /*List<Course> courses = getInformer.getCourses();
         courses.forEach(System.out::println);*/
 
-        /*List<Project> projects = informer.getProjects();
+        /*List<Project> projects = getInformer.getProjects();
         projects.forEach(System.out::println);*/
 
-        /*List<Submission> submissions = informer.getSubmissions(8, 20, 0);
+        /*List<Submission> submissions = getInformer.getSubmissions(8, 20, 0);
         submissions.forEach(System.out::println);*/
 
-        /*List<Comment> comments = informer.getComments(1111);
+        /*List<Comment> comments = getInformer.getComments(1111);
         comments.forEach(System.out::println);*/
 
     }
