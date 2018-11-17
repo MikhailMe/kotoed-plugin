@@ -76,7 +76,7 @@ public class KotoedPlugin implements ToolWindowFactory {
     public void LoadTree(@NotNull DefaultMutableTreeNode incomeTree) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (int i = 0; i < 10; i++) {
-            root.add(new DefaultMutableTreeNode(new SubmissionNode("SubmissionNode #" + i, i, true)));
+            root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
         }
         DefaultTreeModel treeModel = new DefaultTreeModel( root );
         tree.setModel(treeModel);
@@ -104,30 +104,10 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
 
     private void parseObject(Object obj) {
-        if (obj instanceof CourseNode) {
-            nodeClickedTwice((CourseNode) obj);
-        } else if (obj instanceof ProjectNode) {
-            nodeClickedTwice((ProjectNode) obj);
-        } else if (obj instanceof SubmissionNode) {
+        if (obj instanceof SubmissionNode) {
             new Comments((SubmissionNode) obj);
         }
     }
-
-    private void nodeClickedTwice(@NotNull CourseNode course) {
-        displayInfo(course.toString());
-    }
-
-    private void nodeClickedTwice(@NotNull ProjectNode project) {
-        displayInfo(project.toString());
-    }
-
-    private void displayInfo(String text) {
-        JOptionPane.showMessageDialog(null,
-                "You have pressed node:" + text,
-                "Tree item pressed",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
-
     public void onSignInButtonPressed() {
         SignInWindow sign = new SignInWindow(this);
     }

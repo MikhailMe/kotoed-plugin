@@ -26,7 +26,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="9dcc0" class="javax.swing.JButton" binding="_Button" default-binding="true">
+          <component id="9dcc0" class="javax.swing.JButton" binding="button1">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <minimum-size width="30" height="30"/>

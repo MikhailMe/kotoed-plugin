@@ -25,20 +25,9 @@ public class CustomTreeRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
 
-        if (userObject instanceof CourseNode) {
-            CourseNode course = (CourseNode) userObject;
-            String text = String.format(SPAN_FORMAT, BLUE, course.getName());
-            text += BRACKET_OPEN + String.format(SPAN_FORMAT, ORANGE, course.getStatus() + BRACKET_CLOSE);
-            this.setText(HTML_OPEN + text + HTML_CLOSE);
-            //this.setIcon(employeeIcon);
-        } else if (userObject instanceof ProjectNode) {
-            ProjectNode project = (ProjectNode) userObject;
-            String text = String.format(SPAN_FORMAT, BLUE, project.getName());
-            text += BRACKET_OPEN + String.format(SPAN_FORMAT, ORANGE, project.getSource() + BRACKET_CLOSE);
-            this.setText(HTML_OPEN + text + HTML_CLOSE);
-        } else if (userObject instanceof SubmissionNode) {
+        if (userObject instanceof SubmissionNode) {
             SubmissionNode submission = (SubmissionNode) userObject;
-            String text = String.format(SPAN_FORMAT, BLUE, submission.getText());
+            String text = submission.getText();
             text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, submission.getNumber() + BRACKET_CLOSE);
             this.setText(HTML_OPEN + text + HTML_CLOSE);
             if (submission.getStatus()) this.setIcon(new ImageIcon(getClass().getResource(OPEN_ICON)));
