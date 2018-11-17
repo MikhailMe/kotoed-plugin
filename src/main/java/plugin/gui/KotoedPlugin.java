@@ -66,8 +66,8 @@ public class KotoedPlugin implements ToolWindowFactory {
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content submission= contentFactory.createContent(panel, "Submissions", false);
-        Content comment = contentFactory.createContent(commentsTab.panel, "Comments", false);
-        Content build = contentFactory.createContent(buildTab.panel, "Build", false);
+        Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
+        Content build = contentFactory.createContent(buildTab.getPanel(), "Build", false);
         toolWindow.getContentManager().addContent(submission);
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(build);

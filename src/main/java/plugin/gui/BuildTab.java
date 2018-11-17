@@ -1,8 +1,10 @@
 package plugin.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import lombok.Data;
 
+import javax.swing.*;
+
+@Data
 public class BuildTab extends JPanel {
 
     public JPanel panel;

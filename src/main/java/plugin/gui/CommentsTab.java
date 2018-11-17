@@ -1,7 +1,10 @@
 package plugin.gui;
 
+import lombok.Data;
+
 import javax.swing.*;
 
+@Data
 public class CommentsTab {
     private JPanel comentPreview;
     private JPanel comentView;
