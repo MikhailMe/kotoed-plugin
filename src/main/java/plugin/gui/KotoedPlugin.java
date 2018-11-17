@@ -3,13 +3,12 @@ package plugin.gui;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import plugin.gui.Items.Comments;
-import plugin.gui.Items.SignInWindow;
-import plugin.gui.Items.SignUpWindow;
+import plugin.gui.Items.*;
 import plugin.gui.Stabs.CourseNode;
 import plugin.gui.Stabs.ProjectNode;
 import plugin.gui.Stabs.SubmissionNode;
@@ -18,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.awt.event.*;
 
 public class KotoedPlugin implements ToolWindowFactory {
@@ -28,19 +29,31 @@ public class KotoedPlugin implements ToolWindowFactory {
     private JButton signUpButton;
     private JTree tree;
     private JPanel treePanel;
-    private JPanel infoPanel;
-    private JPanel toolbar;
+    private JScrollPane scrollPane;
     private ToolWindow myToolWindow;
+    private CommentsTab commentsTab;
+    private BuildTab buildTab;
 
     public static Project project;
 
     public KotoedPlugin() {
-        signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
-        signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
         cheatButton = new JButton();
         cheatButton.addActionListener(actionEvent -> {
             DataContext dataContext = DataManager.getInstance().getDataContext();
             project = (Project) dataContext.getData(DataConstants.PROJECT);
+        });
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        signInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                onSignInButtonPressed();
+            }
+        });
+        signUpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                onSignUpButtonPressed();
+            }
         });
     }
 
@@ -48,34 +61,30 @@ public class KotoedPlugin implements ToolWindowFactory {
     public void createToolWindowContent(@NotNull Project project,
                                         @NotNull ToolWindow toolWindow) {
         myToolWindow = toolWindow;
+        commentsTab = new CommentsTab();
+        buildTab = new BuildTab();
+
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(panel, "Kotoed Swing Test", false);
-        toolWindow.getContentManager().addContent(content);
+        Content submission= contentFactory.createContent(panel, "Submissions", false);
+        Content comment = contentFactory.createContent(commentsTab.panel, "Comments", false);
+        Content build = contentFactory.createContent(buildTab.panel, "Build", false);
+        toolWindow.getContentManager().addContent(submission);
+        toolWindow.getContentManager().addContent(comment);
+        toolWindow.getContentManager().addContent(build);
     }
 
     public void LoadTree(@NotNull DefaultMutableTreeNode incomeTree) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-
-        DefaultMutableTreeNode kotlinNode = new DefaultMutableTreeNode(new CourseNode("Kotlin", "icon", "Open"));
         for (int i = 0; i < 10; i++) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(new ProjectNode("Kotlin project" + i, "git_url"));
-            for (int j = 0; j < 10; j++)
-                node.add(new DefaultMutableTreeNode(new SubmissionNode("SubmissionNode #" + j * i, j * i, true)));
-            kotlinNode.add(node);
+            root.add(new DefaultMutableTreeNode(new SubmissionNode("SubmissionNode #" + i, i, true)));
         }
+        DefaultTreeModel treeModel = new DefaultTreeModel( root );
+        tree.setModel(treeModel);
+        tree.setRootVisible(false);
 
-        DefaultMutableTreeNode javaNode = new DefaultMutableTreeNode(new CourseNode("Java", "icon", "Closed"));
-        for (int i = 0; i < 10; i++) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(new ProjectNode("Java project " + i, "source_git"));
-            for (int j = 0; j < 10; j++)
-                node.add(new DefaultMutableTreeNode(new SubmissionNode("SubmissionNode #" + j * i, j * i, false)));
-            javaNode.add(node);
-        }
+        if(!tree.isVisible())
+            tree.setVisible(true);
 
-        root.add(kotlinNode);
-        root.add(javaNode);
-
-        tree = new JTree(root);
         tree.setCellRenderer(new CustomTreeRenderer());
         tree.addMouseListener(new MouseAdapter() {
             @Override
@@ -89,9 +98,9 @@ public class KotoedPlugin implements ToolWindowFactory {
                 }
             }
         });
-        treePanel.add(new JScrollPane(tree));
-        treePanel.validate();
-        treePanel.repaint();
+
+        //treePanel.validate();
+        //treePanel.repaint();
     }
 
     private void parseObject(Object obj) {
