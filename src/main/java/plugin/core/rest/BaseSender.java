@@ -1,6 +1,5 @@
 package plugin.core.rest;
 
-import io.vertx.core.MultiMap;
 import lombok.Getter;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,7 +7,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jetbrains.annotations.NotNull;
-import plugin.core.parser.Parser;
+import plugin.core.parser.GetParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import static plugin.core.util.Address.*;
-import static plugin.core.util.Address.URL_LOCAL_WHO_AM_I;
 
 public class BaseSender {
 
@@ -28,7 +26,7 @@ public class BaseSender {
     String jsonMyself;
 
     @NotNull
-    final HttpClient client;
+    private final HttpClient client;
 
     final String FIELD_COOKIE = "Cookie";
 
@@ -62,7 +60,7 @@ public class BaseSender {
     String getCookie(@NotNull final String jsonMyself) {
         HttpResponse responseWithCookies = post(urlSignIn, jsonMyself);
         String stringOfHeaders = Arrays.toString(responseWithCookies.getAllHeaders());
-        return Parser.getCookieFromHeaders(stringOfHeaders);
+        return GetParser.parseCookieFromHeaders(stringOfHeaders);
     }
 
     @NotNull

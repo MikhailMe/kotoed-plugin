@@ -2,9 +2,9 @@ package plugin.core.eventbus.InformersImpl;
 
 import io.vertx.core.MultiMap;
 import plugin.core.course.Course;
-import plugin.core.parser.Parser;
 import plugin.core.project.Project;
 import plugin.core.comment.Comment;
+import plugin.core.parser.GetParser;
 import io.vertx.core.json.JsonObject;
 import plugin.core.sumbission.Submission;
 import org.jetbrains.annotations.NotNull;
@@ -49,14 +49,14 @@ public class GetInformer extends BaseInformer implements IGetInformer {
     @NotNull
     public List<Course> getCourses() {
         JsonObject message = new JsonObject().put(FIELD_TEXT, EMPTY_STRING);
-        return get(URL_EVENTBUS_COURSES, message, Parser::getCourses);
+        return get(URL_EVENTBUS_COURSES, message, GetParser::parseCourses);
     }
 
     @NotNull
     public List<Project> getProjects() {
         JsonObject message = new JsonObject().put(FIELD_ID, EMPTY_STRING);
         // FIXME change URL_TO_EVENTBUS
-        return get("URL_TO_EVENTBUS", message, Parser::getProjects);
+        return get("URL_TO_EVENTBUS", message, GetParser::parseProjects);
     }
 
     @NotNull
@@ -68,13 +68,13 @@ public class GetInformer extends BaseInformer implements IGetInformer {
                 .put(FIELD_PAGE_SIZE, pageSize)
                 .put(FIELD_CURRENT_PAGE, currentPage)
                 .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, courseId));
-        return get(URL_EVENTBUS_SUBMISSIONS_FOR_COURSE, message, Parser::getSubmissions);
+        return get(URL_EVENTBUS_SUBMISSIONS_FOR_COURSE, message, GetParser::parseSubmissions);
     }
 
     @NotNull
     public List<Comment> getComments(final int submissionNumber) {
         JsonObject message = new JsonObject().put(FIELD_ID, submissionNumber);
-        return get(URL_EVENTBUS_COMMENTS, message, Parser::getComments);
+        return get(URL_EVENTBUS_COMMENTS, message, GetParser::parseComments);
     }
 
 }

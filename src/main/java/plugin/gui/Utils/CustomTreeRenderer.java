@@ -1,7 +1,5 @@
 package plugin.gui.Utils;
 
-import plugin.gui.Stabs.CourseNode;
-import plugin.gui.Stabs.ProjectNode;
 import plugin.gui.Stabs.SubmissionNode;
 
 import java.awt.*;

@@ -1,28 +1,21 @@
 package plugin.core.parser;
 
-import plugin.core.course.Course;
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
+import plugin.core.comment.CommentsJsonMapper;
+import plugin.core.course.Course;
 import plugin.core.project.Project;
 import plugin.core.sumbission.Submission;
-import org.jetbrains.annotations.NotNull;
-import plugin.core.comment.CommentsJsonMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
-import java.util.List;
 import java.io.IOException;
+import java.util.List;
 
-public class Parser {
+// FIXME: 11/19/2018 rewrite with generics
 
-    private static final ObjectMapper mapper;
+public class GetParser extends BaseParser {
 
-    static {
-        mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-    }
-
-    public static String getCookieFromHeaders(@NotNull final String headers) {
+    public static String parseCookieFromHeaders(@NotNull final String headers) {
         final String prefix = "Set-Cookie: ";
         final String postfix = ";";
         int beginIndex = headers.indexOf(prefix) + prefix.length();
@@ -30,7 +23,7 @@ public class Parser {
         return headers.substring(beginIndex, endIndex);
     }
 
-    public static List<Course> getCourses(@NotNull final String json) {
+    public static List<Course> parseCourses(@NotNull final String json) {
         try {
             return mapper.readValue(json, new TypeReference<List<Course>>() {
             });
@@ -40,7 +33,7 @@ public class Parser {
         return null;
     }
 
-    public static List<Project> getProjects(@NotNull final String json) {
+    public static List<Project> parseProjects(@NotNull final String json) {
         try {
             return mapper.readValue(json, new TypeReference<List<Project>>() {
             });
@@ -50,7 +43,7 @@ public class Parser {
         return null;
     }
 
-    public static List<Comment> getComments(@NotNull final String json) {
+    public static List<Comment> parseComments(@NotNull final String json) {
         try {
             // TODO: 11/03/2018 handle situation with error getting comment and empty comments
             CommentsJsonMapper commentsMapper = mapper.readValue(json, CommentsJsonMapper.class);
@@ -61,7 +54,7 @@ public class Parser {
         return null;
     }
 
-    public static List<Submission> getSubmissions(@NotNull final String json) {
+    public static List<Submission> parseSubmissions(@NotNull final String json) {
         try {
             return mapper.readValue(json, new TypeReference<List<Submission>>() {
             });
@@ -70,4 +63,5 @@ public class Parser {
         }
         return null;
     }
+
 }

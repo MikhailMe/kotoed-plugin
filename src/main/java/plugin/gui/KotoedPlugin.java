@@ -1,25 +1,25 @@
 package plugin.gui;
 
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import plugin.gui.Items.*;
-import plugin.gui.Stabs.CourseNode;
-import plugin.gui.Stabs.ProjectNode;
+import org.jetbrains.annotations.NotNull;
+import plugin.gui.Items.Comments;
+import plugin.gui.Items.SignInWindow;
+import plugin.gui.Items.SignUpWindow;
 import plugin.gui.Stabs.SubmissionNode;
 import plugin.gui.Utils.CustomTreeRenderer;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class KotoedPlugin implements ToolWindowFactory {
 
@@ -43,18 +43,8 @@ public class KotoedPlugin implements ToolWindowFactory {
             project = (Project) dataContext.getData(DataConstants.PROJECT);
         });
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        signInButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                onSignInButtonPressed();
-            }
-        });
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                onSignUpButtonPressed();
-            }
-        });
+        signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
+        signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
     }
 
     @Override
