@@ -25,7 +25,7 @@ public class SenderTest {
         String denizen2 = "qaz";
         String password2 = "qaz";
         String cookie2 = singInTest(denizen2, password2);
-        assert !cookie2.isEmpty();
+        if (cookie2.isEmpty()) throw new AssertionError();
     }
 
     private String singInTest(@NotNull final String denizen,

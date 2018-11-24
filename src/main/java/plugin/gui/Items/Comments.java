@@ -93,7 +93,6 @@ public class Comments extends JDialog {
         stabComment.setText("Some random message: " + RandomStringUtils.randomAlphanumeric(128));
         stabComment.setFileName("Test.java");
         commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
-
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         JScrollBar bar = scrollPane.getVerticalScrollBar();
