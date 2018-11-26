@@ -1,5 +1,7 @@
 package gui.Items;
 
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.editor.Editor;
@@ -62,6 +64,38 @@ public class Comment extends JPanel {
             }
         });
         this.setVisible(true);
+
+        int lineNumber = 12;
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+
+        if (editor == null) return;
+
+        int totalLineCount = editor.getDocument().getLineCount();
+
+        if (lineNumber > totalLineCount) return;
+
+        final RangeHighlighter rangeHighLighter = editor.getMarkupModel().addLineHighlighter(lineNumber - 1,0,null);
+        GutterIconRenderer gutterIconRenderer = new GutterIconRenderer() {
+            @Override
+            public boolean equals(Object obj) {
+                return false;
+            }
+
+            @Override
+            public int hashCode() {
+                return 0;
+            }
+
+            @NotNull
+            @Override
+            public Icon getIcon() {
+                return new ImageIcon(getClass().getResource("/Icons/button_c.png"));
+            }
+        };
+        rangeHighLighter.setGutterIconRenderer(gutterIconRenderer);
+        for (RangeHighlighter item:editor.getMarkupModel().getAllHighlighters()) {
+            System.out.println("item = [" + item + "]");
+        }
     }
 
     private void openFileInEditor(@NotNull final String fileName,
@@ -86,5 +120,6 @@ public class Comment extends JPanel {
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         FileEditorManager.getInstance(project).openFile(Objects.requireNonNull(virtualFile), true);
+
     }
 }
