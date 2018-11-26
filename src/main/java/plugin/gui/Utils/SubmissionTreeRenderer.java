@@ -9,7 +9,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import static plugin.gui.Utils.Strings.*;
 
-public class CustomTreeRenderer extends DefaultTreeCellRenderer {
+public class SubmissionTreeRenderer extends DefaultTreeCellRenderer {
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree,

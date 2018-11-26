@@ -20,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
+import static plugin.gui.Utils.Strings.COMMENT_ICON;
+
 public class Comment extends JPanel {
 
     private JPanel panel1;
@@ -31,12 +33,11 @@ public class Comment extends JPanel {
     private final static Color color = JBColor.WHITE;
 
     public Comment(@NotNull plugin.gui.Stabs.Comment comment,
-                   @NotNull Project project) {
+                   Project project) {
         super();
         textArea.setText(comment.getText());
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        panel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         TitledBorder title = BorderFactory.createTitledBorder(comment.getUserName() + " @ " + comment.getDate() + " at line:" + comment.getLineNumber());
         panel1.setBorder(title);
         textArea.setEditable(false);
@@ -51,7 +52,7 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    //openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
                 }
             }
         });
@@ -59,14 +60,14 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    //openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
                 }
             }
         });
         this.setVisible(true);
 
         int lineNumber = 12;
-        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        /*Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
         if (editor == null) return;
 
@@ -89,13 +90,13 @@ public class Comment extends JPanel {
             @NotNull
             @Override
             public Icon getIcon() {
-                return new ImageIcon(getClass().getResource("/Icons/button_c.png"));
+                return new ImageIcon(getClass().getResource(COMMENT_ICON));
             }
         };
         rangeHighLighter.setGutterIconRenderer(gutterIconRenderer);
         for (RangeHighlighter item:editor.getMarkupModel().getAllHighlighters()) {
             System.out.println("item = [" + item + "]");
-        }
+        }*/
     }
 
     private void openFileInEditor(@NotNull final String fileName,

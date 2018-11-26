@@ -13,7 +13,7 @@ import plugin.gui.Items.Comments;
 import plugin.gui.Items.SignInWindow;
 import plugin.gui.Items.SignUpWindow;
 import plugin.gui.Stabs.SubmissionNode;
-import plugin.gui.Utils.CustomTreeRenderer;
+import plugin.gui.Utils.SubmissionTreeRenderer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -63,7 +63,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(build);
     }
 
-    public void LoadTree(@NotNull DefaultMutableTreeNode incomeTree) {
+    public void LoadSubmissions(@NotNull DefaultMutableTreeNode incomeTree) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (int i = 0; i < 10; i++) {
             root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
@@ -75,7 +75,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         if(!tree.isVisible())
             tree.setVisible(true);
 
-        tree.setCellRenderer(new CustomTreeRenderer());
+        tree.setCellRenderer(new SubmissionTreeRenderer());
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -91,11 +91,13 @@ public class KotoedPlugin implements ToolWindowFactory {
 
         //treePanel.validate();
         //treePanel.repaint();
+
+        commentsTab.updateComments();
     }
 
     private void parseObject(Object obj) {
         if (obj instanceof SubmissionNode) {
-            new Comments((SubmissionNode) obj);
+            //new Comments((SubmissionNode) obj);
         }
     }
     public void onSignInButtonPressed() {

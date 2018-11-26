@@ -1,19 +1,17 @@
 package plugin.gui.Items;
 
 import plugin.gui.KotoedPlugin;
-import plugin.gui.Stabs.SubmissionNode;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.time.LocalDateTime;
 import javax.swing.border.TitledBorder;
 import java.time.format.DateTimeFormatter;
 
 import static plugin.gui.Utils.Strings.*;
 
-public class Comments extends JDialog {
+public class Comments{
 
     private JButton buttonOK;
     private JTextArea textArea;
@@ -23,11 +21,11 @@ public class Comments extends JDialog {
     private JScrollPane scrollPane;
 
     private int prevMax;
-    private SubmissionNode submission;
+    private plugin.gui.Stabs.Comment comment;
 
-    public Comments(@NotNull SubmissionNode submission) {
+    public Comments(@NotNull plugin.gui.Stabs.Comment comment) {
         KotoedPlugin.cheatButton.doClick();
-        this.submission = submission;
+        this.comment = comment;
 
         // this information must be take from Denizen object
         String userName = "Username";
@@ -39,42 +37,23 @@ public class Comments extends JDialog {
         registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
         addComments(userName, date, text, fileName, lineNumber);
-        setParentParams();
     }
-
+    public JPanel getContentPane(){
+        return contentPane;
+    }
     private void registerActions(@NotNull String userName,
                                  @NotNull String date,
                                  @NotNull String text,
                                  @NotNull String fileName,
                                  final int lineNumber) {
         buttonOK.addActionListener(e -> onSend(userName, date, text, fileName, lineNumber));
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-        contentPane.registerKeyboardAction(e -> onCancel(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    private void setParentParams() {
-        setTitle(COMMENTS);
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     private void addBorders() {
         TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
-        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR + submission.toString());
+        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR/* add submision number*/);
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
@@ -84,6 +63,7 @@ public class Comments extends JDialog {
                              @NotNull String fileName,
                              final int lineNumber) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
+
 
         // create first comment
         plugin.gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
@@ -126,7 +106,7 @@ public class Comments extends JDialog {
         return new plugin.gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
-    private void onCancel() {
-        dispose();
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

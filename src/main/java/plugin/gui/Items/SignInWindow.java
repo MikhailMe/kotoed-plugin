@@ -1,6 +1,5 @@
 package plugin.gui.Items;
 
-import plugin.core.rest.Sender;
 import plugin.gui.KotoedPlugin;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
@@ -60,11 +59,11 @@ public class SignInWindow extends JDialog {
         String password = passwordField.getText();
         Sender sender = new Sender("LOCAL");
         String cookie = sender.signIn(denizen, password);
-        this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
+        this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
         dispose();*/
         if (usernameField.getText().equals(CREDENTIALS))
             if (passwordField.getText().equals(CREDENTIALS)) {
-                this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
+                this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
                 dispose();
                 return;
             }

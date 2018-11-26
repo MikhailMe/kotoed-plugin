@@ -23,5 +23,4 @@ public class Comment {
         this.lineNumber = lineNumber;
         this.fileName = fileName;
     }
-
 }
