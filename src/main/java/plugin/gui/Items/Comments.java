@@ -24,7 +24,6 @@ public class Comments{
     private plugin.gui.Stabs.Comment comment;
 
     public Comments(@NotNull plugin.gui.Stabs.Comment comment) {
-        KotoedPlugin.cheatButton.doClick();
         this.comment = comment;
 
         // this information must be take from Denizen object

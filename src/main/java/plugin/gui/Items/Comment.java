@@ -1,5 +1,8 @@
 package plugin.gui.Items;
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.ui.JBColor;
@@ -27,13 +30,11 @@ public class Comment extends JPanel {
     private JPanel panel1;
     private JTextArea textArea;
 
-    private final static int WIDTH = 470;
-    private final static int HEIGHT = 100;
     private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
     public Comment(@NotNull plugin.gui.Stabs.Comment comment,
-                   Project project) {
+                   @NotNull Project project) {
         super();
         textArea.setText(comment.getText());
         textArea.setLineWrap(true);
@@ -52,7 +53,7 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    //openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
                 }
             }
         });
@@ -60,14 +61,14 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    //openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
                 }
             }
         });
         this.setVisible(true);
 
         int lineNumber = 12;
-        /*Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
         if (editor == null) return;
 
@@ -96,7 +97,7 @@ public class Comment extends JPanel {
         rangeHighLighter.setGutterIconRenderer(gutterIconRenderer);
         for (RangeHighlighter item:editor.getMarkupModel().getAllHighlighters()) {
             System.out.println("item = [" + item + "]");
-        }*/
+        }
     }
 
     private void openFileInEditor(@NotNull final String fileName,

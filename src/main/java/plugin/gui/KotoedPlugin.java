@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
 public class KotoedPlugin implements ToolWindowFactory {
 
     private JPanel panel;
-    public static JButton cheatButton;
     private JButton signInButton;
     private JButton signUpButton;
     private JTree tree;
@@ -37,14 +36,10 @@ public class KotoedPlugin implements ToolWindowFactory {
     public static Project project;
 
     public KotoedPlugin() {
-        cheatButton = new JButton();
-        cheatButton.addActionListener(actionEvent -> {
-            DataContext dataContext = DataManager.getInstance().getDataContext();
-            project = (Project) dataContext.getData(DataConstants.PROJECT);
-        });
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
         signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
+        ObtainProject();
     }
 
     @Override
@@ -61,6 +56,30 @@ public class KotoedPlugin implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(submission);
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(build);
+
+    }
+    private void ObtainProject(){
+        Thread thread = new Thread(){
+            public void run(){
+                DataContext dataContext = DataManager.getInstance().getDataContext();
+                Project p =(Project) dataContext.getData(DataConstants.PROJECT);
+                int count = 0;
+                while(p == null)
+                {
+                    dataContext = DataManager.getInstance().getDataContext();
+                    p = (Project) dataContext.getData(DataConstants.PROJECT);
+                    System.out.println("Still null " + count++);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Project not null in " + count);
+                KotoedPlugin.project = p;
+            }
+        };
+        thread.start();
     }
 
     public void LoadSubmissions(@NotNull DefaultMutableTreeNode incomeTree) {
