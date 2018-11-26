@@ -1,5 +1,4 @@
 package plugin.gui.Items;
-
 import plugin.gui.KotoedPlugin;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +7,7 @@ import javax.swing.*;
 import java.time.LocalDateTime;
 import javax.swing.border.TitledBorder;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import static plugin.gui.Utils.Strings.*;
 
@@ -21,10 +21,7 @@ public class Comments{
     private JScrollPane scrollPane;
 
     private int prevMax;
-    private plugin.gui.Stabs.Comment comment;
-
-    public Comments(@NotNull plugin.gui.Stabs.Comment comment) {
-        this.comment = comment;
+    public Comments(@NotNull ArrayList<plugin.gui.Stabs.Comment> c) {
 
         // this information must be take from Denizen object
         String userName = "Username";
@@ -35,7 +32,7 @@ public class Comments{
 
         registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
-        addComments(userName, date, text, fileName, lineNumber);
+        addComments(c);
     }
     public JPanel getContentPane(){
         return contentPane;
@@ -56,22 +53,12 @@ public class Comments{
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
-    private void addComments(@NotNull String userName,
-                             @NotNull String date,
-                             @NotNull String text,
-                             @NotNull String fileName,
-                             final int lineNumber) {
+    private void addComments(@NotNull ArrayList<plugin.gui.Stabs.Comment> c) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-
-        // create first comment
-        plugin.gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
-        commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
-
-        // create second comment
-        stabComment.setText("Some random message: " + RandomStringUtils.randomAlphanumeric(128));
-        stabComment.setFileName("Test.java");
-        commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
+        for (plugin.gui.Stabs.Comment com: c) {
+            commentPanel.add(new Comment(com, KotoedPlugin.project));
+        }
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -96,12 +83,11 @@ public class Comments{
         });
         textArea.setText("");
     }
-
     private plugin.gui.Stabs.Comment createStabComment(@NotNull String userName,
-                                                       @NotNull String date,
-                                                       @NotNull String text,
-                                                       @NotNull String fileName,
-                                                       final int lineNumber) {
+                                                        @NotNull String date,
+                                                        @NotNull String text,
+                                                        @NotNull String fileName,
+                                                        final int lineNumber) {
         return new plugin.gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
