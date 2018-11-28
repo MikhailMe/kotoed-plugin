@@ -23,9 +23,9 @@ public class Main {
         String password = "punsh";
 
         Sender sender = new Sender(CONFIGURATION);
-        String cookie = sender.signIn(denizen, password);
+        sender.signIn(denizen, password);
 
-        MultiMap headers = sender.getHeaders(cookie);
+        MultiMap headers = sender.getHeaders();
 
         /*CreateInfromer createInformer = new CreateInfromer(CONFIGURATION, headers);
 

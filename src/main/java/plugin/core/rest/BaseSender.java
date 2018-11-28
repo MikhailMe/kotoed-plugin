@@ -25,6 +25,9 @@ public class BaseSender {
     @Getter
     String jsonMyself;
 
+    @Getter
+    String cookie;
+
     @NotNull
     private final HttpClient client;
 
@@ -46,11 +49,13 @@ public class BaseSender {
     }
 
     HttpResponse post(@NotNull final String url,
-                      @NotNull final String json) {
+                      @NotNull final String json,
+                      @NotNull final String cookie) {
         try {
-            HttpPost postForCookies = new HttpPost(url);
-            postForCookies.setEntity(new StringEntity(json));
-            return client.execute(postForCookies);
+            HttpPost post = new HttpPost(url);
+            post.setEntity(new StringEntity(json));
+            post.setHeader(FIELD_COOKIE, cookie);
+            return client.execute(post);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +63,7 @@ public class BaseSender {
     }
 
     String getCookie(@NotNull final String jsonMyself) {
-        HttpResponse responseWithCookies = post(urlSignIn, jsonMyself);
+        HttpResponse responseWithCookies = post(urlSignIn, jsonMyself, cookie);
         String stringOfHeaders = Arrays.toString(responseWithCookies.getAllHeaders());
         return GetParser.parseCookieFromHeaders(stringOfHeaders);
     }

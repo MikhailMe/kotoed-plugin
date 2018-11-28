@@ -11,5 +11,5 @@ public interface ISender {
 
     void signUp(@NotNull final String denizen, @NotNull final String password);
 
-    MultiMap getHeaders(String cookie);
+    MultiMap getHeaders();
 }

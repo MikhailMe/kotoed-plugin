@@ -48,7 +48,7 @@
         </constraints>
         <properties>
           <background color="-1"/>
-          <text value="Sign In"/>
+          <text value="Sign Up"/>
         </properties>
       </component>
       <component id="c1ae3" class="javax.swing.JButton" binding="cancelButton" default-binding="true">

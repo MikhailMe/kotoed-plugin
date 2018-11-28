@@ -1,4 +1,5 @@
 package plugin.gui.Items;
+
 import plugin.gui.KotoedPlugin;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -72,15 +73,22 @@ public class Comments{
                         @NotNull String fileName,
                         final int lineNumber) {
         plugin.gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
-        stabComment.setText(textArea.getText());
-        commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
-        commentPanel.revalidate();
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
-            if (e.getAdjustable().getMaximum() != prevMax) {
-                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-                prevMax = e.getAdjustable().getMaximum();
-            }
-        });
+        if (!textArea.getText().isEmpty()) {
+            stabComment.setText(textArea.getText());
+            commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
+            commentPanel.revalidate();
+            scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+                if (e.getAdjustable().getMaximum() != prevMax) {
+                    e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+                    prevMax = e.getAdjustable().getMaximum();
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    EMPTY_COMMENT_MESSAGE,
+                    EMPTY_COMMENT,
+                    JOptionPane.ERROR_MESSAGE);
+        }
         textArea.setText("");
     }
     private plugin.gui.Stabs.Comment createStabComment(@NotNull String userName,

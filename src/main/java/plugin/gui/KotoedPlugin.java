@@ -9,7 +9,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
-import plugin.gui.Items.Comments;
 import plugin.gui.Items.SignInWindow;
 import plugin.gui.Items.SignUpWindow;
 import plugin.gui.Stabs.SubmissionNode;
@@ -21,11 +20,14 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static plugin.gui.Utils.PsiKeys.COOKIE_FIELD;
+
 public class KotoedPlugin implements ToolWindowFactory {
 
     private JPanel panel;
     private JButton signInButton;
     private JButton signUpButton;
+    private JButton autoSubmitButton;
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
@@ -36,18 +38,21 @@ public class KotoedPlugin implements ToolWindowFactory {
     public static Project project;
 
     public KotoedPlugin() {
+
+        autoSubmitButton.setVisible(false);
+
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
         signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
-        ObtainProject();
+        autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
     }
 
     @Override
     public void createToolWindowContent(@NotNull Project project,
                                         @NotNull ToolWindow toolWindow) {
+        buildTab = new BuildTab();
         myToolWindow = toolWindow;
         commentsTab = new CommentsTab();
-        buildTab = new BuildTab();
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content submission= contentFactory.createContent(panel, "Submissions", false);
@@ -58,32 +63,19 @@ public class KotoedPlugin implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(build);
 
     }
-    private void ObtainProject(){
-        Thread thread = new Thread(){
-            public void run(){
-                DataContext dataContext = DataManager.getInstance().getDataContext();
-                Project p =(Project) dataContext.getData(DataConstants.PROJECT);
-                int count = 0;
-                while(p == null)
-                {
-                    dataContext = DataManager.getInstance().getDataContext();
-                    p = (Project) dataContext.getData(DataConstants.PROJECT);
-                    System.out.println("Still null " + count++);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("Project not null in " + count);
-                KotoedPlugin.project = p;
-            }
-        };
-        thread.start();
-    }
 
     public void LoadSubmissions(@NotNull DefaultMutableTreeNode incomeTree) {
+        signInButton.setVisible(false);
+        signUpButton.setVisible(false);
+        autoSubmitButton.setVisible(true);
+
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+
+
+        String test = project.getUserData(COOKIE_FIELD);
+        System.out.println(test);
+
+
         for (int i = 0; i < 10; i++) {
             root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
         }
@@ -119,11 +111,23 @@ public class KotoedPlugin implements ToolWindowFactory {
             //new Comments((SubmissionNode) obj);
         }
     }
-    public void onSignInButtonPressed() {
-        SignInWindow sign = new SignInWindow(this);
+
+    private void onSignInButtonPressed() {
+        obtainProject();
+        new SignInWindow(this);
     }
 
-    public void onSignUpButtonPressed() {
-        SignUpWindow dialog = new SignUpWindow(this);
+    private void onSignUpButtonPressed() {
+        obtainProject();
+        new SignUpWindow(this);
+    }
+
+    private void onAutoSubmitPressed() {
+        obtainProject();
+    }
+
+    private void obtainProject(){
+        DataContext dataContext = DataManager.getInstance().getDataContext();
+        project = (Project) dataContext.getData(DataConstants.PROJECT);
     }
 }

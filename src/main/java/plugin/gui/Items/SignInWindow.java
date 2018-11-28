@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import static plugin.gui.Utils.PsiKeys.COOKIE_FIELD;
 import static plugin.gui.Utils.Strings.*;
 
 public class SignInWindow extends JDialog {
@@ -55,22 +56,27 @@ public class SignInWindow extends JDialog {
     }
 
     private void onSignIn() {
+        KotoedPlugin.project.putUserData(COOKIE_FIELD, "test123");
+        this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
+        dispose();
+
+
         /*String denizen = usernameField.getText();
         String password = passwordField.getText();
         Sender sender = new Sender("LOCAL");
-        String cookie = sender.signIn(denizen, password);
-        this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
-        dispose();*/
-        if (usernameField.getText().equals(CREDENTIALS))
-            if (passwordField.getText().equals(CREDENTIALS)) {
-                this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
-                dispose();
-                return;
-            }
-        JOptionPane.showMessageDialog(null,
-                AUTH_ERROR_MESSAGE,
-                AUTH_ERROR,
-                JOptionPane.ERROR_MESSAGE);
+        sender.signIn(denizen, password);
+        KotoedPlugin.project.putUserData(COOKIE_FIELD, sender.getCookie());
+
+        if (!sender.getWhoAmI().isEmpty()) {
+            this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
+            dispose();
+        }
+        else {
+            JOptionPane.showMessageDialog(null,
+                    AUTH_ERROR_MESSAGE,
+                    AUTH_ERROR,
+                    JOptionPane.ERROR_MESSAGE);
+        }*/
     }
 
     private void onCancel() {

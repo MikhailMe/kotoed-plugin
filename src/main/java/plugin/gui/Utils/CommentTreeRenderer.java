@@ -1,7 +1,5 @@
 package plugin.gui.Utils;
 
-import plugin.gui.Stabs.SubmissionNode;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;

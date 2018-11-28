@@ -6,6 +6,9 @@ public class Strings {
     public static final String SIGN_IN = "Sign In";
     public static final String SIGN_UP = "Sign Up";
 
+    public static final String EMPTY_COMMENT = "Send error";
+    public static final String EMPTY_COMMENT_MESSAGE = "Empty comment, you must write something for send";
+
     public static final String AUTH_ERROR = "Authorize error";
     public static final String AUTH_ERROR_MESSAGE = "Username or password is incorrect!";
 

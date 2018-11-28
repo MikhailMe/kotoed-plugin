@@ -19,12 +19,8 @@ public class Sender extends BaseSender implements ISender{
     }
 
     public String getWhoAmI() {
-        return jsonMyself == null ? null : Objects.requireNonNull(getWhoAmI(jsonMyself));
-    }
-
-    private String getWhoAmI(@NotNull final String jsonMyself) {
         try {
-            HttpResponse whoAmI = post(urlWhoAmI, jsonMyself);
+            HttpResponse whoAmI = post(urlWhoAmI, jsonMyself, cookie);
             BufferedReader rd = getReader(whoAmI);
             return IOUtils.toString(rd);
         } catch (IOException e) {
@@ -49,13 +45,16 @@ public class Sender extends BaseSender implements ISender{
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
-        post(urlSignUp, jsonMyself);
+        post(urlSignUp, jsonMyself, cookie);
     }
 
     @NotNull
-    public MultiMap getHeaders(String cookie) {
+    public MultiMap getHeaders() {
         return MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
     }
 
-
+    @NotNull
+    public String getCookie() {
+        return cookie;
+    }
 }
