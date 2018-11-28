@@ -1,5 +1,10 @@
 package plugin.gui.Items;
 
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.editor.Editor;
@@ -18,13 +23,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
+import static plugin.gui.Utils.Strings.COMMENT_ICON;
+
 public class Comment extends JPanel {
 
     private JPanel panel1;
     private JTextArea textArea;
 
-    private final static int WIDTH = 470;
-    private final static int HEIGHT = 100;
     private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
@@ -34,7 +39,6 @@ public class Comment extends JPanel {
         textArea.setText(comment.getText());
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        panel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         TitledBorder title = BorderFactory.createTitledBorder(comment.getUserName() + " @ " + comment.getDate() + " at line:" + comment.getLineNumber());
         panel1.setBorder(title);
         textArea.setEditable(false);
@@ -86,5 +90,6 @@ public class Comment extends JPanel {
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         FileEditorManager.getInstance(project).openFile(Objects.requireNonNull(virtualFile), true);
+
     }
 }

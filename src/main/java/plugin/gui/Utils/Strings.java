@@ -14,9 +14,8 @@ public class Strings {
     public static final String REPEAT_PASSWORD_TEXT = "Repeat password:";
     public static final String EMAIL_TEXT = "Email:";
 
-    //public static final String OPEN_ICON = "/Icons/open.png";
+    public static final String COMMENT_ICON = "/Icons/button_c.png";
     public static final String OPEN_ICON = "/Icons/openStatus.png";
-    //public static final String CLOSED_ICON = "/Icons/closed.png";
     public static final String CLOSED_ICON = "/Icons/closedStatus.png";
 
     //Comments class
