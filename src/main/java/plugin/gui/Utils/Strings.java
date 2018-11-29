@@ -1,7 +1,6 @@
 package plugin.gui.Utils;
 
 public class Strings {
-    public static final String CREDENTIALS = "admin";
 
     public static final String SIGN_IN = "Sign In";
     public static final String SIGN_UP = "Sign Up";
@@ -9,8 +8,11 @@ public class Strings {
     public static final String EMPTY_COMMENT = "Send error";
     public static final String EMPTY_COMMENT_MESSAGE = "Empty comment, you must write something for send";
 
-    public static final String AUTH_ERROR = "Authorize error";
-    public static final String AUTH_ERROR_MESSAGE = "Username or password is incorrect!";
+    public static final String SIGN_IN_ERROR = "Sign in error";
+    public static final String SIGN_IN_ERROR_MESSAGE = "Username or password is incorrect!";
+
+    public static final String SIGN_UP_ERROR = "Sign up error";
+    public static final String SIGN_UP_ERROR_MESSAGE = "User with this username already exist!";
 
     public static final String USERNAME_TEXT = "Username:";
     public static final String PASSWORD_TEXT = "Password:";
@@ -26,7 +28,7 @@ public class Strings {
     public static final String COMMENT_FOR = "Comments for:";
     public static final String COMMENTS = "Comments";
 
-    public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
+    // other
 
     public static final String RED = "red";
     public static final String BLUE = "blue";
@@ -36,4 +38,11 @@ public class Strings {
     public static final String HTML_OPEN = "<html>";
     public static final String HTML_CLOSE = "</html>";
     public static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
+    public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
+
+    public static final String CONFIGURATION = "GLOBAL";
+
+    // digit constants
+    public static final int DOUBLE_CLICK = 2;
 }
+

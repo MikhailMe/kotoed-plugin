@@ -3,12 +3,15 @@ package plugin.gui;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataConstants;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.project.DefaultProjectFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+import plugin.core.eventbus.InformersImpl.GetInformer;
+import plugin.core.sumbission.Submission;
 import plugin.gui.Items.SignInWindow;
 import plugin.gui.Items.SignUpWindow;
 import plugin.gui.Stabs.SubmissionNode;
@@ -19,9 +22,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Objects;
 
-import static plugin.gui.Utils.PsiKeys.COOKIE_FIELD;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
+import static plugin.gui.Utils.Strings.CONFIGURATION;
+import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
+
+// TODO: 11/29/2018 rename me to KotoedContext
 public class KotoedPlugin implements ToolWindowFactory {
 
     private JPanel panel;
@@ -55,7 +64,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         commentsTab = new CommentsTab();
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content submission= contentFactory.createContent(panel, "Submissions", false);
+        Content submission = contentFactory.createContent(panel, "Submissions", false);
         Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
         Content build = contentFactory.createContent(buildTab.getPanel(), "Build", false);
         toolWindow.getContentManager().addContent(submission);
@@ -72,30 +81,41 @@ public class KotoedPlugin implements ToolWindowFactory {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
 
-        String test = project.getUserData(COOKIE_FIELD);
-        System.out.println(test);
+        GetInformer informer = new GetInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(project.getUserData(PSI_KEY_HEADERS)));
 
+        // 8 - courseId - то есть Functional Programming
+        // 20 - сколько сабмишинов на одной странице
+        // 0 - нулевая страница
+        List<Submission> submissionList = informer.getSubmissions(8, 20, 0);
 
-        for (int i = 0; i < 10; i++) {
-            root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
+        for (Submission submission : submissionList) {
+            // FIXME: здесь почему-то id проекта, а не сабмишина - нужно глянуть в котоеде
+            String submissionName = submission.getName();
+            long submissionId = submission.getId();
+            // FIXME : здесь должен быть статус, которого нет :(
+            boolean submissionStatus = true;
+            SubmissionNode node = new SubmissionNode(submissionName, submissionId, submissionStatus);
+            root.add(new DefaultMutableTreeNode(node));
         }
-        DefaultTreeModel treeModel = new DefaultTreeModel( root );
+
+        /*for (int i = 0; i < 10; i++) {
+            root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
+        }*/
+        DefaultTreeModel treeModel = new DefaultTreeModel(root);
         tree.setModel(treeModel);
         tree.setRootVisible(false);
 
-        if(!tree.isVisible())
+        if (!tree.isVisible())
             tree.setVisible(true);
 
         tree.setCellRenderer(new SubmissionTreeRenderer());
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                            tree.getLastSelectedPathComponent();
-                    if (node == null) return;
-                    Object nodeInfo = node.getUserObject();
-                    parseObject(nodeInfo);
+                if (e.getClickCount() == DOUBLE_CLICK) {
+                    // TODO: 11/29/2018 хотим чекаутиться на определенный сабмит
                 }
             }
         });
@@ -103,13 +123,9 @@ public class KotoedPlugin implements ToolWindowFactory {
         //treePanel.validate();
         //treePanel.repaint();
 
-        commentsTab.updateComments();
-    }
-
-    private void parseObject(Object obj) {
-        if (obj instanceof SubmissionNode) {
-            //new Comments((SubmissionNode) obj);
-        }
+        // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
+        // TODO: пока что метод выдаёт эксепшн и всё ломается :(
+        //commentsTab.updateComments();
     }
 
     private void onSignInButtonPressed() {
@@ -126,7 +142,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         obtainProject();
     }
 
-    private void obtainProject(){
+    private void obtainProject() {
         DataContext dataContext = DataManager.getInstance().getDataContext();
         project = (Project) dataContext.getData(DataConstants.PROJECT);
     }

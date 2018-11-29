@@ -9,7 +9,7 @@ public interface ISender {
 
     String signIn(@NotNull final String denizen, @NotNull final String password);
 
-    void signUp(@NotNull final String denizen, @NotNull final String password);
+    String signUp(@NotNull final String denizen, @NotNull final String password);
 
     MultiMap getHeaders();
 }

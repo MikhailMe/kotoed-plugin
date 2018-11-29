@@ -23,7 +23,11 @@ public class Main {
         String password = "punsh";
 
         Sender sender = new Sender(CONFIGURATION);
-        sender.signIn(denizen, password);
+        String cookie = sender.signIn(denizen, password);
+
+        System.out.println(cookie);
+
+        System.out.println(sender.getWhoAmI());
 
         MultiMap headers = sender.getHeaders();
 

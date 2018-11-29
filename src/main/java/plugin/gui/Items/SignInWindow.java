@@ -1,13 +1,16 @@
 package plugin.gui.Items;
 
+import io.vertx.core.MultiMap;
+import plugin.core.rest.Sender;
 import plugin.gui.KotoedPlugin;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
-import java.awt.event.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.*;
 
-import static plugin.gui.Utils.PsiKeys.COOKIE_FIELD;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_COOKIE;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
 import static plugin.gui.Utils.Strings.*;
 
 public class SignInWindow extends JDialog {
@@ -17,10 +20,13 @@ public class SignInWindow extends JDialog {
     private JPasswordField passwordField;
     private JButton signInButton;
     private JButton cancelButton;
+
+    // TODO: 11/30/2018 remove me !!!
     private KotoedPlugin kotoedPlugin;
 
     public SignInWindow(KotoedPlugin kotoedPlugin) {
         this.kotoedPlugin = kotoedPlugin;
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
@@ -56,27 +62,23 @@ public class SignInWindow extends JDialog {
     }
 
     private void onSignIn() {
-        KotoedPlugin.project.putUserData(COOKIE_FIELD, "test123");
-        this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
-        dispose();
-
-
-        /*String denizen = usernameField.getText();
+        String denizen = usernameField.getText();
         String password = passwordField.getText();
-        Sender sender = new Sender("LOCAL");
+        Sender sender = new Sender(CONFIGURATION);
         sender.signIn(denizen, password);
-        KotoedPlugin.project.putUserData(COOKIE_FIELD, sender.getCookie());
-
         if (!sender.getWhoAmI().isEmpty()) {
-            this.kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
+            MultiMap headers = sender.getHeaders();
+            KotoedPlugin.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
+            KotoedPlugin.project.putUserData(PSI_KEY_HEADERS, headers);
+            kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
             dispose();
-        }
-        else {
-            JOptionPane.showMessageDialog(null,
-                    AUTH_ERROR_MESSAGE,
-                    AUTH_ERROR,
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    SIGN_IN_ERROR_MESSAGE,
+                    SIGN_IN_ERROR,
                     JOptionPane.ERROR_MESSAGE);
-        }*/
+        }
     }
 
     private void onCancel() {

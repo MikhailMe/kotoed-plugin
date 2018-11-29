@@ -37,6 +37,10 @@ public class CommentsTab {
     private JButton button2;
     private Comments comments;
 
+    public void update() {
+
+    }
+
     public void updateComments() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (int i = 0; i < 10; i++) {
@@ -89,11 +93,20 @@ public class CommentsTab {
         return new plugin.gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
-    private void SetGutterIcons(ArrayList<Comment> c) {
+    // FIXME: 11/30/2018 на 131 строке - постоянный экспешн, у тебя там что-то генерится не очень, ты так говорил
+    /*
+    * 1) убрать параметер @param с
+    * 2) вызывать этот метод при переходе на вкладку комментс
+    * для отрисовки меджик холс
+    * 3) почистить гатер либо подумать как его обновлять
+    * 4) разобраться с PsiFile
+    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
+    * */
+    private void SetGutterIcons(List<Comment> c) {
 
         /*for every coment using filename and linenumber - set icon - for all elements of list*/
         /*also need buffer for detecting already set icons to get rit of double icons*/
-        ArrayList<Integer> markedLines = new ArrayList<Integer>();
+        List<Integer> markedLines = new ArrayList<>();
         Map<String, ArrayList<Integer>> m = new HashMap<>();
         for (Comment com : c) {
             if (!m.containsKey(com.getFileName()))
@@ -123,11 +136,6 @@ public class CommentsTab {
                 m.put(com.getFileName(), a);
             }
         }
-    }
-
-    private String ParseFileName(String s) {
-        List<String> a = Arrays.asList(s.split("/"));
-        return a.get(a.size() - 1).substring(0, a.get(a.size() - 1).length() - 2);
     }
 
     private GutterIconRenderer CreateGutterIconRenderer() {

@@ -12,7 +12,7 @@ import java.io.BufferedReader;
 
 import static plugin.core.util.Address.*;
 
-public class Sender extends BaseSender implements ISender{
+public class Sender extends BaseSender implements ISender {
 
     public Sender(@NotNull String configuration) {
         super(configuration);
@@ -36,16 +36,27 @@ public class Sender extends BaseSender implements ISender{
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
-        return Objects.requireNonNull(getCookie(jsonMyself));
+        return Objects.requireNonNull(setCookie());
     }
 
-    public void signUp(@NotNull final String denizen,
-                       @NotNull final String password) {
+    public String signUp(@NotNull final String denizen,
+                          @NotNull final String password) {
         this.jsonMyself = new JsonObject()
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
-        post(urlSignUp, jsonMyself, cookie);
+        HttpResponse signUpResponse = post(urlSignUp, jsonMyself, cookie);
+        try {
+            BufferedReader rd = getReader(signUpResponse);
+            return IOUtils.toString(rd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isSuccessSignUp(@NotNull final String signUpResponse) {
+        return signUpResponse.contains("true");
     }
 
     @NotNull
@@ -53,8 +64,4 @@ public class Sender extends BaseSender implements ISender{
         return MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
     }
 
-    @NotNull
-    public String getCookie() {
-        return cookie;
-    }
 }

@@ -23,7 +23,7 @@ public class Submission {
 
     @Override
     public String toString() {
-        return "id = " + id + "\n" +
+        return "projectId = " + id + "\n" +
                 "name = " + name + "\n" +
                 "deleted = " + deleted + "\n" +
                 "denizen = " + denizen.toString() + "\n" +
