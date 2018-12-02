@@ -70,7 +70,7 @@ public class SignInWindow extends JDialog {
             MultiMap headers = sender.getHeaders();
             KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
             KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
-            KotoedContext.loadTabs();
+            KotoedContext.checkCurrentProjectInKotoed();
             dispose();
         } else {
             JOptionPane.showMessageDialog(

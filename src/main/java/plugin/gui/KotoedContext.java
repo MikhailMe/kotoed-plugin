@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+import plugin.gui.Items.RegisterProjectWindow;
 import plugin.gui.Tabs.BuildTab;
 import plugin.gui.Tabs.CommentsTab;
 import plugin.gui.Tabs.SubmissionTab;
@@ -31,6 +32,21 @@ public class KotoedContext implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(build);
 
+    }
+    public static void checkCurrentProjectInKotoed(){
+        // TODO: 02.12.2018 make some request to Kotoed and get project info 
+        // TODO: 02.12.2018 if project exists - load last commit,else - advice for register
+        if(getProjectInfo())
+        {
+
+        }
+        else {
+            new RegisterProjectWindow();
+        }
+
+    }
+    private static boolean getProjectInfo(){
+        return false;
     }
     public static void loadTabs(){
         submissionTab.LoadSubmissions();
