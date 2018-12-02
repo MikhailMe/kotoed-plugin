@@ -59,15 +59,15 @@ public class SignInWindow extends JDialog {
 
     private void onSignIn() {
         String denizen = usernameField.getText();
-        String password = passwordField.getText();
+        String password = String.valueOf(passwordField.getPassword());
         Sender sender = new Sender(CONFIGURATION);
         sender.signIn(denizen, password);
         if (!sender.getWhoAmI().isEmpty()) {
+            dispose();
             MultiMap headers = sender.getHeaders();
             KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
             KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
-            KotoedContext.loadTabs();
-            dispose();
+            KotoedContext.checkCurrentProjectInKotoed();
         } else {
             JOptionPane.showMessageDialog(
                     null,

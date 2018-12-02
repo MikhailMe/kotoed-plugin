@@ -64,7 +64,7 @@ public class SignUpWindow extends JDialog {
 
     private void onOK() {
         String denizen = usernameField.getText();
-        String password = passwordField.getText();
+        String password = String.valueOf(passwordField.getPassword());
         Sender sender = new Sender(CONFIGURATION);
         String singUpResponse = sender.signUp(denizen, password);
         if (sender.isSuccessSignUp(singUpResponse)) {

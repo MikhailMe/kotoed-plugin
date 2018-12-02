@@ -4,14 +4,23 @@ import lombok.Data;
 
 import javax.swing.*;
 
+import static plugin.gui.Utils.Strings.ICON_SIZE;
+import static plugin.gui.Utils.Strings.REFRESH_ICON;
+
 @Data
 public class BuildTab extends JPanel {
 
     public JPanel panel;
-    private JButton button1;
-    private JButton button2;
+    private JButton refreshButton;
 
     public BuildTab() {
         super();
+        this.refreshButton.setIcon(
+                new ImageIcon(
+                        new ImageIcon(
+                                getClass()
+                                        .getResource(REFRESH_ICON))
+                                .getImage()
+                                .getScaledInstance( ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH )));
     }
 }

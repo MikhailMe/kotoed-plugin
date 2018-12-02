@@ -1,6 +1,5 @@
 package plugin.gui.Tabs;
 
-import com.intellij.openapi.project.ProjectManager;
 import lombok.Getter;
 import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
@@ -20,34 +19,32 @@ import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
-import static plugin.gui.Utils.Strings.CONFIGURATION;
-import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
+import static plugin.gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.ICON_SIZE;
 
 
 public class SubmissionTab {
 
     @Getter
     private JPanel panel;
-    private JButton signInButton;
-    private JButton signUpButton;
     private JButton autoSubmitButton;
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
+    private JButton refreshButton;
 
     public SubmissionTab() {
 
         autoSubmitButton.setVisible(false);
 
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
-        signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
+
+        this.autoSubmitButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(UPLOAD_ICON)).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
+        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(REFRESH_ICON)).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
     }
 
     public void loadSubmissions() {
-        signInButton.setVisible(false);
-        signUpButton.setVisible(false);
         autoSubmitButton.setVisible(true);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
@@ -94,14 +91,6 @@ public class SubmissionTab {
         // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
         // TODO: пока что метод выдаёт эксепшн и всё ломается :(
         //commentsTab.loadComments();
-    }
-
-    private void onSignInButtonPressed() {
-        new SignInWindow();
-    }
-
-    private void onSignUpButtonPressed() {
-        new SignUpWindow();
     }
 
     private void onAutoSubmitPressed() {
