@@ -78,17 +78,17 @@ public class CommentsTab {
 
     // FIXME: 11/30/2018 на 131 строке - постоянный экспешн, у тебя там что-то генерится не очень, ты так говорил
     /*
-    * 1) убрать параметер @param с
-    * 2) вызывать этот метод при переходе на вкладку комментс
-    * для отрисовки меджик холс
-    * 3) почистить гатер либо подумать как его обновлять
-    * 4) разобраться с PsiFile
-    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
-    * */
+     * 1) убрать параметер @param с
+     * 2) вызывать этот метод при переходе на вкладку комментс
+     * для отрисовки меджик холс
+     * 3) почистить гатер либо подумать как его обновлять
+     * 4) разобраться с PsiFile
+     * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
+     * */
     /*private void SetGutterIcons(List<Comment> c) {
 
-        *//*for every coment using filename and linenumber - set icon - for all elements of list*//*
-        *//*also need buffer for detecting already set icons to get rit of double icons*//*
+     *//*for every coment using filename and linenumber - set icon - for all elements of list*//*
+     *//*also need buffer for detecting already set icons to get rit of double icons*//*
         List<Integer> markedLines = new ArrayList<>();
         Map<String, List<Integer>> m = new HashMap<>();
         for (Comment com : c) {
@@ -97,10 +97,10 @@ public class CommentsTab {
             if (m.get(com.getFileName()).contains(com.getLineNumber()))
                 return;
             *//* Вот тут реальный костыль: крч нам надо отрисовать иконки гаттера по всем файлам
-             * для этого я беру название файла из комента, открываю его в едиторе, рисую иконку,и так по всем коментам,
-             * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
-             * тут надо углубиться в идею гаттера но мне впадло и нет времени,
-             * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*//*
+     * для этого я беру название файла из комента, открываю его в едиторе, рисую иконку,и так по всем коментам,
+     * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
+     * тут надо углубиться в идею гаттера но мне впадло и нет времени,
+     * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*//*
             File file = new File(KotoedContext.project.getBasePath() + "/src/" + com.getFileName());
 
             VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);

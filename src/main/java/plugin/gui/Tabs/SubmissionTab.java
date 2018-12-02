@@ -97,20 +97,14 @@ public class SubmissionTab {
     }
 
     private void onSignInButtonPressed() {
-        obtainProject();
         new SignInWindow();
     }
 
     private void onSignUpButtonPressed() {
-        obtainProject();
         new SignUpWindow();
     }
 
     private void onAutoSubmitPressed() {
-        obtainProject();
     }
 
-    private void obtainProject() {
-        KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
-    }
 }

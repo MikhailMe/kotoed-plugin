@@ -14,7 +14,7 @@ import plugin.core.comment.Comment;
 
 import static plugin.gui.Utils.Strings.*;
 
-public class Comments{
+public class Comments {
 
     private int prevMax;
 
@@ -64,7 +64,7 @@ public class Comments{
     private void addComments(@NotNull List<Comment> comments) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-        for (Comment comment: comments) {
+        for (Comment comment : comments) {
             commentPanel.add(new CommentItem(comment, KotoedContext.project));
         }
 

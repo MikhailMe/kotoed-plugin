@@ -20,6 +20,7 @@ public class CustomizeEditor extends AnAction {
         e.getPresentation().setVisible(project != null && editor != null &&
                 editor.getSelectionModel().hasSelection());
     }
+
     @Override
     public void actionPerformed(AnActionEvent e) {
         //Get all the required data from data keys
