@@ -1,10 +1,7 @@
 package plugin.gui.Tabs;
 
 import lombok.Getter;
-import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
-import plugin.gui.Items.SignInWindow;
-import plugin.gui.Items.SignUpWindow;
 import plugin.gui.KotoedContext;
 import plugin.gui.Stabs.SubmissionNode;
 import plugin.gui.Utils.SubmissionTreeRenderer;
@@ -17,11 +14,8 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Objects;
 
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
+import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.*;
-import static plugin.gui.Utils.Strings.ICON_SIZE;
-
 
 public class SubmissionTab {
 
@@ -40,8 +34,15 @@ public class SubmissionTab {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
 
-        this.autoSubmitButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(UPLOAD_ICON)).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
-        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(REFRESH_ICON)).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
+        this.autoSubmitButton.setIcon(new ImageIcon(new ImageIcon(getClass()
+                .getResource(UPLOAD_ICON))
+                .getImage()
+                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
+
+        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
+                .getResource(REFRESH_ICON))
+                .getImage()
+                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
     }
 
     public void loadSubmissions() {
@@ -49,15 +50,7 @@ public class SubmissionTab {
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
-
-        GetInformer informer = new GetInformer(
-                CONFIGURATION,
-                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
-
-        // 8 - courseId - то есть Functional Programming
-        // 20 - сколько сабмишинов на одной странице
-        // 0 - нулевая страница
-        List<Submission> submissionList = informer.getSubmissions(8, 20, 0);
+        List<Submission> submissionList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
 
         for (Submission submission : submissionList) {
             // FIXME: здесь почему-то id проекта, а не сабмишина - нужно глянуть в котоеде
@@ -68,8 +61,6 @@ public class SubmissionTab {
             SubmissionNode node = new SubmissionNode(submissionName, submissionId, submissionStatus);
             root.add(new DefaultMutableTreeNode(node));
         }
-
-        KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
 
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         tree.setModel(treeModel);
@@ -87,13 +78,17 @@ public class SubmissionTab {
                 }
             }
         });
-
-        // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
-        // TODO: пока что метод выдаёт эксепшн и всё ломается :(
-        //commentsTab.loadComments();
     }
 
     private void onAutoSubmitPressed() {
+        // TODO: 12/3/2018
+        /*
+        * вызываем окно идеи для коммита и коммитим
+        * пушим измениния
+        * посылаем сабмит-запрос в котоед
+        * */
+
+
     }
 
 }

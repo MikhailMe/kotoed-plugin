@@ -1,5 +1,7 @@
 package plugin.gui.Items;
 
+import gherkin.lexer.Pa;
+import javafx.util.Pair;
 import lombok.Getter;
 import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +11,7 @@ import javax.swing.border.TitledBorder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import plugin.core.comment.Comment;
 
@@ -28,7 +31,7 @@ public class Comments {
     private JPanel commentHolder;
     private JScrollPane scrollPane;
 
-    public Comments(@NotNull List<Comment> comments) {
+    public Comments(@NotNull Map<Pair<String, Long>, List<Comment>> structuredComments) {
 
         // this information must be take from Denizen object
 
@@ -42,7 +45,7 @@ public class Comments {
 
         registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
-        addComments(comments);
+        addComments(structuredComments);
     }
 
     private void registerActions(@NotNull String userName,
@@ -57,16 +60,22 @@ public class Comments {
         TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
+        // TODO add submission number
         TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR/* add submision number*/);
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
-    private void addComments(@NotNull List<Comment> comments) {
+    private void addComments(@NotNull Map<Pair<String, Long>, List<Comment>> structuredComments) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-        for (Comment comment : comments) {
-            commentPanel.add(new CommentItem(comment, KotoedContext.project));
+        for (Map.Entry<Pair<String, Long>, List<Comment>> entry : structuredComments.entrySet()) {
+            // TODO написать добавление комментов
         }
+
+        // TODO: remove me after write cycle
+        /*for (Comment comment : comments) {
+            commentPanel.add(new CommentItem(comment, KotoedContext.project));
+        }*/
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());

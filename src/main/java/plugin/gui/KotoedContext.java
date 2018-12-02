@@ -7,6 +7,9 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+import plugin.core.comment.Comment;
+import plugin.core.eventbus.InformersImpl.GetInformer;
+import plugin.core.sumbission.Submission;
 import plugin.gui.Items.RegisterProjectWindow;
 import plugin.gui.Items.SignInWindow;
 import plugin.gui.Items.SignUpWindow;
@@ -15,6 +18,12 @@ import plugin.gui.Tabs.CommentsTab;
 import plugin.gui.Tabs.SubmissionTab;
 
 import javax.swing.*;
+
+import java.util.List;
+import java.util.Objects;
+
+import static plugin.gui.Utils.PsiKeys.*;
+import static plugin.gui.Utils.Strings.CONFIGURATION;
 
 public class KotoedContext implements ToolWindowFactory {
 
@@ -72,6 +81,8 @@ public class KotoedContext implements ToolWindowFactory {
             if (n != 1) {
                 new RegisterProjectWindow();
                 loadTabs();
+            } else {
+                return;
             }
         }
 
@@ -81,25 +92,54 @@ public class KotoedContext implements ToolWindowFactory {
     // TODO: 02.12.2018 if KotoedContext.project == getKotoedProjectFromKotoed()
     // TODO: then return true else call createproject window
     private static boolean getProjectInfo() {
-        return false;
+        return true;
     }
 
+    private static void loadTabs() {
+        getFullProjectData();
 
-    public static void loadTabs() {
         toolWindow.getContentManager().removeAllContents(true);
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
 
-        Content submission = contentFactory.createContent(submissionTab.getPanel(), "Submissions", false);
-        Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
         Content build = contentFactory.createContent(buildTab.getPanel(), "Build", false);
+        Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
+        Content submission = contentFactory.createContent(submissionTab.getPanel(), "Submissions", false);
 
-        toolWindow.getContentManager().addContent(submission);
-        toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(build);
-
+        toolWindow.getContentManager().addContent(comment);
+        toolWindow.getContentManager().addContent(submission);
 
         commentsTab.loadComments();
         submissionTab.loadSubmissions();
+    }
+
+    private static void getFullProjectData() {
+
+        // TODO: 12/3/2018 get with data from work with projects
+        int courseId = 8;
+        int pageSize = 20;
+        int currentPage = 0;
+
+
+
+        GetInformer informer = new GetInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+
+        // 8 - courseId - то есть Functional Programming
+        // 20 - сколько сабмишинов на одной странице
+        // 0 - нулевая страница
+        List<Submission> submissionList = informer.getSubmissions(courseId, pageSize, currentPage);
+
+
+        // TODO: 12/3/2018 get from @param submissionList
+        int submissionId = 9255;
+
+        List<Comment> commentList = informer.getComments(submissionId);
+
+
+        KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, commentList);
+        KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
     }
 }

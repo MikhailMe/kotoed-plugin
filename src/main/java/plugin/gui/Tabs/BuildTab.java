@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.swing.*;
 
+import static java.awt.Image.SCALE_SMOOTH;
 import static plugin.gui.Utils.Strings.ICON_SIZE;
 import static plugin.gui.Utils.Strings.REFRESH_ICON;
 
@@ -15,12 +16,9 @@ public class BuildTab extends JPanel {
 
     public BuildTab() {
         super();
-        this.refreshButton.setIcon(
-                new ImageIcon(
-                        new ImageIcon(
-                                getClass()
-                                        .getResource(REFRESH_ICON))
-                                .getImage()
-                                .getScaledInstance( ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH )));
+        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
+                .getResource(REFRESH_ICON))
+                .getImage()
+                .getScaledInstance(ICON_SIZE, ICON_SIZE, SCALE_SMOOTH)));
     }
 }

@@ -1,6 +1,8 @@
 package plugin.core;
 
 import io.vertx.core.MultiMap;
+import javafx.util.Pair;
+import plugin.core.comment.Comment;
 import plugin.core.course.Course;
 import plugin.core.eventbus.InformersImpl.BaseInformer;
 import plugin.core.eventbus.InformersImpl.CreateInfromer;
@@ -11,23 +13,22 @@ import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.util.ProjectRecord;
 import plugin.core.util.SubmissionRecord;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
-    private static final String CONFIGURATION = Address.LOCAL;
+    private static final String CONFIGURATION = Address.GLOBAL;
 
     public static void main(String[] args) {
 
-        String denizen = "punsh";
-        String password = "punsh";
+        String denizen = "mikhailme";
+        String password = "qwerty12345";
 
         Sender sender = new Sender(CONFIGURATION);
         String cookie = sender.signIn(denizen, password);
-
-        System.out.println(cookie);
-
-        System.out.println(sender.getWhoAmI());
 
         MultiMap headers = sender.getHeaders();
 
@@ -41,8 +42,6 @@ public class Main {
         //createInformer.createComment(8615, 446, 2, "Task1_1.hs", "oops");
 
 
-
-
         //GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
 
         /*List<Course> courses = getInformer.getCourses();
@@ -54,8 +53,10 @@ public class Main {
         /*List<Submission> submissions = getInformer.getSubmissions(8, 20, 0);
         submissions.forEach(System.out::println);*/
 
-        /*List<Comment> comments = getInformer.getComments(1111);
-        comments.forEach(System.out::println);*/
+        //List<Comment> comments = getInformer.getComments(9255);
+        //comments.forEach(System.out::println);
+
+
 
     }
 
