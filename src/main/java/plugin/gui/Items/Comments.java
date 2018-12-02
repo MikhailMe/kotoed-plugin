@@ -1,7 +1,6 @@
 package plugin.gui.Items;
 
 import plugin.gui.KotoedContext;
-import plugin.gui.SubmissionTab;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 

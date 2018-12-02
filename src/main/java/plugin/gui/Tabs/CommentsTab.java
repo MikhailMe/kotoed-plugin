@@ -1,4 +1,4 @@
-package plugin.gui;
+package plugin.gui.Tabs;
 
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 import plugin.gui.Items.Comments;
+import plugin.gui.KotoedContext;
 import plugin.gui.Stabs.Comment;
 import plugin.gui.Utils.CommentTreeRenderer;
 
@@ -102,7 +103,7 @@ public class CommentsTab {
     * для отрисовки меджик холс
     * 3) почистить гатер либо подумать как его обновлять
     * 4) разобраться с PsiFile
-    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
+    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!! Как я тебе их блядь повешу,это такая пезда шо ппц,на костыль вешать костыль - гг вп
     * */
     private void SetGutterIcons(List<Comment> c) {
 

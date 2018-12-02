@@ -2,7 +2,7 @@ package plugin.gui.Items;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 import plugin.core.rest.Sender;
-import plugin.gui.SubmissionTab;
+import plugin.gui.Tabs.SubmissionTab;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

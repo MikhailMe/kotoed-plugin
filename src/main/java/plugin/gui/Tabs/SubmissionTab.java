@@ -1,4 +1,4 @@
-package plugin.gui;
+package plugin.gui.Tabs;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataConstants;
@@ -14,6 +14,7 @@ import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
 import plugin.gui.Items.SignInWindow;
 import plugin.gui.Items.SignUpWindow;
+import plugin.gui.KotoedContext;
 import plugin.gui.Stabs.SubmissionNode;
 import plugin.gui.Utils.SubmissionTreeRenderer;
 

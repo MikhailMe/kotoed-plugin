@@ -1,4 +1,4 @@
-package plugin.gui;
+package plugin.gui.Tabs;
 
 import lombok.Data;
 

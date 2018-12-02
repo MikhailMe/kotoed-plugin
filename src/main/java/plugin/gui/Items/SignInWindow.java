@@ -3,11 +3,10 @@ package plugin.gui.Items;
 import io.vertx.core.MultiMap;
 import plugin.core.rest.Sender;
 import plugin.gui.KotoedContext;
-import plugin.gui.SubmissionTab;
+import plugin.gui.Tabs.SubmissionTab;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.*;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COOKIE;
