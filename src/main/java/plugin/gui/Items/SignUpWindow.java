@@ -2,7 +2,6 @@ package plugin.gui.Items;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 import plugin.core.rest.Sender;
-import plugin.gui.Tabs.SubmissionTab;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -21,12 +20,7 @@ public class SignUpWindow extends JDialog {
     private JButton signInButton;
     private JButton cancelButton;
 
-    // TODO: 11/30/2018 remove me!
-    private SubmissionTab submissionTab;
-
-    public SignUpWindow(SubmissionTab submissionTab) {
-        this.submissionTab = submissionTab;
-
+    public SignUpWindow() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
@@ -75,7 +69,7 @@ public class SignUpWindow extends JDialog {
         String singUpResponse = sender.signUp(denizen, password);
         if (sender.isSuccessSignUp(singUpResponse)) {
             dispose();
-            new SignInWindow(submissionTab);
+            new SignInWindow();
         } else {
             JOptionPane.showMessageDialog(
                     null,

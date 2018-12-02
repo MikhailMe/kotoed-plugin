@@ -1,17 +1,9 @@
 package plugin.gui.Tabs;
 
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
-import plugin.gui.Items.Comments;
-import plugin.gui.KotoedContext;
-import plugin.gui.Stabs.Comment;
-import plugin.gui.Utils.CommentTreeRenderer;
+import plugin.core.comment.Comment;
+import plugin.core.eventbus.InformersImpl.GetInformer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -19,13 +11,20 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 
 import lombok.Data;
+import plugin.core.sumbission.Submission;
+import plugin.gui.Items.Comments;
+import plugin.gui.KotoedContext;
+import plugin.gui.Utils.CommentTreeRenderer;
 
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
 import static plugin.gui.Utils.Strings.COMMENT_ICON;
+import static plugin.gui.Utils.Strings.CONFIGURATION;
+import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
 @Data
 public class CommentsTab {
@@ -38,62 +37,43 @@ public class CommentsTab {
     private JButton button2;
     private Comments comments;
 
-    public void update() {
-
-    }
-
-    public void LoadComments() {
-        // create random object
-        Random ran = new Random();
-        ArrayList<Comment> c = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-            c.add(createStabComment(RandomStringUtils.randomAlphanumeric(9),
-                    ran.nextInt(30) + "-" + ran.nextInt(12) + "-2018",
-                    RandomStringUtils.randomAlphanumeric(128),
-                    ran.nextInt(30) % 2 == 1 ? "Main.java" : "Test.java",
-                    ran.nextInt(30)));
-
+    public void loadComments() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        for (Comment com :c ) {
-            root.add(new DefaultMutableTreeNode(com));
-        }
+
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         fileComentTree.setModel(treeModel);
         fileComentTree.setRootVisible(false);
 
-        if (!fileComentTree.isVisible())
-            fileComentTree.setVisible(true);
+        if (!fileComentTree.isVisible()) fileComentTree.setVisible(true);
 
         fileComentTree.setCellRenderer(new CommentTreeRenderer());
         fileComentTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == DOUBLE_CLICK) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                             fileComentTree.getLastSelectedPathComponent();
-                    if (node == null) return;
-                    Object nodeInfo = node.getUserObject();
-                    System.out.println("Comment pressed");
-                    /*Duno what to do here*/
                 }
             }
         });
 
+        List<Submission> submissionList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
+
+
+        final int submissionId = 9255;
+        GetInformer informer = new GetInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+        List<Comment> commentList = informer.getComments(submissionId);
+
+
         /*Get comment list from back and put into Comments object*/
-        comments = new Comments(c);
+        comments = new Comments(commentList);
         this.comentView.setLayout(new BorderLayout());
         this.comentView.add(comments.getContentPane());
 
-        SetGutterIcons(c);
+        //SetGutterIcons(commentList);
 
-    }
-
-    private plugin.gui.Stabs.Comment createStabComment(@NotNull String userName,
-                                                       @NotNull String date,
-                                                       @NotNull String text,
-                                                       @NotNull String fileName,
-                                                       final int lineNumber) {
-        return new plugin.gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
     // FIXME: 11/30/2018 на 131 строке - постоянный экспешн, у тебя там что-то генерится не очень, ты так говорил
@@ -105,22 +85,22 @@ public class CommentsTab {
     * 4) разобраться с PsiFile
     * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
     * */
-    private void SetGutterIcons(List<Comment> c) {
+    /*private void SetGutterIcons(List<Comment> c) {
 
-        /*for every coment using filename and linenumber - set icon - for all elements of list*/
-        /*also need buffer for detecting already set icons to get rit of double icons*/
+        *//*for every coment using filename and linenumber - set icon - for all elements of list*//*
+        *//*also need buffer for detecting already set icons to get rit of double icons*//*
         List<Integer> markedLines = new ArrayList<>();
-        Map<String, ArrayList<Integer>> m = new HashMap<>();
+        Map<String, List<Integer>> m = new HashMap<>();
         for (Comment com : c) {
             if (!m.containsKey(com.getFileName()))
                 m.put(com.getFileName(), new ArrayList<>());
             if (m.get(com.getFileName()).contains(com.getLineNumber()))
                 return;
-            /* Вот тут реальный костыль: крч нам надо отрисовать иконки гаттера по всем файлам
+            *//* Вот тут реальный костыль: крч нам надо отрисовать иконки гаттера по всем файлам
              * для этого я беру название файла из комента, открываю его в едиторе, рисую иконку,и так по всем коментам,
              * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
              * тут надо углубиться в идею гаттера но мне впадло и нет времени,
-             * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*/
+             * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*//*
             File file = new File(KotoedContext.project.getBasePath() + "/src/" + com.getFileName());
 
             VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
@@ -134,15 +114,15 @@ public class CommentsTab {
                 final RangeHighlighter rangeHighLighter = editor.getMarkupModel().addLineHighlighter(com.getLineNumber() - 1, 0, null);
                 rangeHighLighter.setGutterIconRenderer(CreateGutterIconRenderer());
                 //Сохраняем чтоб небыло повторений отрисовки иконок
-                ArrayList<Integer> a = m.get(com.getFileName());
+                List<Integer> a = m.get(com.getFileName());
                 a.add(com.getLineNumber());
                 m.put(com.getFileName(), a);
             }
         }
-    }
+    }*/
 
     private GutterIconRenderer CreateGutterIconRenderer() {
-        GutterIconRenderer gutterIconRenderer = new GutterIconRenderer() {
+        return new GutterIconRenderer() {
             @Override
             public boolean equals(Object obj) {
                 return false;
@@ -159,6 +139,5 @@ public class CommentsTab {
                 return new ImageIcon(getClass().getResource(COMMENT_ICON));
             }
         };
-        return gutterIconRenderer;
     }
 }

@@ -1,5 +1,7 @@
 package plugin.gui.Utils;
 
+import plugin.core.comment.Comment;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -22,10 +24,10 @@ public class CommentTreeRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
 
-        if (userObject instanceof plugin.gui.Stabs.Comment) {
-            plugin.gui.Stabs.Comment comment = (plugin.gui.Stabs.Comment) userObject;
-            String text = comment.getFileName();
-            text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, comment.getLineNumber() + BRACKET_CLOSE);
+        if (userObject instanceof Comment) {
+            Comment comment = (Comment) userObject;
+            String text = comment.getSourcefile();
+            text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, comment.getSourceline() + BRACKET_CLOSE);
             this.setText(HTML_OPEN + text + HTML_CLOSE);
             this.setIcon(new ImageIcon(getClass().getResource(COMMENT_ICON)));
         } else {

@@ -1,15 +1,7 @@
 package plugin.gui.Tabs;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.DefaultProjectFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.project.ProjectManager;
+import lombok.Getter;
 import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
 import plugin.gui.Items.SignInWindow;
@@ -27,13 +19,14 @@ import java.util.List;
 import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
 import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
 
-// TODO: 11/29/2018 rename me to KotoedContext
-public class SubmissionTab{
+public class SubmissionTab {
 
+    @Getter
     private JPanel panel;
     private JButton signInButton;
     private JButton signUpButton;
@@ -41,10 +34,6 @@ public class SubmissionTab{
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
-    public JPanel getPanel()
-    {
-        return panel;
-    }
 
     public SubmissionTab() {
 
@@ -55,7 +44,8 @@ public class SubmissionTab{
         signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
     }
-    public void LoadSubmissions() {
+
+    public void loadSubmissions() {
         signInButton.setVisible(false);
         signUpButton.setVisible(false);
         autoSubmitButton.setVisible(true);
@@ -82,9 +72,8 @@ public class SubmissionTab{
             root.add(new DefaultMutableTreeNode(node));
         }
 
-        /*for (int i = 0; i < 10; i++) {
-            root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
-        }*/
+        KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
+
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         tree.setModel(treeModel);
         tree.setRootVisible(false);
@@ -101,16 +90,20 @@ public class SubmissionTab{
                 }
             }
         });
+
+        // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
+        // TODO: пока что метод выдаёт эксепшн и всё ломается :(
+        //commentsTab.loadComments();
     }
 
     private void onSignInButtonPressed() {
         obtainProject();
-        new SignInWindow(this);
+        new SignInWindow();
     }
 
     private void onSignUpButtonPressed() {
         obtainProject();
-        new SignUpWindow(this);
+        new SignUpWindow();
     }
 
     private void onAutoSubmitPressed() {
@@ -118,7 +111,6 @@ public class SubmissionTab{
     }
 
     private void obtainProject() {
-        DataContext dataContext = DataManager.getInstance().getDataContext();
-        KotoedContext.project = (Project) dataContext.getData(DataConstants.PROJECT);
+        KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
     }
 }

@@ -49,7 +49,8 @@ public class KotoedContext implements ToolWindowFactory {
         return false;
     }
     public static void loadTabs(){
-        submissionTab.LoadSubmissions();
-        commentsTab.LoadComments();
+
+        submissionTab.loadSubmissions();
+        commentsTab.loadComments();
     }
 }

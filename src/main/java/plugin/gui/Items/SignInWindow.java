@@ -21,12 +21,8 @@ public class SignInWindow extends JDialog {
     private JButton signInButton;
     private JButton cancelButton;
 
-    // TODO: 11/30/2018 remove me !!!
-    private SubmissionTab submissionTab;
 
-    public SignInWindow(SubmissionTab submissionTab) {
-        this.submissionTab = submissionTab;
-
+    public SignInWindow() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);

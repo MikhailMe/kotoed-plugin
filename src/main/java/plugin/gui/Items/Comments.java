@@ -1,43 +1,50 @@
 package plugin.gui.Items;
 
+import lombok.Getter;
 import plugin.gui.KotoedContext;
-import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.time.LocalDateTime;
 import javax.swing.border.TitledBorder;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.List;
+
+import plugin.core.comment.Comment;
 
 import static plugin.gui.Utils.Strings.*;
 
 public class Comments{
 
+    private int prevMax;
+
     private JButton buttonOK;
     private JTextArea textArea;
+
+    @Getter
     private JPanel contentPane;
+
     private JPanel commentPanel;
     private JPanel commentHolder;
     private JScrollPane scrollPane;
 
-    private int prevMax;
-    public Comments(@NotNull ArrayList<plugin.gui.Stabs.Comment> c) {
+    public Comments(@NotNull List<Comment> comments) {
 
         // this information must be take from Denizen object
+
+        // TODO: 12/1/2018 подумать как грамотно всё прокинуть
+
         String userName = "Username";
         String date = DateTimeFormatter.ofPattern(TIME_PATERN).format(LocalDateTime.now());
-        String text = "Some random message: " + RandomStringUtils.randomAlphanumeric(128);
+        String text = "";
         String fileName = "Main.java";
         int lineNumber = 12;
 
         registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
-        addComments(c);
+        addComments(comments);
     }
-    public JPanel getContentPane(){
-        return contentPane;
-    }
+
     private void registerActions(@NotNull String userName,
                                  @NotNull String date,
                                  @NotNull String text,
@@ -54,11 +61,11 @@ public class Comments{
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
-    private void addComments(@NotNull ArrayList<plugin.gui.Stabs.Comment> c) {
+    private void addComments(@NotNull List<Comment> comments) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-        for (plugin.gui.Stabs.Comment com: c) {
-            commentPanel.add(new Comment(com, KotoedContext.project));
+        for (Comment comment: comments) {
+            commentPanel.add(new CommentItem(comment, KotoedContext.project));
         }
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
@@ -72,10 +79,15 @@ public class Comments{
                         @NotNull String text,
                         @NotNull String fileName,
                         final int lineNumber) {
-        plugin.gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
+
+        // TODO: 12/1/2018 внести информацию в коммент
+        Comment comment = new Comment();
+        //comment.setDatetime();
+
+
         if (!textArea.getText().isEmpty()) {
-            stabComment.setText(textArea.getText());
-            commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedContext.project));
+            comment.setText(textArea.getText());
+            commentPanel.add(new CommentItem(comment, KotoedContext.project));
             commentPanel.revalidate();
             scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
                 if (e.getAdjustable().getMaximum() != prevMax) {
@@ -90,13 +102,6 @@ public class Comments{
                     JOptionPane.ERROR_MESSAGE);
         }
         textArea.setText("");
-    }
-    private plugin.gui.Stabs.Comment createStabComment(@NotNull String userName,
-                                                        @NotNull String date,
-                                                        @NotNull String text,
-                                                        @NotNull String fileName,
-                                                        final int lineNumber) {
-        return new plugin.gui.Stabs.Comment(userName, date, text, lineNumber, fileName);
     }
 
     private void createUIComponents() {
