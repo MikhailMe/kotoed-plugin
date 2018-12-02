@@ -1,7 +1,7 @@
 package plugin.gui.Items;
 
 import lombok.Getter;
-import plugin.gui.KotoedPlugin;
+import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class Comments{
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
         for (Comment comment: comments) {
-            commentPanel.add(new CommentItem(comment, KotoedPlugin.project));
+            commentPanel.add(new CommentItem(comment, KotoedContext.project));
         }
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
@@ -87,7 +87,7 @@ public class Comments{
 
         if (!textArea.getText().isEmpty()) {
             comment.setText(textArea.getText());
-            commentPanel.add(new CommentItem(comment, KotoedPlugin.project));
+            commentPanel.add(new CommentItem(comment, KotoedContext.project));
             commentPanel.revalidate();
             scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
                 if (e.getAdjustable().getMaximum() != prevMax) {

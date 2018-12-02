@@ -1,12 +1,6 @@
-package plugin.gui;
+package plugin.gui.Tabs;
 
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
 import plugin.core.eventbus.InformersImpl.GetInformer;
@@ -23,6 +17,7 @@ import java.util.List;
 import lombok.Data;
 import plugin.core.sumbission.Submission;
 import plugin.gui.Items.Comments;
+import plugin.gui.KotoedContext;
 import plugin.gui.Utils.CommentTreeRenderer;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
@@ -42,7 +37,7 @@ public class CommentsTab {
     private JButton button2;
     private Comments comments;
 
-    public void updateComments() {
+    public void loadComments() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
@@ -62,13 +57,13 @@ public class CommentsTab {
             }
         });
 
-        List<Submission> submissionList = Objects.requireNonNull(KotoedPlugin.project.getUserData(PSI_KEY_SUBMISSION_LIST));
+        List<Submission> submissionList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
 
 
         final int submissionId = 9255;
         GetInformer informer = new GetInformer(
                 CONFIGURATION,
-                Objects.requireNonNull(KotoedPlugin.project.getUserData(PSI_KEY_HEADERS)));
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
         List<Comment> commentList = informer.getComments(submissionId);
 
 
@@ -106,12 +101,12 @@ public class CommentsTab {
              * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
              * тут надо углубиться в идею гаттера но мне впадло и нет времени,
              * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*//*
-            File file = new File(KotoedPlugin.project.getBasePath() + "/src/" + com.getFileName());
+            File file = new File(KotoedContext.project.getBasePath() + "/src/" + com.getFileName());
 
             VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-            FileEditorManager.getInstance(KotoedPlugin.project).openFile(Objects.requireNonNull(virtualFile), true);
+            FileEditorManager.getInstance(KotoedContext.project).openFile(Objects.requireNonNull(virtualFile), true);
 
-            Editor editor = FileEditorManager.getInstance(KotoedPlugin.project).getSelectedTextEditor();
+            Editor editor = FileEditorManager.getInstance(KotoedContext.project).getSelectedTextEditor();
             if (editor == null) return;
             int totalLineCount = editor.getDocument().getLineCount();
             if (com.getLineNumber() > totalLineCount) return;
