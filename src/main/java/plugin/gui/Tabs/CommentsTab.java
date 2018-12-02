@@ -22,9 +22,8 @@ import plugin.gui.Utils.CommentTreeRenderer;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
-import static plugin.gui.Utils.Strings.COMMENT_ICON;
-import static plugin.gui.Utils.Strings.CONFIGURATION;
-import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
+import static plugin.gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.ICON_SIZE;
 
 @Data
 public class CommentsTab {
@@ -37,10 +36,7 @@ public class CommentsTab {
     private Comments comments;
 
     public CommentsTab(){
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Icons/refresh.png"));
-        Image img = icon.getImage() ;
-        Image newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
-        this.refreshButton.setIcon(new ImageIcon(newimg));
+        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(REFRESH_ICON)).getImage().getScaledInstance( ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH )));
     }
 
     public void loadComments() {

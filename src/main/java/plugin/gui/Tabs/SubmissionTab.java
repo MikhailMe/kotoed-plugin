@@ -21,8 +21,8 @@ import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
-import static plugin.gui.Utils.Strings.CONFIGURATION;
-import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
+import static plugin.gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.ICON_SIZE;
 
 
 public class SubmissionTab {
@@ -42,17 +42,9 @@ public class SubmissionTab {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Icons/upload.png"));
-        Image img = icon.getImage() ;
-        Image newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
-        this.autoSubmitButton.setIcon(new ImageIcon(newimg));
-
-        icon = new ImageIcon(getClass().getResource("/Icons/refresh.png"));
-        img = icon.getImage() ;
-        newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
-        this.refreshButton.setIcon(new ImageIcon(newimg));
+        this.autoSubmitButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(UPLOAD_ICON)).getImage().getScaledInstance( ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH )));
+        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(REFRESH_ICON)).getImage().getScaledInstance( ICON_SIZE, ICON_SIZE,  java.awt.Image.SCALE_SMOOTH )));
     }
-
     public void loadSubmissions() {
         autoSubmitButton.setVisible(true);
 
