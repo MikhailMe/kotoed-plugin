@@ -42,7 +42,7 @@ public class CommentsTab {
 
     }
 
-    public void loadComments() {
+    public void LoadComments() {
         // create random object
         Random ran = new Random();
         ArrayList<Comment> c = new ArrayList<>();
@@ -103,7 +103,7 @@ public class CommentsTab {
     * для отрисовки меджик холс
     * 3) почистить гатер либо подумать как его обновлять
     * 4) разобраться с PsiFile
-    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!! Как я тебе их блядь повешу,это такая пезда шо ппц,на костыль вешать костыль - гг вп
+    * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
     * */
     private void SetGutterIcons(List<Comment> c) {
 
