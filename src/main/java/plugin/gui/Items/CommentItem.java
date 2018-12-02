@@ -1,10 +1,5 @@
 package plugin.gui.Items;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.editor.Editor;
@@ -14,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import plugin.core.comment.Comment;
 
 import java.awt.*;
 import java.io.File;
@@ -23,9 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
-import static plugin.gui.Utils.Strings.COMMENT_ICON;
-
-public class Comment extends JPanel {
+public class CommentItem extends JPanel {
 
     private JPanel panel1;
     private JTextArea textArea;
@@ -33,27 +27,27 @@ public class Comment extends JPanel {
     private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
-    public Comment(@NotNull plugin.gui.Stabs.Comment comment,
-                   @NotNull Project project) {
+    public CommentItem(@NotNull Comment comment,
+                       @NotNull Project project) {
         super();
+
         textArea.setText(comment.getText());
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        TitledBorder title = BorderFactory.createTitledBorder(comment.getUserName() + " @ " + comment.getDate() + " at line:" + comment.getLineNumber());
-        panel1.setBorder(title);
         textArea.setEditable(false);
+
+        TitledBorder title = BorderFactory.createTitledBorder(
+                comment.getDenizenId() + " @ " + comment.getDatetime() + " at line:" + comment.getSourceline());
+        panel1.setBorder(title);
+
         this.add(panel1);
         this.setBackground(color);
-        this.addMouseListener(new MouseAdapter() {
-        });
-        textArea.addMouseListener(new MouseAdapter() {
-        });
 
         panel1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getSourcefile(), (int) comment.getSourceline(), project);
                 }
             }
         });
@@ -61,7 +55,7 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getSourcefile(), (int) comment.getSourceline(), project);
                 }
             }
         });

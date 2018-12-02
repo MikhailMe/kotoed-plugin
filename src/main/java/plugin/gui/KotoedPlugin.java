@@ -1,10 +1,7 @@
 package plugin.gui;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.DefaultProjectFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
@@ -26,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_SUBMISSION_LIST;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
 import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
@@ -70,7 +68,6 @@ public class KotoedPlugin implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(submission);
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(build);
-
     }
 
     public void LoadSubmissions(@NotNull DefaultMutableTreeNode incomeTree) {
@@ -100,9 +97,8 @@ public class KotoedPlugin implements ToolWindowFactory {
             root.add(new DefaultMutableTreeNode(node));
         }
 
-        /*for (int i = 0; i < 10; i++) {
-            root.add(new DefaultMutableTreeNode(new SubmissionNode("Submission", i, (i % 2) == 1)));
-        }*/
+        project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
+
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         tree.setModel(treeModel);
         tree.setRootVisible(false);
@@ -125,7 +121,7 @@ public class KotoedPlugin implements ToolWindowFactory {
 
         // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
         // TODO: пока что метод выдаёт эксепшн и всё ломается :(
-        //commentsTab.updateComments();
+        commentsTab.updateComments();
     }
 
     private void onSignInButtonPressed() {
@@ -143,7 +139,6 @@ public class KotoedPlugin implements ToolWindowFactory {
     }
 
     private void obtainProject() {
-        DataContext dataContext = DataManager.getInstance().getDataContext();
-        project = (Project) dataContext.getData(DataConstants.PROJECT);
+        project = ProjectManager.getInstance().getOpenProjects()[0];
     }
 }
