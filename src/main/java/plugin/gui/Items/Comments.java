@@ -1,6 +1,7 @@
 package plugin.gui.Items;
 
-import plugin.gui.KotoedPlugin;
+import plugin.gui.KotoedContext;
+import plugin.gui.SubmissionTab;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +59,7 @@ public class Comments{
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
         for (plugin.gui.Stabs.Comment com: c) {
-            commentPanel.add(new Comment(com, KotoedPlugin.project));
+            commentPanel.add(new Comment(com, KotoedContext.project));
         }
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
@@ -75,7 +76,7 @@ public class Comments{
         plugin.gui.Stabs.Comment stabComment = createStabComment(userName, date, text, fileName, lineNumber);
         if (!textArea.getText().isEmpty()) {
             stabComment.setText(textArea.getText());
-            commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedPlugin.project));
+            commentPanel.add(new plugin.gui.Items.Comment(stabComment, KotoedContext.project));
             commentPanel.revalidate();
             scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
                 if (e.getAdjustable().getMaximum() != prevMax) {

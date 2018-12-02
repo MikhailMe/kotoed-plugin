@@ -2,7 +2,8 @@ package plugin.gui.Items;
 
 import io.vertx.core.MultiMap;
 import plugin.core.rest.Sender;
-import plugin.gui.KotoedPlugin;
+import plugin.gui.KotoedContext;
+import plugin.gui.SubmissionTab;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -22,10 +23,10 @@ public class SignInWindow extends JDialog {
     private JButton cancelButton;
 
     // TODO: 11/30/2018 remove me !!!
-    private KotoedPlugin kotoedPlugin;
+    private SubmissionTab submissionTab;
 
-    public SignInWindow(KotoedPlugin kotoedPlugin) {
-        this.kotoedPlugin = kotoedPlugin;
+    public SignInWindow(SubmissionTab submissionTab) {
+        this.submissionTab = submissionTab;
 
         setContentPane(contentPane);
         setModal(true);
@@ -68,9 +69,9 @@ public class SignInWindow extends JDialog {
         sender.signIn(denizen, password);
         if (!sender.getWhoAmI().isEmpty()) {
             MultiMap headers = sender.getHeaders();
-            KotoedPlugin.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
-            KotoedPlugin.project.putUserData(PSI_KEY_HEADERS, headers);
-            kotoedPlugin.LoadSubmissions(new DefaultMutableTreeNode());
+            KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
+            KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
+            KotoedContext.loadTabs();
             dispose();
         } else {
             JOptionPane.showMessageDialog(

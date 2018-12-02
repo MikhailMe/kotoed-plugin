@@ -31,7 +31,7 @@ import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
 
 // TODO: 11/29/2018 rename me to KotoedContext
-public class KotoedPlugin implements ToolWindowFactory {
+public class SubmissionTab{
 
     private JPanel panel;
     private JButton signInButton;
@@ -40,13 +40,12 @@ public class KotoedPlugin implements ToolWindowFactory {
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
-    private ToolWindow myToolWindow;
-    private CommentsTab commentsTab;
-    private BuildTab buildTab;
+    public JPanel getPanel()
+    {
+        return panel;
+    }
 
-    public static Project project;
-
-    public KotoedPlugin() {
+    public SubmissionTab() {
 
         autoSubmitButton.setVisible(false);
 
@@ -55,25 +54,7 @@ public class KotoedPlugin implements ToolWindowFactory {
         signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
     }
-
-    @Override
-    public void createToolWindowContent(@NotNull Project project,
-                                        @NotNull ToolWindow toolWindow) {
-        buildTab = new BuildTab();
-        myToolWindow = toolWindow;
-        commentsTab = new CommentsTab();
-
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content submission = contentFactory.createContent(panel, "Submissions", false);
-        Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
-        Content build = contentFactory.createContent(buildTab.getPanel(), "Build", false);
-        toolWindow.getContentManager().addContent(submission);
-        toolWindow.getContentManager().addContent(comment);
-        toolWindow.getContentManager().addContent(build);
-
-    }
-
-    public void LoadSubmissions(@NotNull DefaultMutableTreeNode incomeTree) {
+    public void LoadSubmissions() {
         signInButton.setVisible(false);
         signUpButton.setVisible(false);
         autoSubmitButton.setVisible(true);
@@ -83,7 +64,7 @@ public class KotoedPlugin implements ToolWindowFactory {
 
         GetInformer informer = new GetInformer(
                 CONFIGURATION,
-                Objects.requireNonNull(project.getUserData(PSI_KEY_HEADERS)));
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
 
         // 8 - courseId - то есть Functional Programming
         // 20 - сколько сабмишинов на одной странице
@@ -119,13 +100,6 @@ public class KotoedPlugin implements ToolWindowFactory {
                 }
             }
         });
-
-        //treePanel.validate();
-        //treePanel.repaint();
-
-        // TODO: 11/30/2018 когда поменяется этот метод - тогда расскоментить
-        // TODO: пока что метод выдаёт эксепшн и всё ломается :(
-        //commentsTab.updateComments();
     }
 
     private void onSignInButtonPressed() {
@@ -144,6 +118,6 @@ public class KotoedPlugin implements ToolWindowFactory {
 
     private void obtainProject() {
         DataContext dataContext = DataManager.getInstance().getDataContext();
-        project = (Project) dataContext.getData(DataConstants.PROJECT);
+        KotoedContext.project = (Project) dataContext.getData(DataConstants.PROJECT);
     }
 }

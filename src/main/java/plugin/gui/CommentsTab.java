@@ -41,10 +41,20 @@ public class CommentsTab {
 
     }
 
-    public void updateComments() {
+    public void loadComments() {
+        // create random object
+        Random ran = new Random();
+        ArrayList<Comment> c = new ArrayList<>();
+        for (int i = 0; i < 10; i++)
+            c.add(createStabComment(RandomStringUtils.randomAlphanumeric(9),
+                    ran.nextInt(30) + "-" + ran.nextInt(12) + "-2018",
+                    RandomStringUtils.randomAlphanumeric(128),
+                    ran.nextInt(30) % 2 == 1 ? "Main.java" : "Test.java",
+                    ran.nextInt(30)));
+
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        for (int i = 0; i < 10; i++) {
-            root.add(new DefaultMutableTreeNode(new Comment("Boris", "10-01-2018", "hue", 12, "Main.java")));
+        for (Comment com :c ) {
+            root.add(new DefaultMutableTreeNode(com));
         }
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         fileComentTree.setModel(treeModel);
@@ -67,15 +77,7 @@ public class CommentsTab {
                 }
             }
         });
-        // create random object
-        Random ran = new Random();
-        ArrayList<Comment> c = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-            c.add(createStabComment(RandomStringUtils.randomAlphanumeric(9),
-                    ran.nextInt(30) + "-" + ran.nextInt(12) + "-2018",
-                    RandomStringUtils.randomAlphanumeric(128),
-                    ran.nextInt(30) % 2 == 1 ? "Main.java" : "Test.java",
-                    ran.nextInt(30)));
+
         /*Get comment list from back and put into Comments object*/
         comments = new Comments(c);
         this.comentView.setLayout(new BorderLayout());
@@ -118,12 +120,12 @@ public class CommentsTab {
              * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
              * тут надо углубиться в идею гаттера но мне впадло и нет времени,
              * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*/
-            File file = new File(KotoedPlugin.project.getBasePath() + "/src/" + com.getFileName());
+            File file = new File(KotoedContext.project.getBasePath() + "/src/" + com.getFileName());
 
             VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-            FileEditorManager.getInstance(KotoedPlugin.project).openFile(Objects.requireNonNull(virtualFile), true);
+            FileEditorManager.getInstance(KotoedContext.project).openFile(Objects.requireNonNull(virtualFile), true);
 
-            Editor editor = FileEditorManager.getInstance(KotoedPlugin.project).getSelectedTextEditor();
+            Editor editor = FileEditorManager.getInstance(KotoedContext.project).getSelectedTextEditor();
             if (editor == null) return;
             int totalLineCount = editor.getDocument().getLineCount();
             if (com.getLineNumber() > totalLineCount) return;

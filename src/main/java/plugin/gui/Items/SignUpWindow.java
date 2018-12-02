@@ -2,7 +2,7 @@ package plugin.gui.Items;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 import plugin.core.rest.Sender;
-import plugin.gui.KotoedPlugin;
+import plugin.gui.SubmissionTab;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -22,10 +22,10 @@ public class SignUpWindow extends JDialog {
     private JButton cancelButton;
 
     // TODO: 11/30/2018 remove me!
-    private KotoedPlugin kotoedPlugin;
+    private SubmissionTab submissionTab;
 
-    public SignUpWindow(KotoedPlugin kotoedPlugin) {
-        this.kotoedPlugin = kotoedPlugin;
+    public SignUpWindow(SubmissionTab submissionTab) {
+        this.submissionTab = submissionTab;
 
         setContentPane(contentPane);
         setModal(true);
@@ -75,7 +75,7 @@ public class SignUpWindow extends JDialog {
         String singUpResponse = sender.signUp(denizen, password);
         if (sender.isSuccessSignUp(singUpResponse)) {
             dispose();
-            new SignInWindow(kotoedPlugin);
+            new SignInWindow(submissionTab);
         } else {
             JOptionPane.showMessageDialog(
                     null,
