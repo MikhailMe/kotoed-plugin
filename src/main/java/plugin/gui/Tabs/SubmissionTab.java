@@ -13,6 +13,7 @@ import plugin.gui.Utils.SubmissionTreeRenderer;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -28,26 +29,31 @@ public class SubmissionTab {
 
     @Getter
     private JPanel panel;
-    private JButton signInButton;
-    private JButton signUpButton;
     private JButton autoSubmitButton;
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
+    private JButton refreshButton;
 
     public SubmissionTab() {
 
         autoSubmitButton.setVisible(false);
 
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        signInButton.addActionListener(actionEvent -> onSignInButtonPressed());
-        signUpButton.addActionListener(actionEvent -> onSignUpButtonPressed());
         autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Icons/upload.png"));
+        Image img = icon.getImage() ;
+        Image newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
+        this.autoSubmitButton.setIcon(new ImageIcon(newimg));
+
+        icon = new ImageIcon(getClass().getResource("/Icons/refresh.png"));
+        img = icon.getImage() ;
+        newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
+        this.refreshButton.setIcon(new ImageIcon(newimg));
     }
 
     public void loadSubmissions() {
-        signInButton.setVisible(false);
-        signUpButton.setVisible(false);
         autoSubmitButton.setVisible(true);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
@@ -95,17 +101,6 @@ public class SubmissionTab {
         // TODO: пока что метод выдаёт эксепшн и всё ломается :(
         //commentsTab.loadComments();
     }
-
-    private void onSignInButtonPressed() {
-        obtainProject();
-        new SignInWindow();
-    }
-
-    private void onSignUpButtonPressed() {
-        obtainProject();
-        new SignUpWindow();
-    }
-
     private void onAutoSubmitPressed() {
         obtainProject();
     }

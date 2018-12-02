@@ -33,9 +33,15 @@ public class CommentsTab {
     private JPanel comentView;
     private JPanel panel;
     private JTree fileComentTree;
-    private JButton button1;
-    private JButton button2;
+    private JButton refreshButton;
     private Comments comments;
+
+    public CommentsTab(){
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Icons/refresh.png"));
+        Image img = icon.getImage() ;
+        Image newimg = img.getScaledInstance( 20, 20,  java.awt.Image.SCALE_SMOOTH ) ;
+        this.refreshButton.setIcon(new ImageIcon(newimg));
+    }
 
     public void loadComments() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
