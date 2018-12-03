@@ -57,7 +57,7 @@ public class SubmissionTab {
             String submissionName = submission.getName();
             long submissionId = submission.getId();
             // FIXME : здесь должен быть статус, которого нет :(
-            boolean submissionStatus = true;
+            boolean submissionStatus = false;
             SubmissionNode node = new SubmissionNode(submissionName, submissionId, submissionStatus);
             root.add(new DefaultMutableTreeNode(node));
         }
@@ -73,7 +73,7 @@ public class SubmissionTab {
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == DOUBLE_CLICK) {
+                if (e.getClickCount() == SINGLE_CLICK) {
                     // TODO: 11/29/2018 хотим чекаутиться на определенный сабмит
                 }
             }
