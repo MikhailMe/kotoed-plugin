@@ -25,8 +25,6 @@ public class Strings {
     public static final String REFRESH_ICON = "/Icons/refresh.png";
     public static final String UPLOAD_ICON = "/Icons/upload.png";
 
-    public static final int ICON_SIZE = 20;
-
     //Comments class
     public static final String COMMENT_TEXT = "Comment text:";
     public static final String COMMENT_FOR = "Comments for:";
@@ -48,5 +46,6 @@ public class Strings {
 
     // digit constants
     public static final int DOUBLE_CLICK = 2;
+    public static final int ICON_SIZE = 20;
 }
 

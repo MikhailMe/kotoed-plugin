@@ -24,6 +24,8 @@ import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
+import static plugin.gui.Utils.Strings.SIGN_IN;
+import static plugin.gui.Utils.Strings.SIGN_UP;
 
 public class KotoedContext implements ToolWindowFactory {
 
@@ -46,8 +48,8 @@ public class KotoedContext implements ToolWindowFactory {
         KotoedContext.toolWindow = toolWindow;
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         JPanel panel = new JPanel();
-        JButton signIn = new JButton("Sign In");
-        JButton signUp = new JButton("Sign Up");
+        JButton signIn = new JButton(SIGN_IN);
+        JButton signUp = new JButton(SIGN_UP);
         signIn.addActionListener(actionEvent -> onSignInButtonPressed());
         signUp.addActionListener(actionEvent -> onSignUpButtonPressed());
         panel.add(signIn);
@@ -92,7 +94,7 @@ public class KotoedContext implements ToolWindowFactory {
     // TODO: 02.12.2018 if KotoedContext.project == getKotoedProjectFromKotoed()
     // TODO: then return true else call createproject window
     private static boolean getProjectInfo() {
-        return true;
+        return false;
     }
 
     private static void loadTabs() {
@@ -116,6 +118,7 @@ public class KotoedContext implements ToolWindowFactory {
 
     private static void getFullProjectData() {
 
+
         // TODO: 12/3/2018 get with data from work with projects
         int courseId = 8;
         int pageSize = 20;
@@ -138,7 +141,7 @@ public class KotoedContext implements ToolWindowFactory {
 
         List<Comment> commentList = informer.getComments(submissionId);
 
-
+        KotoedContext.project.putUserData(PSI_KEY_REPO_URL, "repo url here");
         KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, commentList);
         KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
     }

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COOKIE;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_DENIZEN;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
 import static plugin.gui.Utils.Strings.*;
 
@@ -62,11 +63,13 @@ public class SignInWindow extends JDialog {
         String password = String.valueOf(passwordField.getPassword());
         Sender sender = new Sender(CONFIGURATION);
         sender.signIn(denizen, password);
-        if (!sender.getWhoAmI().isEmpty()) {
+        String whoAmI = sender.getWhoAmI();
+        if (!whoAmI.isEmpty()) {
             dispose();
             MultiMap headers = sender.getHeaders();
-            KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
+            KotoedContext.project.putUserData(PSI_KEY_DENIZEN, whoAmI);
             KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
+            KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
             KotoedContext.checkCurrentProjectInKotoed();
         } else {
             JOptionPane.showMessageDialog(
