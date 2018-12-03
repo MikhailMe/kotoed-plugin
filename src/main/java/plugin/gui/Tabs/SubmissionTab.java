@@ -73,7 +73,7 @@ public class SubmissionTab {
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == DOUBLE_CLICK) {
+                if (e.getClickCount() == CLICK_COUNT) {
                     // TODO: 11/29/2018 хотим чекаутиться на определенный сабмит
                 }
             }

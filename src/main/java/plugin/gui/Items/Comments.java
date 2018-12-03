@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import plugin.core.comment.Comment;
+import plugin.gui.Utils.CommentTreeItem;
 
 import static plugin.gui.Utils.Strings.*;
 
@@ -31,7 +32,7 @@ public class Comments {
     private JPanel commentHolder;
     private JScrollPane scrollPane;
 
-    public Comments(@NotNull Map<Pair<String, Long>, List<Comment>> structuredComments) {
+    public Comments(@NotNull CommentTreeItem commentTree) {
 
         // this information must be take from Denizen object
 
@@ -45,7 +46,7 @@ public class Comments {
 
         registerActions(userName, date, text, fileName, lineNumber);
         addBorders();
-        addComments(structuredComments);
+        addComments(commentTree);
     }
 
     private void registerActions(@NotNull String userName,
@@ -65,17 +66,12 @@ public class Comments {
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
-    private void addComments(@NotNull Map<Pair<String, Long>, List<Comment>> structuredComments) {
+    private void addComments(@NotNull CommentTreeItem commentTree) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-        for (Map.Entry<Pair<String, Long>, List<Comment>> entry : structuredComments.entrySet()) {
-            // TODO написать добавление комментов
+        for (Comment ct: commentTree.getCommentList()) {
+            commentPanel.add(new CommentItem(ct, KotoedContext.project));
         }
-
-        // TODO: remove me after write cycle
-        /*for (Comment comment : comments) {
-            commentPanel.add(new CommentItem(comment, KotoedContext.project));
-        }*/
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(35);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());

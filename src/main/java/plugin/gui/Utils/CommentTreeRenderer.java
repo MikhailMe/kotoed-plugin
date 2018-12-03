@@ -24,8 +24,8 @@ public class CommentTreeRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
 
-        if (userObject instanceof Comment) {
-            Comment comment = (Comment) userObject;
+        if (userObject instanceof CommentTreeItem) {
+            CommentTreeItem comment = (CommentTreeItem) userObject;
             String text = comment.getSourcefile();
             text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, comment.getSourceline() + BRACKET_CLOSE);
             this.setText(HTML_OPEN + text + HTML_CLOSE);

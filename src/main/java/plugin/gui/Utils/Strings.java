@@ -47,6 +47,6 @@ public class Strings {
     public static final String CONFIGURATION = "GLOBAL";
 
     // digit constants
-    public static final int DOUBLE_CLICK = 2;
+    public static final int CLICK_COUNT = 1;
 }
 

@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -23,6 +25,7 @@ import java.util.List;
 import lombok.Data;
 import plugin.gui.Items.Comments;
 import plugin.gui.KotoedContext;
+import plugin.gui.Utils.CommentTreeItem;
 import plugin.gui.Utils.CommentTreeRenderer;
 
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
@@ -46,8 +49,19 @@ public class CommentsTab {
     }
 
     public void loadComments() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
+        List<Comment> commentList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+
+        Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
+        List<CommentTreeItem> commentItemsList = new ArrayList<>();
+
+        for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
+            commentItemsList.add(new CommentTreeItem(i.getKey().getKey(),i.getKey().getValue(),i.getValue()));
+        }
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+        for (CommentTreeItem i:commentItemsList) {
+            root.add(new DefaultMutableTreeNode(i));
+        }
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         fileComentTree.setModel(treeModel);
         fileComentTree.setRootVisible(false);
@@ -55,32 +69,29 @@ public class CommentsTab {
         if (!fileComentTree.isVisible()) fileComentTree.setVisible(true);
 
         fileComentTree.setCellRenderer(new CommentTreeRenderer());
-        fileComentTree.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == DOUBLE_CLICK) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                            fileComentTree.getLastSelectedPathComponent();
-                }
-            }
-        });
 
-        //List<Submission> submissionList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
-
-        List<Comment> commentList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
-
-        Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
-
-
-        /*Get comment list from back and put into Comments object*/
-        comments = new Comments(structuredComments);
+        fileComentTree.addTreeSelectionListener(evt -> nodeSelected(evt));
         this.comentView.setLayout(new BorderLayout());
-        this.comentView.add(comments.getContentPane());
 
-        //SetGutterIcons(commentList);
-
+        // TODO: 03.12.2018 DOWNLOAD SOME PROJECT FROM KOTOED AND TEST ON REAL PROJECT
+        // TODO: 03.12.2018 also may be needs some fix in state machine to dont get errors
+        //SetGutterIcons(commentItemsList);
     }
+    private void nodeSelected(TreeSelectionEvent tse){
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)tse.getNewLeadSelectionPath().getLastPathComponent();
+        if (node == null)
+            return;
+        Object nodeInfo = node.getUserObject();
 
+        CommentTreeItem treeItem = (CommentTreeItem) nodeInfo;
+        UpdateCommentArea(new Comments(treeItem).getContentPane());
+    }
+    private void UpdateCommentArea(JPanel p){
+        this.comentView.removeAll();
+        this.comentView.add(p);
+        this.comentView.revalidate();
+        this.comentView.repaint();
+    }
     private Map<Pair<String, Long>, List<Comment>> getStructuredComments(List<Comment> commentList) {
         Map<Pair<String, Long>, List<Comment>> structuredComments = new HashMap<>();
         commentList.forEach(comment -> {
@@ -108,13 +119,13 @@ public class CommentsTab {
      * 4) разобраться с PsiFile
      * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
      * */
-    private void SetGutterIcons(List<Comment> comments) {
+    private void SetGutterIcons(List<CommentTreeItem> comments) {
 
      /*for every coment using filename and linenumber - set icon - for all elements of list
      also need buffer for detecting already set icons to get rit of double icons*/
         List<Integer> markedLines = new ArrayList<>();
         Map<String, List<Integer>> hashMap = new HashMap<>();
-        for (Comment comment : comments) {
+        for (CommentTreeItem comment : comments) {
             if (!hashMap.containsKey(comment.getSourcefile()))
                 hashMap.put(comment.getSourcefile(), new ArrayList<>());
             if (hashMap.get(comment.getSourcefile()).contains((int) comment.getSourceline()))
