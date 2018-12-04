@@ -3,7 +3,6 @@ package plugin.core.rest;
 import io.vertx.core.MultiMap;
 import org.apache.http.HttpResponse;
 import io.vertx.core.json.JsonObject;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -22,7 +21,7 @@ public class Sender extends BaseSender implements ISender {
         try {
             HttpResponse whoAmI = post(urlWhoAmI, jsonMyself, cookie);
             BufferedReader rd = getReader(whoAmI);
-            return IOUtils.toString(rd);
+            return rd.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +47,7 @@ public class Sender extends BaseSender implements ISender {
         HttpResponse signUpResponse = post(urlSignUp, jsonMyself, cookie);
         try {
             BufferedReader rd = getReader(signUpResponse);
-            return IOUtils.toString(rd);
+            return rd.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import plugin.core.comment.Comment;
+import plugin.gui.KotoedContext;
 
 import java.awt.*;
 import java.io.File;
@@ -19,12 +20,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCEFILE;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCELINE;
+import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
+
 public class CommentItem extends JPanel {
 
     private JPanel panel1;
     private JTextArea textArea;
 
-    private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
     public CommentItem(@NotNull Comment comment,
@@ -37,7 +41,7 @@ public class CommentItem extends JPanel {
         textArea.setEditable(false);
 
         TitledBorder title = BorderFactory.createTitledBorder(
-                comment.getDenizenId() + " @ " + comment.getDatetime() + " at line:" + comment.getSourceline());
+                comment.getDenizenId() + " @ " + comment.getNormalDatetime() + " at line:" + comment.getSourceline());
         panel1.setBorder(title);
 
         this.add(panel1);
@@ -62,25 +66,34 @@ public class CommentItem extends JPanel {
         this.setVisible(true);
     }
 
-    private void openFileInEditor(@NotNull final String fileName,
-                                  final int lineNumber,
+    private void setCurrentFileAndLine(@NotNull String sourceFile,
+                                       final long sourceLine) {
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCEFILE, sourceFile);
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCELINE, sourceLine);
+    }
+
+    private void openFileInEditor(@NotNull final String sourcefile,
+                                  final int sourceline,
                                   @NotNull Project project) {
+
+        setCurrentFileAndLine(sourcefile, sourceline);
+
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
         if (editor == null) return;
 
         int totalLineCount = editor.getDocument().getLineCount();
 
-        if (lineNumber > totalLineCount) return;
+        if (sourceline > totalLineCount) return;
 
         Document document = editor.getDocument();
-        int startOffset = document.getLineStartOffset(lineNumber - 1);
-        int endOffset = document.getLineEndOffset(lineNumber);
+        int startOffset = document.getLineStartOffset(sourceline - 1);
+        int endOffset = document.getLineEndOffset(sourceline);
 
         SelectionModel selectionModel = editor.getSelectionModel();
         selectionModel.setSelection(startOffset, endOffset);
 
-        File file = new File(project.getBasePath() + "/src/" + fileName);
+        File file = new File(project.getBasePath() + "/src/" + sourcefile);
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         FileEditorManager.getInstance(project).openFile(Objects.requireNonNull(virtualFile), true);

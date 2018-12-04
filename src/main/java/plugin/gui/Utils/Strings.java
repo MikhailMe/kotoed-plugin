@@ -40,7 +40,7 @@ public class Strings {
     public static final String HTML_OPEN = "<html>";
     public static final String HTML_CLOSE = "</html>";
     public static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
-    public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
+    public static final String TIME_PATERN = "dd/MM/yyyy HH:mm:ss";
 
     public static final String CONFIGURATION = "GLOBAL";
 

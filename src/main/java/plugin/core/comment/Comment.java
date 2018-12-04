@@ -4,6 +4,10 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Data
 @JsonDeserialize
 @JsonIgnoreProperties(value = "original")
@@ -23,6 +27,12 @@ public class Comment {
     private String denizenId;
 
     public Comment() {
+    }
+
+    public String getNormalDatetime() {
+        Date date = new Date(datetime);
+        Format format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return format.format(date);
     }
 
     @Override

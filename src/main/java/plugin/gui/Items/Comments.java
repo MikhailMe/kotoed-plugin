@@ -1,21 +1,25 @@
 package plugin.gui.Items;
 
-import gherkin.lexer.Pa;
 import javafx.util.Pair;
 import lombok.Getter;
+import plugin.core.eventbus.InformersImpl.CreateInfromer;
 import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import plugin.core.comment.Comment;
 import plugin.gui.Utils.CommentTreeItem;
 
+import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.*;
 
 public class Comments {
@@ -33,28 +37,13 @@ public class Comments {
     private JScrollPane scrollPane;
 
     public Comments(@NotNull CommentTreeItem commentTree) {
-
-        // this information must be take from Denizen object
-
-        // TODO: 12/1/2018 подумать как грамотно всё прокинуть
-
-        String userName = "Username";
-        String date = DateTimeFormatter.ofPattern(TIME_PATERN).format(LocalDateTime.now());
-        String text = "";
-        String fileName = "Main.java";
-        int lineNumber = 12;
-
-        registerActions(userName, date, text, fileName, lineNumber);
+        registerActions();
         addBorders();
         addComments(commentTree);
     }
 
-    private void registerActions(@NotNull String userName,
-                                 @NotNull String date,
-                                 @NotNull String text,
-                                 @NotNull String fileName,
-                                 final int lineNumber) {
-        buttonOK.addActionListener(e -> onSend(userName, date, text, fileName, lineNumber));
+    private void registerActions() {
+        buttonOK.addActionListener(e -> onSend());
     }
 
     private void addBorders() {
@@ -69,7 +58,7 @@ public class Comments {
     private void addComments(@NotNull CommentTreeItem commentTree) {
         commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
-        for (Comment comment: commentTree.getCommentList()) {
+        for (Comment comment : commentTree.getCommentList()) {
             commentPanel.add(new CommentItem(comment, KotoedContext.project));
         }
 
@@ -79,16 +68,34 @@ public class Comments {
         prevMax = bar.getMaximum();
     }
 
-    private void onSend(@NotNull String userName,
-                        @NotNull String date,
-                        @NotNull String text,
-                        @NotNull String fileName,
-                        final int lineNumber) {
+    // FIXME: 12/4/2018 FIX PARAMETERS
+    private void onSend() {
+        //long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
+        String denizen = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN));
+        String currentSourceFile = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCEFILE));
+        long currentSourceLine = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCELINE));
+        long currentDate = System.currentTimeMillis();
+        //long currentSubmissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
 
-        // TODO: 12/1/2018 внести информацию в коммент
         Comment comment = new Comment();
-        //comment.setDatetime();
+        //comment.setAuthorId(denizenId);
+        comment.setDenizenId(denizen);
+        comment.setDatetime(currentDate);
+        comment.setSourcefile(currentSourceFile);
+        comment.setSourceline(currentSourceLine);
+        //comment.setOriginalSubmissionId(currentSubmissionId);
 
+        // TODO: 12/4/2018 check it !!!
+        /*CreateInfromer createInfromer = new CreateInfromer(
+                CONFIGURATION,
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+        createInfromer.createComment(
+            comment.getOriginalSubmissionId(),
+            comment.getAuthorId(),
+            comment.getSourceline(),
+            comment.getSourcefile(),
+            comment.getText()
+        );*/
 
         if (!textArea.getText().isEmpty()) {
             comment.setText(textArea.getText());
@@ -101,7 +108,8 @@ public class Comments {
                 }
             });
         } else {
-            JOptionPane.showMessageDialog(null,
+            JOptionPane.showMessageDialog(
+                    null,
                     EMPTY_COMMENT_MESSAGE,
                     EMPTY_COMMENT,
                     JOptionPane.ERROR_MESSAGE);
@@ -112,4 +120,5 @@ public class Comments {
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
+
 }

@@ -1,17 +1,15 @@
 package plugin.gui.Items;
 
 import io.vertx.core.MultiMap;
+import plugin.core.parser.GetParser;
 import plugin.core.rest.Sender;
 import plugin.gui.KotoedContext;
-import plugin.gui.Tabs.SubmissionTab;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_COOKIE;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_DENIZEN;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
+import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.*;
 
 public class SignInWindow extends JDialog {
@@ -58,16 +56,19 @@ public class SignInWindow extends JDialog {
         this.setVisible(true);
     }
 
+    // TODO: 12/4/2018 implement denizenId
     private void onSignIn() {
         String denizen = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
         Sender sender = new Sender(CONFIGURATION);
         sender.signIn(denizen, password);
         String whoAmI = sender.getWhoAmI();
+        //long denizenId = GetParser.getDenizenId(whoAmI);
         if (!whoAmI.isEmpty()) {
             dispose();
             MultiMap headers = sender.getHeaders();
-            KotoedContext.project.putUserData(PSI_KEY_DENIZEN, whoAmI);
+            KotoedContext.project.putUserData(PSI_KEY_DENIZEN, denizen);
+            //KotoedContext.project.putUserData(PSI_KEY_DENIZEN_ID, denizenId);
             KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
             KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
             KotoedContext.checkCurrentProjectInKotoed();

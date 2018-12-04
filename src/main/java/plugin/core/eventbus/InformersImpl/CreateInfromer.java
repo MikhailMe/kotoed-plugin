@@ -68,9 +68,9 @@ public class CreateInfromer extends BaseInformer implements ICreateInformer {
     }
 
     // FIXME: 11/19/2018
-    public CommentRecord createComment(final int submissionId,
-                                       final int authorId,
-                                       final int sourceLine,
+    public CommentRecord createComment(final long submissionId,
+                                       final long authorId,
+                                       final long sourceLine,
                                        @NotNull final String sourceFile,
                                        @NotNull final String text) {
         JsonObject message = new JsonObject()

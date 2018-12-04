@@ -1,6 +1,9 @@
 package plugin.core.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
 import plugin.core.comment.CommentsJsonMapper;
@@ -62,6 +65,12 @@ public class GetParser extends BaseParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    // FIXME: 12/4/2018 FIXME
+    public static long getDenizenId(@NotNull String whoAmI) {
+        JsonObject jo = new Gson().fromJson(whoAmI, JsonObject.class);
+        return jo.get("id").getAsLong();
     }
 
 }

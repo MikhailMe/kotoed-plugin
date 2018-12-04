@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 
+import static java.awt.Image.SCALE_SMOOTH;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
 import static plugin.gui.Utils.Strings.*;
 
@@ -41,7 +42,7 @@ public class CommentsTab {
         this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
                 .getResource(REFRESH_ICON))
                 .getImage()
-                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
+                .getScaledInstance(ICON_SIZE, ICON_SIZE, SCALE_SMOOTH)));
     }
 
     public void loadComments() {
@@ -74,13 +75,12 @@ public class CommentsTab {
 
         // TODO: 03.12.2018 DOWNLOAD SOME PROJECT FROM KOTOED AND TEST ON REAL PROJECT
         // TODO: 03.12.2018 also may be needs some fix in state machine to dont get errors
-        //SetGutterIcons(commentItemsList);
+        SetGutterIcons(commentItemsList);
     }
 
     private void nodeSelected(TreeSelectionEvent tse) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tse.getNewLeadSelectionPath().getLastPathComponent();
-        if (node == null)
-            return;
+        if (node == null) return;
         Object nodeInfo = node.getUserObject();
 
         CommentTreeItem treeItem = (CommentTreeItem) nodeInfo;
