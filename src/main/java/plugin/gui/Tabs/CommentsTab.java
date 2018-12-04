@@ -26,6 +26,8 @@ import java.util.List;
 
 import static java.awt.Image.SCALE_SMOOTH;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCEFILE;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCELINE;
 import static plugin.gui.Utils.Strings.*;
 
 @Data
@@ -78,13 +80,19 @@ public class CommentsTab {
         SetGutterIcons(commentItemsList);
     }
 
+    private void setCurrentFileAndLine(@NotNull String sourceFile,
+                                       final long sourceLine) {
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCEFILE, sourceFile);
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCELINE, sourceLine);
+    }
+
     private void nodeSelected(TreeSelectionEvent tse) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tse.getNewLeadSelectionPath().getLastPathComponent();
         if (node == null) return;
         Object nodeInfo = node.getUserObject();
-
         CommentTreeItem treeItem = (CommentTreeItem) nodeInfo;
         UpdateCommentArea(new Comments(treeItem).getContentPane());
+        setCurrentFileAndLine(treeItem.getSourcefile(), treeItem.getSourceline());
     }
 
     private void UpdateCommentArea(JPanel p) {
@@ -92,6 +100,7 @@ public class CommentsTab {
         this.comentView.add(p);
         this.comentView.revalidate();
         this.comentView.repaint();
+
     }
 
     private Map<Pair<String, Long>, List<Comment>> getStructuredComments(List<Comment> commentList) {
@@ -112,7 +121,6 @@ public class CommentsTab {
         return structuredComments;
     }
 
-    // FIXME: 11/30/2018 на 131 строке - постоянный экспешн, у тебя там что-то генерится не очень, ты так говорил
     /*
      * 1) убрать параметер @param с
      * 2) вызывать этот метод при переходе на вкладку комментс

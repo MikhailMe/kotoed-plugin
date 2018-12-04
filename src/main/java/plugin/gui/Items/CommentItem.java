@@ -20,8 +20,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCEFILE;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCELINE;
 import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
 
 public class CommentItem extends JPanel {
@@ -66,18 +64,9 @@ public class CommentItem extends JPanel {
         this.setVisible(true);
     }
 
-    private void setCurrentFileAndLine(@NotNull String sourceFile,
-                                       final long sourceLine) {
-        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCEFILE, sourceFile);
-        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCELINE, sourceLine);
-    }
-
     private void openFileInEditor(@NotNull final String sourcefile,
                                   final int sourceline,
                                   @NotNull Project project) {
-
-        setCurrentFileAndLine(sourcefile, sourceline);
-
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
         if (editor == null) return;
