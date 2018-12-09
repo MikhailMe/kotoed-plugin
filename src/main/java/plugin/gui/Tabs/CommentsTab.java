@@ -4,9 +4,9 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
 
@@ -38,14 +38,9 @@ public class CommentsTab {
     private JPanel comentView;
     private JPanel panel;
     private JTree fileComentTree;
-    private JButton refreshButton;
     private Comments comments;
 
     public CommentsTab() {
-        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
-                .getResource(REFRESH_ICON))
-                .getImage()
-                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
     }
 
     public void loadComments() {
@@ -56,7 +51,7 @@ public class CommentsTab {
         List<CommentTreeItem> commentItemsList = new ArrayList<>();
 
         for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
-            commentItemsList.add(new CommentTreeItem(i.getKey().getKey(),i.getKey().getValue(),i.getValue()));
+            commentItemsList.add(new CommentTreeItem(i.getKey().getFirst(),i.getKey().getSecond(),i.getValue()));
         }
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (CommentTreeItem i:commentItemsList) {

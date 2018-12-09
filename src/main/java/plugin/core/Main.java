@@ -1,7 +1,6 @@
 package plugin.core;
 
 import io.vertx.core.MultiMap;
-import javafx.util.Pair;
 import plugin.core.comment.Comment;
 import plugin.core.course.Course;
 import plugin.core.eventbus.InformersImpl.BaseInformer;

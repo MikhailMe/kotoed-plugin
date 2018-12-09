@@ -2,6 +2,7 @@ package plugin.gui;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
@@ -11,11 +12,10 @@ import plugin.core.comment.Comment;
 import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
 import plugin.gui.Items.RegisterProjectWindow;
-import plugin.gui.Items.SignInWindow;
-import plugin.gui.Items.SignUpWindow;
 import plugin.gui.Tabs.BuildTab;
 import plugin.gui.Tabs.CommentsTab;
 import plugin.gui.Tabs.SubmissionTab;
+import plugin.gui.ToolBar.ToolBar;
 
 import javax.swing.*;
 
@@ -34,6 +34,8 @@ public class KotoedContext implements ToolWindowFactory {
     private static CommentsTab commentsTab;
     private static SubmissionTab submissionTab;
 
+    private static final String AUTH = "Authorize";
+
     static {
         buildTab = new BuildTab();
         commentsTab = new CommentsTab();
@@ -44,29 +46,25 @@ public class KotoedContext implements ToolWindowFactory {
     public void createToolWindowContent(@NotNull Project project,
                                         @NotNull ToolWindow toolWindow) {
         KotoedContext.toolWindow = toolWindow;
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        JPanel panel = new JPanel();
-        JButton signIn = new JButton("Sign In");
-        JButton signUp = new JButton("Sign Up");
-        signIn.addActionListener(actionEvent -> onSignInButtonPressed());
-        signUp.addActionListener(actionEvent -> onSignUpButtonPressed());
-        panel.add(signIn);
-        panel.add(signUp);
+        //Clears toolWindow
+        toolWindow.getContentManager().removeAllContents(true);
 
-        Content init = contentFactory.createContent(panel, "Hello", false);
-        toolWindow.getContentManager().addContent(init);
+        //Getting factory for building ToolWindow
+        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+
+        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for First Time Open
+        SimpleToolWindowPanel noUserWindow = new SimpleToolWindowPanel(false, true);
+        JPanel panel = new JPanel();
+        noUserWindow.setContent(panel);
+        noUserWindow.setToolbar(ToolBar.noUserToolBar(panel).getComponent());
+
+        //Creating content for ToolWindow
+        Content user = contentFactory.createContent(noUserWindow, AUTH, false);
+        //Adding content to ToolWindow
+        toolWindow.getContentManager().addContent(user);
 
         KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
     }
-
-    private void onSignInButtonPressed() {
-        new SignInWindow();
-    }
-
-    private void onSignUpButtonPressed() {
-        new SignUpWindow();
-    }
-
     public static void checkCurrentProjectInKotoed() {
         // TODO: 02.12.2018 make some request to Kotoed and get project info 
         // TODO: 02.12.2018 if project exists - load last commit,else - advice for register
@@ -96,20 +94,39 @@ public class KotoedContext implements ToolWindowFactory {
     }
 
     private static void loadTabs() {
+        //Getting project data
         getFullProjectData();
 
+        //Clears toolWindow
         toolWindow.getContentManager().removeAllContents(true);
 
+        //Getting factory for building ToolWindow
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
 
-        Content build = contentFactory.createContent(buildTab.getPanel(), "Build", false);
-        Content comment = contentFactory.createContent(commentsTab.getPanel(), "Comments", false);
-        Content submission = contentFactory.createContent(submissionTab.getPanel(), "Submissions", false);
+        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for CommentsTab
+        SimpleToolWindowPanel commentPanel = new SimpleToolWindowPanel(false, true);
+        commentPanel.setContent(commentsTab.getPanel());
+        commentPanel.setToolbar(ToolBar.createCommentToolbar(commentsTab.getPanel()).getComponent());
 
+        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for BuildTab
+        SimpleToolWindowPanel buildPanel = new SimpleToolWindowPanel(false, true);
+        buildPanel.setContent(buildTab.getPanel());
+        buildPanel.setToolbar(ToolBar.createBuildToolbar(buildTab.getPanel()).getComponent());
+
+        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for SubmissionTab
+        SimpleToolWindowPanel submissionPanel = new SimpleToolWindowPanel(false, true);
+        submissionPanel.setContent(submissionTab.getPanel());
+        submissionPanel.setToolbar(ToolBar.createSubmissionToolbar(submissionTab.getPanel()).getComponent());
+
+        //Creating content for ToolWindow
+        Content build = contentFactory.createContent(buildPanel, "Build", false);
+        Content comment = contentFactory.createContent(commentPanel, "Comments", false);
+        Content submission = contentFactory.createContent(submissionPanel, "Submissions", false);
+        //Adding content to ToolWindow
         toolWindow.getContentManager().addContent(build);
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(submission);
-
+        //Loading main data
         commentsTab.loadComments();
         submissionTab.loadSubmissions();
     }

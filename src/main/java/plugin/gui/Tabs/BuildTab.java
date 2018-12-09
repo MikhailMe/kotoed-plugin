@@ -16,9 +16,5 @@ public class BuildTab extends JPanel {
 
     public BuildTab() {
         super();
-        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
-                .getResource(REFRESH_ICON))
-                .getImage()
-                .getScaledInstance(ICON_SIZE, ICON_SIZE, SCALE_SMOOTH)));
     }
 }

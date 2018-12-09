@@ -23,7 +23,6 @@ public class Strings {
     public static final String OPEN_ICON = "/Icons/openStatus.png";
     public static final String CLOSED_ICON = "/Icons/closedStatus.png";
     public static final String REFRESH_ICON = "/Icons/refresh.png";
-    public static final String UPLOAD_ICON = "/Icons/upload.png";
 
     public static final int ICON_SIZE = 20;
 

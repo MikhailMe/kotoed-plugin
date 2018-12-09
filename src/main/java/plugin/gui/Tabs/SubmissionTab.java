@@ -21,32 +21,15 @@ public class SubmissionTab {
 
     @Getter
     private JPanel panel;
-    private JButton autoSubmitButton;
     private JTree tree;
     private JPanel treePanel;
     private JScrollPane scrollPane;
-    private JButton refreshButton;
 
     public SubmissionTab() {
-
-        autoSubmitButton.setVisible(false);
-
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        autoSubmitButton.addActionListener(actionEvent -> onAutoSubmitPressed());
-
-        this.autoSubmitButton.setIcon(new ImageIcon(new ImageIcon(getClass()
-                .getResource(UPLOAD_ICON))
-                .getImage()
-                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
-
-        this.refreshButton.setIcon(new ImageIcon(new ImageIcon(getClass()
-                .getResource(REFRESH_ICON))
-                .getImage()
-                .getScaledInstance(ICON_SIZE, ICON_SIZE, java.awt.Image.SCALE_SMOOTH)));
     }
 
     public void loadSubmissions() {
-        autoSubmitButton.setVisible(true);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
@@ -78,17 +61,6 @@ public class SubmissionTab {
                 }
             }
         });
-    }
-
-    private void onAutoSubmitPressed() {
-        // TODO: 12/3/2018
-        /*
-        * вызываем окно идеи для коммита и коммитим
-        * пушим измениния
-        * посылаем сабмит-запрос в котоед
-        * */
-
-
     }
 
 }

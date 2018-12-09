@@ -1,7 +1,6 @@
 package plugin.gui.Items;
 
 import gherkin.lexer.Pa;
-import javafx.util.Pair;
 import lombok.Getter;
 import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
