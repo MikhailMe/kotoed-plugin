@@ -6,7 +6,9 @@ import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -57,11 +59,11 @@ public class Comments {
     }
 
     private void addBorders() {
-        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
+        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.GREEN), COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
         // TODO add submission number
-        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR/* add submision number*/);
+        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.BLUE), COMMENT_FOR/* add submision number*/);
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 

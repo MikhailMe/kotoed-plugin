@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.util.Objects;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class CommentItem extends JPanel {
@@ -36,7 +37,7 @@ public class CommentItem extends JPanel {
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
 
-        TitledBorder title = BorderFactory.createTitledBorder(
+        TitledBorder title = BorderFactory.createTitledBorder(new LineBorder(Color.CYAN),
                 comment.getDenizenId() + " @ " + comment.getDatetime() + " at line:" + comment.getSourceline());
         panel1.setBorder(title);
 
