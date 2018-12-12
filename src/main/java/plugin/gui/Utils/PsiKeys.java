@@ -13,5 +13,6 @@ public class PsiKeys {
     public static final Key<MultiMap> PSI_KEY_HEADERS = Key.create("Headers");
     public static final Key<List<Comment>> PSI_KEY_COMMENT_LIST = Key.create("Comments");
     public static final Key<List<Submission>> PSI_KEY_SUBMISSION_LIST = Key.create("Submissions");
+    public static final Key<String> DISPLAY_GUTTER_ICONS = Key.create("DisplayGutterIcons");
 
 }

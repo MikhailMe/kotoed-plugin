@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>gray_team.kotoed_plugin</id>
     <name>Kotoed plugin</name>
-    <version>0.0.2</version>
+    <version>0.8.3</version>
     <vendor email="neon-pf@yandex.ru">gray_team</vendor>
 
     <description><![CDATA[
@@ -11,6 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Kotoed" anchor="right" factoryClass="plugin.gui.KotoedContext"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="plugin.gui.Utils.KotoedLineMarkerProvider"/>
     </extensions>
 
     <actions>

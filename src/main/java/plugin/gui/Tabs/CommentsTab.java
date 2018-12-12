@@ -28,6 +28,7 @@ import plugin.gui.KotoedContext;
 import plugin.gui.Utils.CommentTreeItem;
 import plugin.gui.Utils.CommentTreeRenderer;
 
+import static plugin.gui.Utils.PsiKeys.DISPLAY_GUTTER_ICONS;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
 import static plugin.gui.Utils.Strings.*;
 
@@ -68,9 +69,7 @@ public class CommentsTab {
         fileComentTree.addTreeSelectionListener(evt -> nodeSelected(evt));
         this.comentView.setLayout(new BorderLayout());
 
-        // TODO: 03.12.2018 DOWNLOAD SOME PROJECT FROM KOTOED AND TEST ON REAL PROJECT
-        // TODO: 03.12.2018 also may be needs some fix in state machine to dont get errors
-        //SetGutterIcons(commentItemsList);
+        KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, "Display");
     }
     private void nodeSelected(TreeSelectionEvent tse){
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)tse.getNewLeadSelectionPath().getLastPathComponent();
@@ -103,74 +102,5 @@ public class CommentsTab {
             }
         });
         return structuredComments;
-    }
-
-    // FIXME: 11/30/2018 на 131 строке - постоянный экспешн, у тебя там что-то генерится не очень, ты так говорил
-    /*
-     * 1) убрать параметер @param с
-     * 2) вызывать этот метод при переходе на вкладку комментс
-     * для отрисовки меджик холс
-     * 3) почистить гатер либо подумать как его обновлять
-     * 4) разобраться с PsiFile
-     * 5) ПОВЕСИТЬ ЭКШОНЫ НА ЦЕШЕЧКИ !!!!!!!!!!!
-     * */
-    private void SetGutterIcons(List<CommentTreeItem> comments) {
-
-     /*for every coment using filename and linenumber - set icon - for all elements of list
-     also need buffer for detecting already set icons to get rit of double icons*/
-        List<Integer> markedLines = new ArrayList<>();
-        Map<String, List<Integer>> hashMap = new HashMap<>();
-        for (CommentTreeItem comment : comments) {
-            if (!hashMap.containsKey(comment.getSourcefile()))
-                hashMap.put(comment.getSourcefile(), new ArrayList<>());
-            if (hashMap.get(comment.getSourcefile()).contains((int) comment.getSourceline()))
-                return;
-            /*Вот тут реальный костыль: крч нам надо отрисовать иконки гаттера по всем файлам
-             * для этого я беру название файла из комента, открываю его в едиторе, рисую иконку,и так по всем коментам,
-             * но кекус в том что если закрыть файл и открыть - иконки надо рисовать заного,
-             * тут надо углубиться в идею гаттера но мне впадло и нет времени,
-             * скоро зачетная неделя и нам надо "херак херак и в продакшн" - потом пофиксим*/
-            File file = new File(KotoedContext.project.getBasePath() + "/src/" + comment.getSourcefile());
-
-            VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-            FileEditorManager.getInstance(KotoedContext.project).openFile(Objects.requireNonNull(virtualFile), true);
-
-            Editor editor = FileEditorManager.getInstance(KotoedContext.project).getSelectedTextEditor();
-            if (editor == null) return;
-            int totalLineCount = editor.getDocument().getLineCount();
-            if (comment.getSourceline() > totalLineCount) return;
-
-            if (!markedLines.contains(comment.getSourceline())) {
-                final RangeHighlighter rangeHighLighter = editor
-                        .getMarkupModel()
-                        .addLineHighlighter((int) comment.getSourceline() - 1, 0, null);
-                rangeHighLighter.setGutterIconRenderer(CreateGutterIconRenderer());
-
-                //Сохраняем чтоб небыло повторений отрисовки иконок
-                List<Integer> savedList = hashMap.get(comment.getSourcefile());
-                savedList.add((int) comment.getSourceline());
-                hashMap.put(comment.getSourcefile(), savedList);
-            }
-        }
-    }
-
-    private GutterIconRenderer CreateGutterIconRenderer() {
-        return new GutterIconRenderer() {
-            @Override
-            public boolean equals(Object obj) {
-                return false;
-            }
-
-            @Override
-            public int hashCode() {
-                return 0;
-            }
-
-            @NotNull
-            @Override
-            public Icon getIcon() {
-                return new ImageIcon(getClass().getResource(COMMENT_ICON));
-            }
-        };
     }
 }
