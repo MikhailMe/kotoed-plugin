@@ -1,19 +1,14 @@
 package plugin.gui.Items;
-
-import javafx.util.Pair;
 import lombok.Getter;
 import plugin.core.eventbus.InformersImpl.CreateInfromer;
 import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+
+import java.awt.*;
 import java.util.Objects;
 
 import plugin.core.comment.Comment;
@@ -47,11 +42,11 @@ public class Comments {
     }
 
     private void addBorders() {
-        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(COMMENT_TEXT);
+        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.GREEN), COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
         // TODO add submission number
-        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(COMMENT_FOR/* add submision number*/);
+        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.BLUE),COMMENT_FOR/* add submision number*/);
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
@@ -116,9 +111,4 @@ public class Comments {
         }
         textArea.setText("");
     }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
 }

@@ -1,7 +1,6 @@
 package plugin.gui.Items;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLEditorKit;
 import java.awt.event.*;
 
 public class About extends JDialog {

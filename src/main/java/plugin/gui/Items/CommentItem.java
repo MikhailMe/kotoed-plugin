@@ -10,7 +10,6 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import plugin.core.comment.Comment;
-import plugin.gui.KotoedContext;
 
 import java.awt.*;
 import java.io.File;

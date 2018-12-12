@@ -1,29 +1,24 @@
 package plugin.gui.Tabs;
 
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
+import plugin.gui.Items.Comments;
+import plugin.gui.KotoedContext;
+import plugin.gui.Utils.CommentTreeItem;
+import plugin.gui.Utils.CommentTreeRenderer;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.io.File;
+
 import java.util.*;
 import java.util.List;
 
-import static java.awt.Image.SCALE_SMOOTH;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCEFILE;
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCELINE;
-import static plugin.gui.Utils.Strings.*;
+import static plugin.gui.Utils.PsiKeys.*;
 
 @Data
 public class CommentsTab {
@@ -45,7 +40,7 @@ public class CommentsTab {
         List<CommentTreeItem> commentItemsList = new ArrayList<>();
 
         for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
-            commentItemsList.add(new CommentTreeItem(i.getKey().getFirst(),i.getKey().getSecond(),i.getValue()));
+            commentItemsList.add(new CommentTreeItem(i.getKey().getSecond(), i.getKey().getFirst(),i.getValue()));
         }
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (CommentTreeItem commentTreeItem : commentItemsList) {
