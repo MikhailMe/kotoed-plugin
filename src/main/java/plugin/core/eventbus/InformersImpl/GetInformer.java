@@ -77,4 +77,29 @@ public class GetInformer extends BaseInformer implements IGetInformer {
         return get(URL_EVENTBUS_COMMENTS, message, GetParser::parseComments);
     }
 
+
+    // TODO: there is a test method, don't forget remove me
+    public <T> List<T> getSubs() {
+        CountDownLatch latch = new CountDownLatch(1);
+        final List<T> list = new ArrayList<>();
+        JsonObject message = new JsonObject()
+                .put(FIELD_TEXT, "")
+                .put(FIELD_PAGE_SIZE, 100)
+                .put(FIELD_CURRENT_PAGE, 0)
+                .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, 8));
+        EventBusBridge.connect(
+                URI.create(urlEventbus),
+                headers,
+                eb -> eb.send("kotoed.api.submission.list", message, reply -> {
+
+                    String json = String.valueOf(reply.body());
+
+                    System.out.println(json);
+
+                    eb.close();
+                    latch.countDown();
+                }));
+        awaitLatch(latch);
+        return list;
+    }
 }

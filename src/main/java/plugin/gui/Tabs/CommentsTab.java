@@ -12,24 +12,17 @@ import plugin.core.comment.Comment;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
 
-import lombok.Data;
-import plugin.gui.Items.Comments;
-import plugin.gui.KotoedContext;
-import plugin.gui.Utils.CommentTreeItem;
-import plugin.gui.Utils.CommentTreeRenderer;
-
-import static plugin.gui.Utils.PsiKeys.DISPLAY_GUTTER_ICONS;
+import static java.awt.Image.SCALE_SMOOTH;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCEFILE;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SOURCELINE;
 import static plugin.gui.Utils.Strings.*;
 
 @Data
@@ -42,7 +35,7 @@ public class CommentsTab {
     private Comments comments;
 
     public CommentsTab() {
-    }
+   }
 
     public void loadComments() {
 
@@ -55,8 +48,8 @@ public class CommentsTab {
             commentItemsList.add(new CommentTreeItem(i.getKey().getFirst(),i.getKey().getSecond(),i.getValue()));
         }
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        for (CommentTreeItem i:commentItemsList) {
-            root.add(new DefaultMutableTreeNode(i));
+        for (CommentTreeItem commentTreeItem : commentItemsList) {
+            root.add(new DefaultMutableTreeNode(commentTreeItem));
         }
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         fileComentTree.setModel(treeModel);
@@ -71,21 +64,30 @@ public class CommentsTab {
 
         KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, "Display");
     }
-    private void nodeSelected(TreeSelectionEvent tse){
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)tse.getNewLeadSelectionPath().getLastPathComponent();
-        if (node == null)
-            return;
-        Object nodeInfo = node.getUserObject();
 
+    private void setCurrentFileAndLine(@NotNull String sourceFile,
+                                       final long sourceLine) {
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCEFILE, sourceFile);
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SOURCELINE, sourceLine);
+    }
+
+    private void nodeSelected(TreeSelectionEvent tse) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tse.getNewLeadSelectionPath().getLastPathComponent();
+        if (node == null) return;
+        Object nodeInfo = node.getUserObject();
         CommentTreeItem treeItem = (CommentTreeItem) nodeInfo;
         UpdateCommentArea(new Comments(treeItem).getContentPane());
+        setCurrentFileAndLine(treeItem.getSourcefile(), treeItem.getSourceline());
     }
-    private void UpdateCommentArea(JPanel p){
+
+    private void UpdateCommentArea(JPanel p) {
         this.comentView.removeAll();
         this.comentView.add(p);
         this.comentView.revalidate();
         this.comentView.repaint();
+
     }
+
     private Map<Pair<String, Long>, List<Comment>> getStructuredComments(List<Comment> commentList) {
         Map<Pair<String, Long>, List<Comment>> structuredComments = new HashMap<>();
         commentList.forEach(comment -> {

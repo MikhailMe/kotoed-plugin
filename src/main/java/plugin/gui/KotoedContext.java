@@ -66,24 +66,29 @@ public class KotoedContext implements ToolWindowFactory {
         KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
     }
     public static void checkCurrentProjectInKotoed() {
-        // TODO: 02.12.2018 make some request to Kotoed and get project info 
-        // TODO: 02.12.2018 if project exists - load last commit,else - advice for register
+        // TODO: 02.12.2018 make some request to Kotoed and get project info
+        // TODO: 02.12.2018 if project exists - load last commit, else - advice for register
         if (getProjectInfo()) {
-            loadTabs();
+            int temp = JOptionPane.showConfirmDialog(
+                    null,
+                    "Your project was found at the Kotoed. Do you want synchronized your project with found project?",
+                    "Project found at the Kotoed",
+                    JOptionPane.YES_NO_OPTION);
+            if (temp != JOptionPane.NO_OPTION) {
+                // TODO: 12/4/2018 написать метод синхронизации текущего проекта с котоедом
+                loadTabs();
+            }
         } else {
             int n = JOptionPane.showConfirmDialog(
                     null,
-                    "Do you want to register your project?",
-                    "Project not found at Kotoed",
+                    "Your project wasn't found at the Kotoed. Do you want to register your project at the Kotoed?",
+                    "Project not found at the Kotoed",
                     JOptionPane.YES_NO_OPTION);
-            if (n != 1) {
+            if (n != JOptionPane.NO_OPTION) {
                 new RegisterProjectWindow();
                 loadTabs();
-            } else {
-                return;
             }
         }
-
     }
 
     // TODO: 02.12.2018 future release - fix info getter from kotoed
@@ -139,7 +144,6 @@ public class KotoedContext implements ToolWindowFactory {
         int currentPage = 0;
 
 
-
         GetInformer informer = new GetInformer(
                 CONFIGURATION,
                 Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
@@ -155,7 +159,7 @@ public class KotoedContext implements ToolWindowFactory {
 
         List<Comment> commentList = informer.getComments(submissionId);
 
-
+        KotoedContext.project.putUserData(PSI_KEY_REPO_URL, "repo url here");
         KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, commentList);
         KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
     }

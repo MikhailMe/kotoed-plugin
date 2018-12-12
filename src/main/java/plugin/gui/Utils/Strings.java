@@ -24,8 +24,6 @@ public class Strings {
     public static final String CLOSED_ICON = "/Icons/closedStatus.png";
     public static final String REFRESH_ICON = "/Icons/refresh.png";
 
-    public static final int ICON_SIZE = 20;
-
     //Comments class
     public static final String COMMENT_TEXT = "Comment text:";
     public static final String COMMENT_FOR = "Comments for:";
@@ -41,11 +39,13 @@ public class Strings {
     public static final String HTML_OPEN = "<html>";
     public static final String HTML_CLOSE = "</html>";
     public static final String SPAN_FORMAT = "<span style='color:%s;'>%s</span>";
-    public static final String TIME_PATERN = "yyyy/MM/dd HH:mm:ss";
+    public static final String TIME_PATERN = "dd/MM/yyyy HH:mm:ss";
 
     public static final String CONFIGURATION = "GLOBAL";
 
     // digit constants
-    public static final int CLICK_COUNT = 1;
+    public static final int ICON_SIZE = 20;
+    public static final int SINGLE_CLICK = 1;
+    public static final int DOUBLE_CLICK = 2;
 }
 
