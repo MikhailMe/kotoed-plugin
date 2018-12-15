@@ -32,6 +32,7 @@ public class ToolBar {
 
         return toolbar;
     }
+
     public static ActionToolbar createBuildToolbar(JComponent component) {
         DefaultActionGroup group = new DefaultActionGroup();
         group.add(new RefreshAction());
@@ -41,6 +42,7 @@ public class ToolBar {
 
         return toolbar;
     }
+
     public static ActionToolbar createSubmissionToolbar(JComponent component) {
         DefaultActionGroup group = new DefaultActionGroup();
         group.add(new AutoSubmitAction());

@@ -2,6 +2,9 @@ package plugin.gui.Utils;
 
 public class Strings {
 
+    public static final String DISPLAY = "Display";
+    public static final String NOT_DISPLAY = "Not display";
+
     public static final String SIGN_IN = "Sign In";
     public static final String SIGN_UP = "Sign Up";
 

@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.List;
 
 import static plugin.gui.Utils.PsiKeys.*;
+import static plugin.gui.Utils.Strings.DISPLAY;
 
 @Data
 public class CommentsTab {
@@ -54,10 +55,10 @@ public class CommentsTab {
 
         fileComentTree.setCellRenderer(new CommentTreeRenderer());
 
-        fileComentTree.addTreeSelectionListener(evt -> nodeSelected(evt));
+        fileComentTree.addTreeSelectionListener(this::nodeSelected);
         this.comentView.setLayout(new BorderLayout());
 
-        KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, "Display");
+        KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, DISPLAY);
     }
 
     private void setCurrentFileAndLine(@NotNull String sourceFile,

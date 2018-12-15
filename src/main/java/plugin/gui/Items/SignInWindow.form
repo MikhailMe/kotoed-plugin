@@ -17,7 +17,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="mikhailme"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="f0201" class="javax.swing.JPasswordField" binding="passwordField">
@@ -27,7 +27,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="qwerty12345"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="55b71" class="javax.swing.JButton" binding="signInButton" default-binding="true">

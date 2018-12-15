@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
+import static plugin.gui.Utils.Strings.NOT_DISPLAY;
 
 public class KotoedContext implements ToolWindowFactory {
 
@@ -64,6 +65,7 @@ public class KotoedContext implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(user);
 
         KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
+        project.putUserData(DISPLAY_GUTTER_ICONS, NOT_DISPLAY);
     }
     public static void checkCurrentProjectInKotoed() {
         // TODO: 02.12.2018 make some request to Kotoed and get project info
@@ -76,6 +78,7 @@ public class KotoedContext implements ToolWindowFactory {
                     JOptionPane.YES_NO_OPTION);
             if (temp != JOptionPane.NO_OPTION) {
                 // TODO: 12/4/2018 написать метод синхронизации текущего проекта с котоедом
+                System.out.println("here");
                 loadTabs();
             }
         } else {
@@ -99,7 +102,6 @@ public class KotoedContext implements ToolWindowFactory {
     }
 
     private static void loadTabs() {
-        //Getting project data
         getFullProjectData();
 
         //Clears toolWindow
@@ -127,15 +129,19 @@ public class KotoedContext implements ToolWindowFactory {
         Content build = contentFactory.createContent(buildPanel, "Build", false);
         Content comment = contentFactory.createContent(commentPanel, "Comments", false);
         Content submission = contentFactory.createContent(submissionPanel, "Submissions", false);
+
         //Adding content to ToolWindow
         toolWindow.getContentManager().addContent(build);
         toolWindow.getContentManager().addContent(comment);
         toolWindow.getContentManager().addContent(submission);
+
         //Loading main data
         commentsTab.loadComments();
         submissionTab.loadSubmissions();
     }
 
+
+    // FIXME: 12/15/2018 REWRITE THIS METHOD FOR ANY DENIZEN
     private static void getFullProjectData() {
 
         // TODO: 12/3/2018 get with data from work with projects

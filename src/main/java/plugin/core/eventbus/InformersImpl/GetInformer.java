@@ -35,6 +35,9 @@ public class GetInformer extends BaseInformer implements IGetInformer {
         final List<T> list = new ArrayList<>();
         EventBusBridge.connect(URI.create(urlEventbus), headers, eb -> eb.send(url, message, reply -> {
             String json = String.valueOf(reply.body());
+
+            System.out.println(json);
+
             CompletableFuture<List<T>> cf = new CompletableFuture<>();
             //noinspection unchecked
             cf.complete(Objects.requireNonNull(parse.apply(json)));
@@ -78,15 +81,14 @@ public class GetInformer extends BaseInformer implements IGetInformer {
     }
 
 
-    // TODO: there is a test method, don't forget remove me
+    // TODO: 12/15/2018 WHAT SEND WE DO ????????????
     public <T> List<T> getSubs() {
         CountDownLatch latch = new CountDownLatch(1);
         final List<T> list = new ArrayList<>();
-        JsonObject message = new JsonObject()
-                .put(FIELD_TEXT, "")
-                .put(FIELD_PAGE_SIZE, 100)
-                .put(FIELD_CURRENT_PAGE, 0)
-                .put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, 8));
+        JsonObject message = new JsonObject();
+                //.put(FIELD_TEXT, "");
+                //.put("with_verification_data", true)
+                //.put(FIELD_FIND, new JsonObject().put(FIELD_COURSE_ID, 8));
         EventBusBridge.connect(
                 URI.create(urlEventbus),
                 headers,
