@@ -1,17 +1,22 @@
 package plugin.gui.Utils;
 
+import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.*;
-import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.util.NotNullLazyValue;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.Function;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
 import plugin.gui.KotoedContext;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,15 +45,35 @@ public class KotoedLineMarkerProvider extends RelatedItemLineMarkerProvider {
                         if(!getFullStringByLine(element.getContainingFile().getText(),lineNumber).equals(element.getText()))
                             return;
 
-                        NavigationGutterIconBuilder<PsiElement> builder =
-                                NavigationGutterIconBuilder.create(AllIcons.Actions.Refresh).
-                                        setTooltipText("Navigate to a comment");
-                        result.add(builder.createLineMarkerInfo(element));
+                        result.add(getLineMarkerInfoForElem(element));
                     }
                 }
             }
         }
+    }
 
+    public RelatedItemLineMarkerInfo<PsiElement> getLineMarkerInfoForElem(@NotNull PsiElement element) {
+        // TODO: 16.12.18 implement tooltip due to comment
+        Function<PsiElement, String> tooltipProvider = element1 -> {
+            final StringBuilder tooltip = new StringBuilder();
+            tooltip.append("mytool");
+
+            return tooltip.length() == 0 ? null : tooltip.toString();
+        };
+        final GutterIconNavigationHandler<PsiElement> navHandler = new GutterIconNavigationHandler<PsiElement>() {
+            @Override
+            public void navigate(MouseEvent e, PsiElement elt) {
+                // TODO: 16.12.18 add action when haskell/kotlin support done
+            }
+        };
+        return new RelatedItemLineMarkerInfo<PsiElement>(element,
+                element.getTextRange(),
+                AllIcons.Actions.Refresh,
+                Pass.UPDATE_ALL,
+                tooltipProvider,
+                navHandler,
+                GutterIconRenderer.Alignment.CENTER,
+                NotNullLazyValue.createConstantValue(Collections.emptyList()));
     }
     private int getStringLine(String text, String key){
         String[] lines = text.split("\n");
