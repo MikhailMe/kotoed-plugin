@@ -40,9 +40,13 @@ public class CommentsTab {
         Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
         List<CommentTreeItem> commentItemsList = new ArrayList<>();
 
+
         for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
             commentItemsList.add(new CommentTreeItem(i.getKey().getSecond(), i.getKey().getFirst(),i.getValue()));
         }
+
+
+
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (CommentTreeItem commentTreeItem : commentItemsList) {
             root.add(new DefaultMutableTreeNode(commentTreeItem));
