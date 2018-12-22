@@ -1,13 +1,15 @@
 package plugin.gui.Items;
 
+import io.vertx.core.MultiMap;
+import plugin.core.parser.GetParser;
 import plugin.core.rest.Sender;
-import plugin.gui.KotoedPlugin;
+import plugin.gui.KotoedContext;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
+import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.*;
 
 public class SignInWindow extends JDialog {
@@ -17,10 +19,9 @@ public class SignInWindow extends JDialog {
     private JPasswordField passwordField;
     private JButton signInButton;
     private JButton cancelButton;
-    private KotoedPlugin kotoedPlugin;
 
-    public SignInWindow(KotoedPlugin kotoedPlugin) {
-        this.kotoedPlugin = kotoedPlugin;
+
+    public SignInWindow() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
@@ -53,25 +54,31 @@ public class SignInWindow extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        System.out.println("here");
     }
 
     private void onSignIn() {
-        /*String denizen = usernameField.getText();
-        String password = passwordField.getText();
-        Sender sender = new Sender("LOCAL");
-        String cookie = sender.signIn(denizen, password);
-        this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
-        dispose();*/
-        if (usernameField.getText().equals(CREDENTIALS))
-            if (passwordField.getText().equals(CREDENTIALS)) {
-                this.kotoedPlugin.LoadTree(new DefaultMutableTreeNode());
-                dispose();
-                return;
-            }
-        JOptionPane.showMessageDialog(null,
-                AUTH_ERROR_MESSAGE,
-                AUTH_ERROR,
-                JOptionPane.ERROR_MESSAGE);
+        String denizen = usernameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        Sender sender = new Sender(CONFIGURATION);
+        sender.signIn(denizen, password);
+        String whoAmI = sender.getWhoAmI();
+        long denizenId = GetParser.getDenizenId(whoAmI);
+        if (!whoAmI.isEmpty()) {
+            dispose();
+            MultiMap headers = sender.getHeaders();
+            KotoedContext.project.putUserData(PSI_KEY_DENIZEN, denizen);
+            KotoedContext.project.putUserData(PSI_KEY_DENIZEN_ID, denizenId);
+            KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
+            KotoedContext.project.putUserData(PSI_KEY_COOKIE, sender.getCookie());
+            KotoedContext.checkCurrentProjectInKotoed();
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    SIGN_IN_ERROR_MESSAGE,
+                    SIGN_IN_ERROR,
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {

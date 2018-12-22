@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import plugin.core.comment.Comment;
 
 import java.awt.*;
 import java.io.File;
@@ -18,38 +19,36 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.border.TitledBorder;
 
-public class Comment extends JPanel {
+import static plugin.gui.Utils.Strings.DOUBLE_CLICK;
+
+public class CommentItem extends JPanel {
 
     private JPanel panel1;
     private JTextArea textArea;
 
-    private final static int WIDTH = 470;
-    private final static int HEIGHT = 100;
-    private final static int DOUBLE_CLICK = 2;
     private final static Color color = JBColor.WHITE;
 
-    public Comment(@NotNull plugin.gui.Stabs.Comment comment,
-                   @NotNull Project project) {
+    public CommentItem(@NotNull Comment comment,
+                       @NotNull Project project) {
         super();
+
         textArea.setText(comment.getText());
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        panel1.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        TitledBorder title = BorderFactory.createTitledBorder(comment.getUserName() + " @ " + comment.getDate() + " at line:" + comment.getLineNumber());
-        panel1.setBorder(title);
         textArea.setEditable(false);
+
+        TitledBorder title = BorderFactory.createTitledBorder(
+                comment.getDenizenId() + " @ " + comment.getNormalDatetime() + " at line:" + comment.getSourceline());
+        panel1.setBorder(title);
+
         this.add(panel1);
         this.setBackground(color);
-        this.addMouseListener(new MouseAdapter() {
-        });
-        textArea.addMouseListener(new MouseAdapter() {
-        });
 
         panel1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getSourcefile(), (int) comment.getSourceline(), project);
                 }
             }
         });
@@ -57,15 +56,15 @@ public class Comment extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == DOUBLE_CLICK) {
-                    openFileInEditor(comment.getFileName(), comment.getLineNumber(), project);
+                    openFileInEditor(comment.getSourcefile(), (int) comment.getSourceline(), project);
                 }
             }
         });
         this.setVisible(true);
     }
 
-    private void openFileInEditor(@NotNull final String fileName,
-                                  final int lineNumber,
+    private void openFileInEditor(@NotNull final String sourcefile,
+                                  final int sourceline,
                                   @NotNull Project project) {
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
@@ -73,18 +72,19 @@ public class Comment extends JPanel {
 
         int totalLineCount = editor.getDocument().getLineCount();
 
-        if (lineNumber > totalLineCount) return;
+        if (sourceline > totalLineCount) return;
 
         Document document = editor.getDocument();
-        int startOffset = document.getLineStartOffset(lineNumber - 1);
-        int endOffset = document.getLineEndOffset(lineNumber);
+        int startOffset = document.getLineStartOffset(sourceline - 1);
+        int endOffset = document.getLineEndOffset(sourceline);
 
         SelectionModel selectionModel = editor.getSelectionModel();
         selectionModel.setSelection(startOffset, endOffset);
 
-        File file = new File(project.getBasePath() + "/src/" + fileName);
+        File file = new File(project.getBasePath() + "/src/" + sourcefile);
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         FileEditorManager.getInstance(project).openFile(Objects.requireNonNull(virtualFile), true);
+
     }
 }

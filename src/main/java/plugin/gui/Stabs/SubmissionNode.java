@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class SubmissionNode {
 
     private String text;
-    private int number;
+    private long number;
     private boolean status;
 
     public boolean getStatus() {
@@ -15,14 +15,14 @@ public class SubmissionNode {
     }
 
     public SubmissionNode(@NotNull final String text,
-                          final int number,
+                          final long number,
                           boolean status) {
         this.text = text;
         this.number = number;
         this.status = status;
     }
 
-    public String toString(){
-        return text ;
+    public String toString() {
+        return text;
     }
 }

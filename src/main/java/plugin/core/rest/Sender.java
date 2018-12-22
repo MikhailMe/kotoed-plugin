@@ -3,7 +3,6 @@ package plugin.core.rest;
 import io.vertx.core.MultiMap;
 import org.apache.http.HttpResponse;
 import io.vertx.core.json.JsonObject;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -12,21 +11,17 @@ import java.io.BufferedReader;
 
 import static plugin.core.util.Address.*;
 
-public class Sender extends BaseSender implements ISender{
+public class Sender extends BaseSender implements ISender {
 
     public Sender(@NotNull String configuration) {
         super(configuration);
     }
 
     public String getWhoAmI() {
-        return jsonMyself == null ? null : Objects.requireNonNull(getWhoAmI(jsonMyself));
-    }
-
-    private String getWhoAmI(@NotNull final String jsonMyself) {
         try {
-            HttpResponse whoAmI = post(urlWhoAmI, jsonMyself);
+            HttpResponse whoAmI = post(urlWhoAmI, jsonMyself, cookie);
             BufferedReader rd = getReader(whoAmI);
-            return IOUtils.toString(rd);
+            return rd.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,22 +35,32 @@ public class Sender extends BaseSender implements ISender{
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
-        return Objects.requireNonNull(getCookie(jsonMyself));
+        return Objects.requireNonNull(setCookie());
     }
 
-    public void signUp(@NotNull final String denizen,
-                       @NotNull final String password) {
+    public String signUp(@NotNull final String denizen,
+                          @NotNull final String password) {
         this.jsonMyself = new JsonObject()
                 .put(DENIZEN_ID, denizen)
                 .put(PASSWORD, password)
                 .toString();
-        post(urlSignUp, jsonMyself);
+        HttpResponse signUpResponse = post(urlSignUp, jsonMyself, cookie);
+        try {
+            BufferedReader rd = getReader(signUpResponse);
+            return rd.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isSuccessSignUp(@NotNull final String signUpResponse) {
+        return signUpResponse.contains("true");
     }
 
     @NotNull
-    public MultiMap getHeaders(String cookie) {
+    public MultiMap getHeaders() {
         return MultiMap.caseInsensitiveMultiMap().add(FIELD_COOKIE, cookie);
     }
-
 
 }

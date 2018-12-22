@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="plugin.gui.Items.About">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="528" height="371"/>
+    </constraints>
+    <properties>
+      <background color="-1"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <hspacer id="98af6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <text value="OK"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a8563" class="javax.swing.JEditorPane" binding="htmlPane">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="500" height="300"/>
+                <preferred-size width="500" height="300"/>
+                <maximum-size width="500" height="300"/>
+              </grid>
+            </constraints>
+            <properties>
+              <contentType value="text/html"/>
+              <editable value="false"/>
+              <text value="&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 36pt;&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-family: calibri, sans-serif;&quot;&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;&lt;span style=&quot;color: #ff00ff;&quot;&gt;K&lt;/span&gt;o&lt;span style=&quot;color: #0000ff;&quot;&gt;t&lt;/span&gt;&lt;span style=&quot;color: #00ccff;&quot;&gt;o&lt;/span&gt;&lt;span style=&quot;color: #ff99cc;&quot;&gt;e&lt;/span&gt;&lt;span style=&quot;color: #ff6600;&quot;&gt;d&lt;/span&gt; &lt;span style=&quot;color: #333333;&quot;&gt;P&lt;/span&gt;&lt;span style=&quot;color: #339966;&quot;&gt;l&lt;/span&gt;u&lt;span style=&quot;color: #00ffff;&quot;&gt;g&lt;span style=&quot;color: #ff6600;&quot;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color: #ff00ff;&quot;&gt;n&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: calibri, sans-serif;&quot;&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;Back-end developers:&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: calibri, sans-serif;&quot;&gt;Mikhail Medvedev&lt;/span&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: #ff00ff; font-family: calibri, sans-serif;&quot;&gt;GUI developers:&lt;/span&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-family: calibri, sans-serif;&quot;&gt;Legkun Boris&lt;/span&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-family: calibri, sans-serif;&quot;&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;span style=&quot;color: #800080; text-decoration: underline;&quot;&gt;Assigned due to SPbPU &lt;/span&gt;&lt;/span&gt;&lt;span lang=&quot;en&quot;&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;span style=&quot;color: #800080; text-decoration: underline;&quot;&gt;Software Development Theory lectures&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&#10;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;strong&gt;&lt;span lang=&quot;en&quot; style=&quot;font-family: calibri, sans-serif;&quot;&gt;@Summer 2018&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;" noi18n="true"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

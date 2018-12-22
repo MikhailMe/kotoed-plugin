@@ -2,10 +2,11 @@ package plugin.gui.Items;
 
 import org.jdesktop.swingx.prompt.PromptSupport;
 import plugin.core.rest.Sender;
-import plugin.gui.KotoedPlugin;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import static plugin.gui.Utils.Strings.*;
 
@@ -19,9 +20,7 @@ public class SignUpWindow extends JDialog {
     private JButton signInButton;
     private JButton cancelButton;
 
-    private KotoedPlugin plugin;
-
-    public SignUpWindow(KotoedPlugin plugin) {
+    public SignUpWindow() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(signInButton);
@@ -61,16 +60,23 @@ public class SignUpWindow extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.plugin = plugin;
     }
 
     private void onOK() {
-        /*String denizen = usernameField.getText();
-        String password = passwordField.getText();
-        Sender sender = new Sender("GLOBAL");
-        sender.signUp(denizen, password);*/
-        dispose();
-        new SignInWindow(plugin);
+        String denizen = usernameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        Sender sender = new Sender(CONFIGURATION);
+        String singUpResponse = sender.signUp(denizen, password);
+        if (sender.isSuccessSignUp(singUpResponse)) {
+            dispose();
+            new SignInWindow();
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    SIGN_UP_ERROR_MESSAGE,
+                    SIGN_UP_ERROR,
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {

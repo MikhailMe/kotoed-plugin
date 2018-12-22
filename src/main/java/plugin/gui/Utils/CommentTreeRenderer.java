@@ -1,15 +1,16 @@
 package plugin.gui.Utils;
 
-import plugin.gui.Stabs.SubmissionNode;
+import plugin.core.comment.Comment;
 
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
 
 import static plugin.gui.Utils.Strings.*;
+import static plugin.gui.Utils.Strings.HTML_CLOSE;
 
-public class CustomTreeRenderer extends DefaultTreeCellRenderer {
+public class CommentTreeRenderer extends DefaultTreeCellRenderer {
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree,
@@ -23,13 +24,12 @@ public class CustomTreeRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
 
-        if (userObject instanceof SubmissionNode) {
-            SubmissionNode submission = (SubmissionNode) userObject;
-            String text = submission.getText();
-            text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, submission.getNumber() + BRACKET_CLOSE);
+        if (userObject instanceof CommentTreeItem) {
+            CommentTreeItem comment = (CommentTreeItem) userObject;
+            String text = comment.getSourcefile();
+            text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, comment.getSourceline() + BRACKET_CLOSE);
             this.setText(HTML_OPEN + text + HTML_CLOSE);
-            if (submission.getStatus()) this.setIcon(new ImageIcon(getClass().getResource(OPEN_ICON)));
-            else this.setIcon(new ImageIcon(getClass().getResource(CLOSED_ICON)));
+            this.setIcon(new ImageIcon(getClass().getResource(COMMENT_ICON)));
         } else {
             String text = String.format(SPAN_FORMAT, RED, userObject);
             this.setText(HTML_OPEN + text + HTML_CLOSE);

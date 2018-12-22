@@ -25,12 +25,16 @@ public class BaseSender {
     @Getter
     String jsonMyself;
 
+    @Getter
+    String cookie;
+
     @NotNull
     private final HttpClient client;
 
     final String FIELD_COOKIE = "Cookie";
 
     BaseSender(@NotNull final String configuration) {
+        this.cookie = "";
         this.client = HttpClientBuilder.create().build();
 
         if (configuration.equals(GLOBAL)) {
@@ -46,21 +50,26 @@ public class BaseSender {
     }
 
     HttpResponse post(@NotNull final String url,
-                      @NotNull final String json) {
+                      @NotNull final String json,
+                      @NotNull final String cookie) {
         try {
-            HttpPost postForCookies = new HttpPost(url);
-            postForCookies.setEntity(new StringEntity(json));
-            return client.execute(postForCookies);
+            HttpPost post = new HttpPost(url);
+            post.setEntity(new StringEntity(json));
+            if (!cookie.isEmpty()) {
+                post.setHeader(FIELD_COOKIE, cookie);
+            }
+            return client.execute(post);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    String getCookie(@NotNull final String jsonMyself) {
-        HttpResponse responseWithCookies = post(urlSignIn, jsonMyself);
+    String setCookie() {
+        HttpResponse responseWithCookies = post(urlSignIn, jsonMyself, cookie);
         String stringOfHeaders = Arrays.toString(responseWithCookies.getAllHeaders());
-        return GetParser.parseCookieFromHeaders(stringOfHeaders);
+        cookie = GetParser.parseCookieFromHeaders(stringOfHeaders);
+        return cookie;
     }
 
     @NotNull
