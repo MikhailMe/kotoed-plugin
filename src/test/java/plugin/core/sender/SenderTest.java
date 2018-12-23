@@ -47,70 +47,6 @@ public class SenderTest {
         initialize();
         return sender.signIn(denizen, password);
     }
-    private GetInformer createInformer(){
-        initialize();
-
-        sender.signIn("mikhailme", "qwerty12345");
-        String whoAmI = sender.getWhoAmI();
-        long denizenId = GetParser.getDenizenId(whoAmI);
-        if (!whoAmI.isEmpty()) {
-            MultiMap headers = sender.getHeaders();
-
-            GetInformer informer = new GetInformer(
-                    CONFIGURATION,
-                    Objects.requireNonNull(headers));
-
-            return informer;
-        }
-        return null;
-    }
-    private List<Submission> getSubmissionsLocal(){
-        int courseId = 8;
-        int pageSize = 20;
-        int currentPage = 0;
-
-        GetInformer informer = createInformer();
-        List<Submission> submissionList = informer.getSubmissions(courseId, pageSize, currentPage);
-
-        return  submissionList;
-    }
-
-
-    @Test
-    public void getSubmissionsTest() {
-        List<Submission> subs = getSubmissionsLocal();
-
-        assert !subs.isEmpty();
-    }
-
-    // TODO: 22/12/18 Fix, wait back
-    public void getProjectTest() {
-        List<Project> projects = createInformer().getProjects();
-
-        assert !projects.isEmpty();
-    }
-
-    @Test
-    public void getCourseTest() {
-
-        List<Course> courses = createInformer().getCourses();
-
-        assert !courses.isEmpty();
-    }
-
-
-    @Test
-    public void getCommentTest() {
-        GetInformer informer = createInformer();
-
-
-        // TODO: 12/3/2018 get from @param submissionList
-        int submissionId = 9255;
-
-        List<Comment> commentList = informer.getComments(submissionId);
-
-        assert !commentList.isEmpty();
-    }
 
     @Test
     public void singUpTest() {
@@ -134,6 +70,5 @@ public class SenderTest {
         String test2 = "qaz";
         String response2 = sender.signUp(test2, test2);
         assert !sender.isSuccessSignUp(response2);
-
     }
 }

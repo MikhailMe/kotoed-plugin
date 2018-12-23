@@ -24,6 +24,5 @@ public class SignInWindowTest {
         Robot robot = BasicRobot.robotWithCurrentAwtHierarchy();
         ComponentFinder finder = robot.finder();
         finder.find(new CaptionMatcher("+"));
-
     }
 }

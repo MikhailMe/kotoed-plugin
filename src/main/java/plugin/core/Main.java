@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class Main {
 
-    private static final String CONFIGURATION = Address.LOCAL;
+    private static final String CONFIGURATION = Address.GLOBAL;
 
     public static void main(String[] args) {
 
@@ -50,7 +50,7 @@ public class Main {
 
         GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
 
-        List<StringBuffer> subs = getInformer.getSubs();
+        //List<StringBuffer> subs = getInformer.getSubs();
 
         /*List<Course> courses = getInformer.getCourses();
         courses.forEach(System.out::println);*/

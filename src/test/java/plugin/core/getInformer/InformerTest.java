@@ -46,6 +46,7 @@ public class InformerTest {
         }
         return null;
     }
+
     private List<Submission> getSubmissionsLocal(){
         int courseId = 8;
         int pageSize = 20;
@@ -63,6 +64,7 @@ public class InformerTest {
 
         assert subs.size() == 1;
     }
+
     @Test
     public void getSubmissionsTest() {
         List<Submission> subs = getSubmissionsLocal();
@@ -71,6 +73,7 @@ public class InformerTest {
     }
 
     // TODO: 22/12/18 Fix, wait back
+    // @Test
     public void getProjectTest() {
         List<Project> projects = createInformer().getProjects();
 
@@ -84,7 +87,6 @@ public class InformerTest {
 
         assert !courses.isEmpty();
     }
-
 
     @Test
     public void getCommentTest() {
@@ -111,23 +113,27 @@ public class InformerTest {
         assert commentList.size() == 17;
     }
 
+    // @Test
     public void createCommentTest ()  {
-        //long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
+        long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
         String denizen = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN));
         String currentSourceFile = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCEFILE));
         long currentSourceLine = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCELINE));
         long currentDate = System.currentTimeMillis();
-        //long currentSubmissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
+        long currentSubmissionId = 9255;
+        String text = "Some text!";
 
         Comment comment = new Comment();
-        //comment.setAuthorId(denizenId);
+        comment.setAuthorId(denizenId);
         comment.setDenizenId(denizen);
         comment.setDatetime(currentDate);
         comment.setSourcefile(currentSourceFile);
         comment.setSourceline(currentSourceLine);
-        //comment.setOriginalSubmissionId(currentSubmissionId);
+        comment.setOriginalSubmissionId(currentSubmissionId);
+        comment.setText(text);
 
-//        GetInformer informer = createInformer();
+        GetInformer informer = createInformer();
+
 //        informer.createComment(
 //            comment.getOriginalSubmissionId(),
 //            comment.getAuthorId(),
@@ -139,13 +145,40 @@ public class InformerTest {
         assert true;
     }
 
+    //@Test
     public void createProjectTest ()  {
+
+//        String projectName = ;
+        // TODO: 23/12/18 Fix, denizenId has long type
+//        long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
+//        int courseId = 8;
+//        String repoType = ;
+//        String repoUrl = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_REPO_URL));
+
+//        GetInformer informer = createInformer();
+//        informer.createProject(
+//            projectName,
+//            denizenId,
+//            courseId,
+//            repoType,
+//            repoUrl
+//    );
+
         assert true;
     }
 
+    //@Test
     public void createSubmissionTest ()  {
+//        int projectId = ;
+//        String revision = ;
+
+
+//        GetInformer informer = createInformer();
+//        informer.createSubmission(
+//            projectId,
+//            revision
+//        );
+
         assert true;
     }
-
-
 }
