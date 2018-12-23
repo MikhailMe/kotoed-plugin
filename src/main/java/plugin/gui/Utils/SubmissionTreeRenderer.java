@@ -25,11 +25,15 @@ public class SubmissionTreeRenderer extends DefaultTreeCellRenderer {
 
         if (userObject instanceof SubmissionNode) {
             SubmissionNode submission = (SubmissionNode) userObject;
-            String text = submission.getText();
-            text += BRACKET_OPEN + "#" + String.format(SPAN_FORMAT, ORANGE, submission.getNumber() + BRACKET_CLOSE);
+            String text = SUBMISSION + String.format(
+                    SPAN_FORMAT,
+                    ORANGE,
+                    BRACKET_OPEN + "#" + submission.getNumber() + BRACKET_CLOSE);
             this.setText(HTML_OPEN + text + HTML_CLOSE);
-            if (submission.getStatus()) this.setIcon(new ImageIcon(getClass().getResource(OPEN_ICON)));
-            else this.setIcon(new ImageIcon(getClass().getResource(CLOSED_ICON)));
+
+            String statusIcon = submission.getStatus().equals(OPEN) ? OPEN_ICON : CLOSED_ICON;
+            this.setIcon(new ImageIcon(getClass().getResource(statusIcon)));
+
         } else {
             String text = String.format(SPAN_FORMAT, RED, userObject);
             this.setText(HTML_OPEN + text + HTML_CLOSE);

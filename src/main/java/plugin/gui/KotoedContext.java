@@ -9,6 +9,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 import plugin.core.comment.Comment;
+import plugin.core.course.Course;
 import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.sumbission.Submission;
 import plugin.gui.Items.RegisterProjectWindow;
@@ -19,7 +20,9 @@ import plugin.gui.ToolBar.ToolBar;
 
 import javax.swing.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.*;
@@ -67,42 +70,67 @@ public class KotoedContext implements ToolWindowFactory {
         KotoedContext.project = ProjectManager.getInstance().getOpenProjects()[0];
         project.putUserData(DISPLAY_GUTTER_ICONS, NOT_DISPLAY);
     }
+
     public static void checkCurrentProjectInKotoed() {
-        // TODO: 02.12.2018 make some request to Kotoed and get project info
-        // TODO: 02.12.2018 if project exists - load last commit, else - advice for register
-        if (getProjectInfo()) {
-            int temp = JOptionPane.showConfirmDialog(
-                    null,
-                    "Your project was found at the Kotoed. Do you want synchronized your project with found project?",
-                    "Project found at the Kotoed",
-                    JOptionPane.YES_NO_OPTION);
-            if (temp != JOptionPane.NO_OPTION) {
-                // TODO: 12/4/2018 написать метод синхронизации текущего проекта с котоедом
-                System.out.println("here");
-                loadTabs();
-            }
-        } else {
-            int n = JOptionPane.showConfirmDialog(
-                    null,
-                    "Your project wasn't found at the Kotoed. Do you want to register your project at the Kotoed?",
-                    "Project not found at the Kotoed",
-                    JOptionPane.YES_NO_OPTION);
-            if (n != JOptionPane.NO_OPTION) {
-                new RegisterProjectWindow();
-                loadTabs();
-            }
-        }
+        String wasFound = "Your project was found at the Kotoed." +
+                " Do you want synchronized your project with found project?";
+        String found = "Project found at the Kotoed";
+
+        String wasNotFound = "Your project wasn't found at the Kotoed." +
+                " Do you want to register your project at the Kotoed?";
+        String notFound = "Project not found at the Kotoed";
+
+        boolean result = getProjectInfo();
+
+        int click = JOptionPane.showConfirmDialog(
+                null,
+                result ? wasFound : wasNotFound,
+                result ? found : notFound,
+                JOptionPane.YES_NO_OPTION);
+
+        if (click != JOptionPane.NO_OPTION)
+            if (result) synchronizeWithKotoed();
+            else new RegisterProjectWindow();
+
+        loadTabs();
     }
 
-    // TODO: 02.12.2018 future release - fix info getter from kotoed
-    // TODO: 02.12.2018 if KotoedContext.project == getKotoedProjectFromKotoed()
-    // TODO: then return true else call createproject window
     private static boolean getProjectInfo() {
-        return true;
+        GetInformer informer = new GetInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(project.getUserData(PSI_KEY_HEADERS)));
+
+        List<Course> courses = informer.getCourses();
+        project.putUserData(PSI_KEY_COURSES_LIST, courses);
+
+        project.putUserData(PSI_KEY_PAGE_SIZE, 20L);
+        project.putUserData(PSI_KEY_CURRENT_PAGE, 0L);
+
+        for (Course course : courses) {
+            List<plugin.core.project.Project> projects = informer.getProjects(
+                    course.getId(),
+                    Objects.requireNonNull(project.getUserData(PSI_KEY_PAGE_SIZE)),
+                    Objects.requireNonNull(project.getUserData(PSI_KEY_CURRENT_PAGE))
+            );
+            for (plugin.core.project.Project proj : projects) {
+                if (proj.getName().equals(project.getName())) {
+                    project.putUserData(PSI_KEY_CURRENT_COURSE_ID, course.getId());
+                    project.putUserData(PSI_KEY_CURRENT_PROJECT_ID, proj.getId());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // TODO: 12/23/2018 Написать метод синхронизации с котоедом
+    // TODO: 12/23/2018 То есть взять последнюю ревизию и откатиться на неё
+    private static void synchronizeWithKotoed() {
+        // TODO: 12/23/2018 work with GIT
     }
 
     private static void loadTabs() {
-        getFullProjectData();
+        getSubmissionsData();
 
         //Clears toolWindow
         toolWindow.getContentManager().removeAllContents(true);
@@ -136,37 +164,36 @@ public class KotoedContext implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(submission);
 
         //Loading main data
-        commentsTab.loadComments();
         submissionTab.loadSubmissions();
+        commentsTab.loadComments();
     }
 
-
-    // FIXME: 12/15/2018 REWRITE THIS METHOD FOR ANY DENIZEN
-    private static void getFullProjectData() {
-
-        // TODO: 12/3/2018 get with data from work with projects
-        int courseId = 8;
-        int pageSize = 20;
-        int currentPage = 0;
-
-
+    private static void getSubmissionsData() {
         GetInformer informer = new GetInformer(
                 CONFIGURATION,
                 Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
 
-        // 8 - courseId - то есть Functional Programming
-        // 20 - сколько сабмишинов на одной странице
-        // 0 - нулевая страница
-        List<Submission> submissionList = informer.getSubmissions(courseId, pageSize, currentPage);
+        // getting all submissions for current project
+        List<Submission> submissionList = informer.getSubmissions(
+                Objects.requireNonNull(project.getUserData(PSI_KEY_CURRENT_PROJECT_ID)),
+                Objects.requireNonNull(project.getUserData(PSI_KEY_PAGE_SIZE)),
+                Objects.requireNonNull(project.getUserData(PSI_KEY_CURRENT_PAGE))
+        );
 
+        long currentSubmissionId = 0L;
 
-        // TODO: 12/3/2018 get from @param submissionList
-        int submissionId = 9255;
+        // getting all comments for any submission and put it to map
+        Map<Long, List<Comment>> map = new HashMap<>();
+        for (Submission submission : submissionList) {
+            long submissionId = submission.getId();
+            map.put(submissionId, informer.getComments(submissionId));
+            if (submissionId > currentSubmissionId) currentSubmissionId = submissionId;
+        }
 
-        List<Comment> commentList = informer.getComments(submissionId);
-
-        KotoedContext.project.putUserData(PSI_KEY_REPO_URL, "repo url here");
-        KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, commentList);
+        // TODO: 12/23/2018 set repo url
+        KotoedContext.project.putUserData(PSI_KEY_REPO_URL, "monkey: repo url");
+        KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, map);
         KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
+        KotoedContext.project.putUserData(PSI_KEY_CURRENT_SUBMISSION_ID, currentSubmissionId);
     }
 }

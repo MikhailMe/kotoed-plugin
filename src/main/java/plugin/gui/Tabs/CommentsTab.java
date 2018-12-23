@@ -31,11 +31,15 @@ public class CommentsTab {
     private Comments comments;
 
     public CommentsTab() {
-   }
+
+    }
 
     public void loadComments() {
+        long submissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
 
-        List<Comment> commentList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+        Map<Long, List<Comment>> map = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+
+        List<Comment> commentList = map.get(submissionId);
 
         Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
         List<CommentTreeItem> commentItemsList = new ArrayList<>();
@@ -81,7 +85,6 @@ public class CommentsTab {
         this.comentView.add(p);
         this.comentView.revalidate();
         this.comentView.repaint();
-
     }
 
     private Map<Pair<String, Long>, List<Comment>> getStructuredComments(List<Comment> commentList) {

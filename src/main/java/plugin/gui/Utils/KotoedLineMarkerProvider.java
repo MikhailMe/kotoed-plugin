@@ -13,10 +13,12 @@ import plugin.gui.KotoedContext;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.DISPLAY_GUTTER_ICONS;
 import static plugin.gui.Utils.PsiKeys.PSI_KEY_COMMENT_LIST;
+import static plugin.gui.Utils.PsiKeys.PSI_KEY_CURRENT_SUBMISSION_ID;
 import static plugin.gui.Utils.Strings.DISPLAY;
 
 public class KotoedLineMarkerProvider extends RelatedItemLineMarkerProvider {
@@ -24,8 +26,14 @@ public class KotoedLineMarkerProvider extends RelatedItemLineMarkerProvider {
     @Override
     protected void collectNavigationMarkers(@NotNull PsiElement element,
                                             Collection<? super RelatedItemLineMarkerInfo> result) {
-        if (KotoedContext.project.getUserData(DISPLAY_GUTTER_ICONS).equals(DISPLAY)) {
-            List<Comment> commentList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+        if (Objects.requireNonNull(KotoedContext.project.getUserData(DISPLAY_GUTTER_ICONS)).equals(DISPLAY)) {
+
+            Map<Long, List<Comment>> map =
+                    Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+
+            List<Comment> commentList =
+                    map.get(Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID)));
+
             for (Comment comment : commentList) {
                 File file = new File(KotoedContext.project.getBasePath() + "/src/" + comment.getSourcefile());
                 VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);

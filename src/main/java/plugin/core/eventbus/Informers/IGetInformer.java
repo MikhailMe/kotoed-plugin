@@ -11,9 +11,9 @@ public interface IGetInformer {
 
     List<Course> getCourses();
 
-    List<Project> getProjects();
+    List<Project> getProjects(final long courseId, final long pageSize, final long currentPage);
 
-    List<Submission> getSubmissions(final int courseId, final int pageSize, final int currentPage);
+    List<Submission> getSubmissions(final long courseId, final long pageSize, final long currentPage);
 
-    List<Comment> getComments(final int submissionNumber);
+    List<Comment> getComments(final long submissionNumber);
 }

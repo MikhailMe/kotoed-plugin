@@ -54,7 +54,6 @@ public class SignInWindow extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        System.out.println("here");
     }
 
     private void onSignIn() {

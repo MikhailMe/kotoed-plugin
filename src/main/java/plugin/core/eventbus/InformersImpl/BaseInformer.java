@@ -9,12 +9,16 @@ import static plugin.core.util.Address.*;
 
 public class BaseInformer {
 
+    final String OPEN = "open";
     final String FIELD_ID = "id";
+    final String CLOSED = "closed";
     final String EMPTY_STRING = "";
     final String FIELD_FIND = "find";
     final String FIELD_TEXT = "text";
+    final String STATE_IN = "state_in";
     final String FIELD_PAGE_SIZE = "page_size";
     final String FIELD_COURSE_ID = "course_id";
+    final String FIELD_PROJECT_ID = "project_id";
     final String FIELD_CURRENT_PAGE = "current_page";
 
     MultiMap headers;

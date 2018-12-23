@@ -26,13 +26,18 @@ public class Strings {
     public static final String OPEN_ICON = "/Icons/openStatus.png";
     public static final String CLOSED_ICON = "/Icons/closedStatus.png";
 
-    //Comments class
-    public static final String COMMENT_TEXT = "Comment text:";
-    public static final String COMMENT_FOR = "Comments for:";
+    // Comments class
     public static final String COMMENTS = "Comments";
+    public static final String COMMENT_FOR = "Comments for:";
+    public static final String COMMENT_TEXT = "Comment text:";
+
+    public static final String SUBMISSION = "Submission";
+
+    // statuses of submission
+    public static final String OPEN = "open";
+    public static final String CLOSED = "closed";
 
     // other
-
     public static final String RED = "red";
     public static final String BLUE = "blue";
     public static final String ORANGE = "orange";

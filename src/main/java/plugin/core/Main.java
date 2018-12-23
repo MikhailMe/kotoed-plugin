@@ -7,6 +7,7 @@ import plugin.core.course.Course;
 import plugin.core.eventbus.InformersImpl.BaseInformer;
 import plugin.core.eventbus.InformersImpl.CreateInfromer;
 import plugin.core.parser.GetParser;
+import plugin.core.project.Project;
 import plugin.core.rest.Sender;
 import plugin.core.sumbission.Submission;
 import plugin.core.util.Address;
@@ -18,10 +19,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final String CONFIGURATION = Address.LOCAL;
+    private static final String CONFIGURATION = Address.GLOBAL;
 
     public static void main(String[] args) {
 
@@ -50,16 +52,15 @@ public class Main {
 
         GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
 
-        List<StringBuffer> subs = getInformer.getSubs();
 
         /*List<Course> courses = getInformer.getCourses();
         courses.forEach(System.out::println);*/
 
-        /*List<Project> projects = getInformer.getProjects();
+        /*List<Project> projects = getInformer.getProjects(8, 20, 0);
         projects.forEach(System.out::println);*/
 
-        //List<Submission> submissions = getInformer.getSubmissions(8, 20, 0);
-        //submissions.forEach(System.out::println);
+        List<Submission> submissions = getInformer.getSubmissions(504, 20, 0);
+        submissions.forEach(System.out::println);
 
         //List<Comment> comments = getInformer.getComments(9255);
         //comments.forEach(System.out::println);

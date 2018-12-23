@@ -50,8 +50,6 @@ public class RegisterProjectWindow extends JDialog {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        // FIXME: 12/3/2018 не отображается на форме :(
-        this.projectName.setText(KotoedContext.project.getName());
         this.repoUrl.setText(KotoedContext.project.getUserData(PSI_KEY_REPO_URL));
     }
 
