@@ -34,27 +34,29 @@ public class CommentsTab {
     }
 
     public void loadComments() {
-        if (Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST)).isEmpty()){
-            return;
-        }
-
-        long submissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
-
-        Map<Long, List<Comment>> map = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
-
-        List<Comment> commentList = map.get(submissionId);
-
-        Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
-        List<CommentTreeItem> commentItemsList = new ArrayList<>();
-
-        for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
-            commentItemsList.add(new CommentTreeItem(i.getKey().getSecond(), i.getKey().getFirst(),i.getValue()));
-        }
-
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        for (CommentTreeItem commentTreeItem : commentItemsList) {
-            root.add(new DefaultMutableTreeNode(commentTreeItem));
+
+        // для обновления комментов
+        // если перелогиниваемся - комменты должны обновляться
+        if (!Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST)).isEmpty()) {
+            long submissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
+
+            Map<Long, List<Comment>> map = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+
+            List<Comment> commentList = map.get(submissionId);
+
+            Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
+            List<CommentTreeItem> commentItemsList = new ArrayList<>();
+
+            for (Map.Entry<Pair<String, Long>, List<Comment>> i : structuredComments.entrySet()) {
+                commentItemsList.add(new CommentTreeItem(i.getKey().getSecond(), i.getKey().getFirst(), i.getValue()));
+            }
+
+            for (CommentTreeItem commentTreeItem : commentItemsList) {
+                root.add(new DefaultMutableTreeNode(commentTreeItem));
+            }
         }
+
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         fileComentTree.setModel(treeModel);
         fileComentTree.setRootVisible(false);

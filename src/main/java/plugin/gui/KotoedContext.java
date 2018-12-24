@@ -87,15 +87,23 @@ public class KotoedContext implements ToolWindowFactory {
                 result ? found : notFound,
                 JOptionPane.YES_NO_OPTION);
 
-        if (click != JOptionPane.NO_OPTION) {
-            if (result)
-                synchronizeWithKotoed();
-            else {
-                new RegisterProjectWindow();
+        switch (click) {
+            case JOptionPane.OK_OPTION: {
+                if (result)
+                    synchronizeWithKotoed();
+                else {
+                    new RegisterProjectWindow();
+                    getProjectInfo();
+                }
                 getProjectInfo();
+                loadTabs();
+                break;
+            }
+            case JOptionPane.CANCEL_OPTION:
+            case JOptionPane.CLOSED_OPTION: {
+                break;
             }
         }
-        loadTabs();
     }
 
     private static boolean getProjectInfo() {
@@ -136,6 +144,37 @@ public class KotoedContext implements ToolWindowFactory {
         // TODO: 12/23/2018 work with GIT
     }
 
+    private static SimpleToolWindowPanel loadTab(@NotNull final String component) {
+        SimpleToolWindowPanel panel = new SimpleToolWindowPanel(false, true);
+        switch (component) {
+            case "Comment": {
+                panel.setContent(commentsTab.getPanel());
+                panel.setToolbar(ToolBar.createCustomToolbar(
+                        commentsTab.getPanel(),
+                        toolWindow,
+                        component).getComponent());
+                break;
+            }
+            case "Build": {
+                panel.setContent(buildTab.getPanel());
+                panel.setToolbar(ToolBar.createCustomToolbar(
+                        buildTab.getPanel(),
+                        toolWindow,
+                        "Build").getComponent());
+                break;
+            }
+            case "Submission": {
+                panel.setContent(submissionTab.getPanel());
+                panel.setToolbar(ToolBar.createCustomToolbar(
+                        submissionTab.getPanel(),
+                        toolWindow,
+                        "Submission").getComponent());
+                break;
+            }
+        }
+        return panel;
+    }
+
     private static void loadTabs() {
         getSubmissionsData();
 
@@ -145,29 +184,9 @@ public class KotoedContext implements ToolWindowFactory {
         //Getting factory for building ToolWindow
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
 
-        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for CommentsTab
-        SimpleToolWindowPanel commentPanel = new SimpleToolWindowPanel(false, true);
-        commentPanel.setContent(commentsTab.getPanel());
-        commentPanel.setToolbar(ToolBar.createCustomToolbar(
-                commentsTab.getPanel(),
-                toolWindow,
-                "Comment").getComponent());
-
-        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for BuildTab
-        SimpleToolWindowPanel buildPanel = new SimpleToolWindowPanel(false, true);
-        buildPanel.setContent(buildTab.getPanel());
-        buildPanel.setToolbar(ToolBar.createCustomToolbar(
-                buildTab.getPanel(),
-                toolWindow,
-                "Build").getComponent());
-
-        //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for SubmissionTab
-        SimpleToolWindowPanel submissionPanel = new SimpleToolWindowPanel(false, true);
-        submissionPanel.setContent(submissionTab.getPanel());
-        submissionPanel.setToolbar(ToolBar.createCustomToolbar(
-                submissionTab.getPanel(),
-                toolWindow,
-                "Submission").getComponent());
+        SimpleToolWindowPanel commentPanel = loadTab("Comment");
+        SimpleToolWindowPanel buildPanel = loadTab("Build");
+        SimpleToolWindowPanel submissionPanel = loadTab("Submission");
 
         //Creating content for ToolWindow
         Content build = contentFactory.createContent(buildPanel, "Build", false);
@@ -197,12 +216,11 @@ public class KotoedContext implements ToolWindowFactory {
         );
 
         KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
-
+        long currentSubmissionId = -1L;
         if (submissionList.isEmpty()) {
+            KotoedContext.project.putUserData(PSI_KEY_CURRENT_SUBMISSION_ID, currentSubmissionId);
             return;
         }
-
-        long currentSubmissionId = 0L;
 
         // getting all comments for any submission and put it to map
         Map<Long, List<Comment>> map = new HashMap<>();

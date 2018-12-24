@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import plugin.gui.Actions.*;
 
 import javax.swing.*;
-import java.util.function.Function;
 
 public class ToolBar {
     public static final String PLACE = "right";
@@ -54,38 +53,4 @@ public class ToolBar {
 
         return toolbar;
     }
-
-    /*public static ActionToolbar createCommentToolbar(JComponent component, ToolWindow toolWindow) {
-        DefaultActionGroup group = new DefaultActionGroup();
-        group.add(new RefreshAction());
-        group.add(new SignOutAction(toolWindow));
-
-        ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(PLACE, group, HORIZONTAL);
-        toolbar.setTargetComponent(component);
-
-        return toolbar;
-    }
-
-    public static ActionToolbar createBuildToolbar(JComponent component, ToolWindow toolWindow) {
-        DefaultActionGroup group = new DefaultActionGroup();
-        group.add(new RefreshAction());
-        group.add(new SignOutAction(toolWindow));
-
-        ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(PLACE, group, HORIZONTAL);
-        toolbar.setTargetComponent(component);
-
-        return toolbar;
-    }
-
-    public static ActionToolbar createSubmissionToolbar(JComponent component, ToolWindow toolWindow) {
-        DefaultActionGroup group = new DefaultActionGroup();
-        group.add(new AutoSubmitAction());
-        group.add(new RefreshAction());
-        group.add(new SignOutAction(toolWindow));
-
-        ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(PLACE, group, HORIZONTAL);
-        toolbar.setTargetComponent(component);
-
-        return toolbar;
-    }*/
 }

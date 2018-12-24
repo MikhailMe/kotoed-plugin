@@ -20,7 +20,6 @@ public class SignInWindow extends JDialog {
     private JButton signInButton;
     private JButton cancelButton;
 
-
     public SignInWindow() {
         setContentPane(contentPane);
         setModal(true);
