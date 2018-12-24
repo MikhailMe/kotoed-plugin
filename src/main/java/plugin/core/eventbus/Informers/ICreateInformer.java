@@ -7,8 +7,8 @@ import plugin.core.util.SubmissionRecord;
 public interface ICreateInformer {
 
     ProjectRecord createProject(@NotNull final String projectName,
-                                final int denizenId,
-                                final int courseId,
+                                final long denizenId,
+                                final long courseId,
                                 @NotNull final String repoType,
                                 @NotNull final String repoUrl);
 

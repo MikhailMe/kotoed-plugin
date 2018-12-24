@@ -54,8 +54,8 @@ public class CreateInformer extends BaseInformer implements ICreateInformer {
     }
 
     public ProjectRecord createProject(@NotNull final String projectName,
-                                       final int denizenId,
-                                       final int courseId,
+                                       final long denizenId,
+                                       final long courseId,
                                        @NotNull final String repoType,
                                        @NotNull final String repoUrl) {
         JsonObject message = new JsonObject()

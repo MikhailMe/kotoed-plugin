@@ -35,6 +35,10 @@ public class CommentsTab {
     }
 
     public void loadComments() {
+        if (Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST)).isEmpty()){
+            return;
+        }
+
         long submissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
 
         Map<Long, List<Comment>> map = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));

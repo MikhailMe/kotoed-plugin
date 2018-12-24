@@ -87,10 +87,14 @@ public class KotoedContext implements ToolWindowFactory {
                 result ? found : notFound,
                 JOptionPane.YES_NO_OPTION);
 
-        if (click != JOptionPane.NO_OPTION)
-            if (result) synchronizeWithKotoed();
-            else new RegisterProjectWindow();
-
+        if (click != JOptionPane.NO_OPTION) {
+            if (result)
+                synchronizeWithKotoed();
+            else {
+                new RegisterProjectWindow();
+                getProjectInfo();
+            }
+        }
         loadTabs();
     }
 
@@ -192,6 +196,12 @@ public class KotoedContext implements ToolWindowFactory {
                 Objects.requireNonNull(project.getUserData(PSI_KEY_CURRENT_PAGE))
         );
 
+        KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
+
+        if (submissionList.isEmpty()) {
+            return;
+        }
+
         long currentSubmissionId = 0L;
 
         // getting all comments for any submission and put it to map
@@ -205,7 +215,6 @@ public class KotoedContext implements ToolWindowFactory {
         // TODO: 12/23/2018 set repo url
         KotoedContext.project.putUserData(PSI_KEY_REPO_URL, "monkey: repo url");
         KotoedContext.project.putUserData(PSI_KEY_COMMENT_LIST, map);
-        KotoedContext.project.putUserData(PSI_KEY_SUBMISSION_LIST, submissionList);
         KotoedContext.project.putUserData(PSI_KEY_CURRENT_SUBMISSION_ID, currentSubmissionId);
     }
 }

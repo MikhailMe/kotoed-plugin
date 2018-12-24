@@ -2,6 +2,7 @@ package plugin.core;
 
 import io.vertx.core.MultiMap;
 import plugin.core.parser.GetParser;
+import plugin.core.project.Project;
 import plugin.core.rest.Sender;
 import plugin.core.sumbission.Submission;
 import plugin.core.util.Address;
@@ -15,8 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String denizen = "mikhailme";
-        String password = "qwerty123456";
+        String denizen = "alewa";
+        String password = "alewa";
 
         Sender sender = new Sender(CONFIGURATION);
         String cookie = sender.signIn(denizen, password);
@@ -40,7 +41,7 @@ public class Main {
         System.out.println(sr.toString());
         createInformer.createComment(8615, 446, 2, "Task1_1.hs", "oops");*/
 
-        //GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
+        GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
 
 
         /*List<Course> courses = getInformer.getCourses();
@@ -49,9 +50,11 @@ public class Main {
         /*List<Project> projects = getInformer.getProjects(8, 20, 0);
         projects.forEach(System.out::println);*/
 
-        /*List<Submission> submissions = getInformer.getSubmissions(504, 20, 0);
-        submissions.forEach(System.out::println);*/
 
+        List<Submission> submissions = getInformer.getSubmissions(745, 20, 0);
+        submissions.forEach(System.out::println);
+
+        System.out.println(submissions.isEmpty());
         //List<Comment> comments = getInformer.getComments(9255);
         //comments.forEach(System.out::println);
 
