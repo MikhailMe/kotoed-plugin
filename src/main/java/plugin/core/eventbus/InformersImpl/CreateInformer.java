@@ -20,9 +20,9 @@ import java.util.function.Function;
 
 import static plugin.core.util.Address.*;
 
-public class CreateInfromer extends BaseInformer implements ICreateInformer {
+public class CreateInformer extends BaseInformer implements ICreateInformer {
 
-    public CreateInfromer(@NotNull String configuration,
+    public CreateInformer(@NotNull String configuration,
                           @NotNull MultiMap headers) {
         super(configuration, headers);
     }

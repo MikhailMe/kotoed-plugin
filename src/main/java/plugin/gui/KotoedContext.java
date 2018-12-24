@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static plugin.gui.Utils.PsiKeys.*;
+import static plugin.gui.Utils.Strings.AUTH;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
 import static plugin.gui.Utils.Strings.NOT_DISPLAY;
 
@@ -37,8 +38,6 @@ public class KotoedContext implements ToolWindowFactory {
     private static ToolWindow toolWindow;
     private static CommentsTab commentsTab;
     private static SubmissionTab submissionTab;
-
-    private static final String AUTH = "Authorize";
 
     static {
         buildTab = new BuildTab();
@@ -106,6 +105,10 @@ public class KotoedContext implements ToolWindowFactory {
         project.putUserData(PSI_KEY_PAGE_SIZE, 20L);
         project.putUserData(PSI_KEY_CURRENT_PAGE, 0L);
 
+        Map<Long, String> mapCoursesIdToName = new HashMap<>();
+        courses.forEach(course -> mapCoursesIdToName.put(course.getId(), course.getName()));
+        project.putUserData(PSI_KEY_MAP_COURSES_ID_TO_NAME, mapCoursesIdToName);
+
         for (Course course : courses) {
             List<plugin.core.project.Project> projects = informer.getProjects(
                     course.getId(),
@@ -141,17 +144,26 @@ public class KotoedContext implements ToolWindowFactory {
         //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for CommentsTab
         SimpleToolWindowPanel commentPanel = new SimpleToolWindowPanel(false, true);
         commentPanel.setContent(commentsTab.getPanel());
-        commentPanel.setToolbar(ToolBar.createCommentToolbar(commentsTab.getPanel()).getComponent());
+        commentPanel.setToolbar(ToolBar.createCustomToolbar(
+                commentsTab.getPanel(),
+                toolWindow,
+                "Comment").getComponent());
 
         //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for BuildTab
         SimpleToolWindowPanel buildPanel = new SimpleToolWindowPanel(false, true);
         buildPanel.setContent(buildTab.getPanel());
-        buildPanel.setToolbar(ToolBar.createBuildToolbar(buildTab.getPanel()).getComponent());
+        buildPanel.setToolbar(ToolBar.createCustomToolbar(
+                buildTab.getPanel(),
+                toolWindow,
+                "Build").getComponent());
 
         //Creating WindowPanel -> ActionToolBar -> Addint to ToolWindow for SubmissionTab
         SimpleToolWindowPanel submissionPanel = new SimpleToolWindowPanel(false, true);
         submissionPanel.setContent(submissionTab.getPanel());
-        submissionPanel.setToolbar(ToolBar.createSubmissionToolbar(submissionTab.getPanel()).getComponent());
+        submissionPanel.setToolbar(ToolBar.createCustomToolbar(
+                submissionTab.getPanel(),
+                toolWindow,
+                "Submission").getComponent());
 
         //Creating content for ToolWindow
         Content build = contentFactory.createContent(buildPanel, "Build", false);

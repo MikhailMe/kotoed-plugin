@@ -2,6 +2,7 @@ package plugin.gui.Utils;
 
 public class Strings {
 
+    public static final String AUTH = "Authorize";
     public static final String DISPLAY = "Display";
     public static final String NOT_DISPLAY = "Not display";
 

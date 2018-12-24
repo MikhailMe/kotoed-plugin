@@ -23,17 +23,35 @@ public class PsiKeys {
     public static final Key<Long> PSI_KEY_CURRENT_COURSE_ID = Key.create("Current course id");
     public static final Key<Long> PSI_KEY_CURRENT_PROJECT_ID = Key.create("Current project id");
 
-
-
     public static final Key<List<Course>> PSI_KEY_COURSES_LIST = Key.create("Courses");
     public static final Key<List<Project>> PSI_KEY_PROJECTS_LIST = Key.create("Projects");
     public static final Key<Map<Long, List<Comment>>> PSI_KEY_COMMENT_LIST = Key.create("Comments");
     public static final Key<List<Submission>> PSI_KEY_SUBMISSION_LIST = Key.create("Submissions");
 
+    public static final Key<Map<Long, String>> PSI_KEY_MAP_COURSES_ID_TO_NAME = Key.create("Map courses id to name");
 
     public static final Key<String> DISPLAY_GUTTER_ICONS = Key.create("DisplayGutterIcons");
 
     public static final Key<Long> PSI_KEY_CURRENT_SOURCELINE = Key.create("Current sourceline");
     public static final Key<String> PSI_KEY_CURRENT_SOURCEFILE = Key.create("Current sourcefile");
     public static final Key<Long> PSI_KEY_CURRENT_SUBMISSION_ID = Key.create("Current submission id");
+
+
+    public static void clearKeys(com.intellij.openapi.project.Project project) {
+        project.putUserData(PSI_KEY_REPO_URL, null);
+        project.putUserData(PSI_KEY_COOKIE, null);
+        project.putUserData(PSI_KEY_DENIZEN, null);
+        project.putUserData(PSI_KEY_HEADERS, null);
+        project.putUserData(PSI_KEY_DENIZEN_ID, null);
+        project.putUserData(PSI_KEY_CURRENT_COURSE_ID, null);
+        project.putUserData(PSI_KEY_CURRENT_PROJECT_ID, null);
+        project.putUserData(PSI_KEY_COURSES_LIST, null);
+        project.putUserData(PSI_KEY_PROJECTS_LIST, null);
+        project.putUserData(PSI_KEY_COMMENT_LIST, null);
+        project.putUserData(PSI_KEY_SUBMISSION_LIST, null);
+        project.putUserData(PSI_KEY_MAP_COURSES_ID_TO_NAME, null);
+        project.putUserData(PSI_KEY_CURRENT_SOURCELINE, null);
+        project.putUserData(PSI_KEY_CURRENT_SOURCEFILE, null);
+        project.putUserData(PSI_KEY_CURRENT_SUBMISSION_ID, null);
+    }
 }

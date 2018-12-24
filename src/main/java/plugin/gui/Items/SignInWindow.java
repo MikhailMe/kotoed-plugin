@@ -62,10 +62,10 @@ public class SignInWindow extends JDialog {
         Sender sender = new Sender(CONFIGURATION);
         sender.signIn(denizen, password);
         String whoAmI = sender.getWhoAmI();
-        long denizenId = GetParser.getDenizenId(whoAmI);
-        if (!whoAmI.isEmpty()) {
+        if (whoAmI != null && !whoAmI.isEmpty()) {
             dispose();
             MultiMap headers = sender.getHeaders();
+            long denizenId = GetParser.getDenizenId(whoAmI);
             KotoedContext.project.putUserData(PSI_KEY_DENIZEN, denizen);
             KotoedContext.project.putUserData(PSI_KEY_DENIZEN_ID, denizenId);
             KotoedContext.project.putUserData(PSI_KEY_HEADERS, headers);
@@ -77,6 +77,10 @@ public class SignInWindow extends JDialog {
                     SIGN_IN_ERROR_MESSAGE,
                     SIGN_IN_ERROR,
                     JOptionPane.ERROR_MESSAGE);
+            sender = null;
+            whoAmI = null;
+            usernameField.setText("");
+            passwordField.setText("");
         }
     }
 
