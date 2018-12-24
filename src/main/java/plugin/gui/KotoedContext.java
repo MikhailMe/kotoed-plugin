@@ -91,7 +91,14 @@ public class KotoedContext implements ToolWindowFactory {
         if (click != JOptionPane.NO_OPTION)
             if (result) synchronizeWithKotoed();
             else if(new RegisterProjectWindow().getStatus())
-                    loadTabs();
+                    try{
+                        loadTabs();
+                    }catch (Exception ex){
+                        JOptionPane.showMessageDialog(null,
+                                "Project load error occurred, please try again.",
+                                "Project load",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
     }
 
     private static boolean getProjectInfo() {

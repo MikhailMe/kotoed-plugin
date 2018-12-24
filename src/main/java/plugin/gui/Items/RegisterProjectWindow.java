@@ -1,11 +1,18 @@
 package plugin.gui.Items;
 
+import plugin.core.course.Course;
+import plugin.core.eventbus.InformersImpl.CreateInformer;
+import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.gui.KotoedContext;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.Objects;
 
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_REPO_URL;
+import static plugin.gui.Utils.PsiKeys.*;
+import static plugin.gui.Utils.Strings.CONFIGURATION;
+import static plugin.gui.Utils.Strings.OPEN;
 
 public class RegisterProjectWindow extends JDialog {
 
@@ -16,9 +23,11 @@ public class RegisterProjectWindow extends JDialog {
     private JTextField repoUrl;
     private JRadioButton gitRadioButton;
     private JRadioButton mercurialRadioButton;
+    private JComboBox courseList;
+    private JLabel courseLabel;
     private ButtonGroup group;
     private boolean status = false;
-
+    private List<Course> courses;
     public RegisterProjectWindow() {
         setContentPane(contentPane);
         setModal(true);
@@ -47,6 +56,15 @@ public class RegisterProjectWindow extends JDialog {
 
         this.group = ((DefaultButtonModel)mercurialRadioButton.getModel()).getGroup();
 
+        GetInformer informer = new GetInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+        courses = informer.getCourses();
+
+        for(Course course : courses)
+            if(course.getState().equals(OPEN))
+                courseList.addItem(course.getName());
+
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -55,12 +73,35 @@ public class RegisterProjectWindow extends JDialog {
     }
 
     private void onOK() {
-        String repoType = this.group.getSelection().getActionCommand();
-        String projectName = this.projectName.getText();
-        String projectURL = this.repoUrl.getText();
-        System.out.println(repoType + " " + projectName + " " + projectURL);
-        dispose();
-        status = true;
+        try {
+            String repoType = this.group.getSelection().getActionCommand();
+            String projectName = this.projectName.getText();
+            String projectURL = this.repoUrl.getText();
+            Course projectCourse = null;
+            for(Course c : courses)
+                if(c.getName().equals((String)courseList.getSelectedItem()))
+                    projectCourse = c;
+
+            CreateInformer informer = new CreateInformer(
+                    CONFIGURATION,
+                    Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+
+            System.out.println("Informet data:" + projectName + " " + KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID) +
+                    " " +  projectCourse.getId() + " " + repoType + " " + projectURL);
+//        informer.createProject(projectName,
+//                KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID),
+//                projectCourse.getId(),
+//                repoType,
+//                projectURL);
+
+            dispose();
+            status = true;
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null,
+                    "Project registration error occurred, please try again.",
+                    "Project registration",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {

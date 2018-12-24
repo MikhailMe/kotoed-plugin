@@ -86,7 +86,7 @@ public class Comments {
         comment.setOriginalSubmissionId(currentSubmissionId);
 
         // TODO: 12/4/2018 check it !!!
-        /*CreateInfromer createInfromer = new CreateInfromer(
+        /*CreateInformer createInfromer = new CreateInformer(
                 CONFIGURATION,
                 Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
         createInfromer.createComment(

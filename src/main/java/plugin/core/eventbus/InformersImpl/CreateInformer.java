@@ -20,9 +20,9 @@ import java.util.function.Function;
 
 import static plugin.core.util.Address.*;
 
-public class CreateInfromer extends BaseInformer implements ICreateInformer {
+public class CreateInformer extends BaseInformer implements ICreateInformer {
 
-    public CreateInfromer(@NotNull String configuration,
+    public CreateInformer(@NotNull String configuration,
                           @NotNull MultiMap headers) {
         super(configuration, headers);
     }
@@ -54,8 +54,8 @@ public class CreateInfromer extends BaseInformer implements ICreateInformer {
     }
 
     public ProjectRecord createProject(@NotNull final String projectName,
-                                       final int denizenId,
-                                       final int courseId,
+                                       final long denizenId,
+                                       final long courseId,
                                        @NotNull final String repoType,
                                        @NotNull final String repoUrl) {
         JsonObject message = new JsonObject()
