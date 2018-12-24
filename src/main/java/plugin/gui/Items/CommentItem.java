@@ -81,7 +81,7 @@ public class CommentItem extends JPanel {
         SelectionModel selectionModel = editor.getSelectionModel();
         selectionModel.setSelection(startOffset, endOffset);
 
-        File file = new File(project.getBasePath() + "/src/" + sourcefile);
+        File file = new File(project.getBasePath() + "/src/main/" + sourcefile);
 
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         FileEditorManager.getInstance(project).openFile(Objects.requireNonNull(virtualFile), true);

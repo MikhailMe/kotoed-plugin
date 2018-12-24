@@ -1,8 +1,8 @@
-package plugin.core.sumbission;
+package plugin.core.project;
 
-import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 
 @Data
 @JsonDeserialize

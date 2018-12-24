@@ -1,6 +1,7 @@
 package plugin.gui.Items;
+
+import com.intellij.ui.JBColor;
 import lombok.Getter;
-import plugin.core.eventbus.InformersImpl.CreateInfromer;
 import plugin.gui.KotoedContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import java.awt.*;
 import java.util.Objects;
 
 import plugin.core.comment.Comment;
@@ -42,11 +42,14 @@ public class Comments {
     }
 
     private void addBorders() {
-        TitledBorder textAreaTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.GREEN), COMMENT_TEXT);
+        TitledBorder textAreaTitledBorder =
+                BorderFactory.createTitledBorder(new LineBorder(JBColor.GREEN), COMMENT_TEXT);
         textArea.setBorder(textAreaTitledBorder);
 
-        // TODO add submission number
-        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(new LineBorder(Color.BLUE),COMMENT_FOR/* add submision number*/);
+        TitledBorder commentPanelTitledBorder = BorderFactory.createTitledBorder(new LineBorder(JBColor.BLUE),
+                COMMENT_FOR + " " + SUBMISSION + BRACKET_OPEN + Objects.requireNonNull(KotoedContext
+                        .project
+                        .getUserData(PSI_KEY_CURRENT_SUBMISSION_ID)) + BRACKET_CLOSE);
         commentHolder.setBorder(commentPanelTitledBorder);
     }
 
@@ -63,22 +66,24 @@ public class Comments {
         prevMax = bar.getMaximum();
     }
 
-    // FIXME: 12/4/2018 FIX PARAMETERS
     private void onSend() {
-        //long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
+        long denizenId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID));
         String denizen = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN));
-        String currentSourceFile = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCEFILE));
-        long currentSourceLine = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCELINE));
+        String currentSourceFile =
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCEFILE));
+        long currentSourceLine =
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SOURCELINE));
         long currentDate = System.currentTimeMillis();
-        //long currentSubmissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
+        long currentSubmissionId =
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
 
         Comment comment = new Comment();
-        //comment.setAuthorId(denizenId);
+        comment.setAuthorId(denizenId);
         comment.setDenizenId(denizen);
         comment.setDatetime(currentDate);
         comment.setSourcefile(currentSourceFile);
         comment.setSourceline(currentSourceLine);
-        //comment.setOriginalSubmissionId(currentSubmissionId);
+        comment.setOriginalSubmissionId(currentSubmissionId);
 
         // TODO: 12/4/2018 check it !!!
         /*CreateInfromer createInfromer = new CreateInfromer(

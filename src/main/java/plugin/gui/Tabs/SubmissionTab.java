@@ -1,6 +1,7 @@
 package plugin.gui.Tabs;
 
 import lombok.Getter;
+//import plugin.core.sumbission.Submission;
 import plugin.core.sumbission.Submission;
 import plugin.gui.KotoedContext;
 import plugin.gui.Stabs.SubmissionNode;
@@ -33,15 +34,13 @@ public class SubmissionTab {
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
-        List<Submission> submissionList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
+        List<Submission> submissionList =
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_SUBMISSION_LIST));
 
         for (Submission submission : submissionList) {
-            // FIXME: здесь почему-то id проекта, а не сабмишина - нужно глянуть в котоеде
-            String submissionName = submission.getName();
             long submissionId = submission.getId();
-            // FIXME : здесь должен быть статус, которого нет :(
-            boolean submissionStatus = false;
-            SubmissionNode node = new SubmissionNode(submissionName, submissionId, submissionStatus);
+            String submissionStatus = submission.getState();
+            SubmissionNode node = new SubmissionNode(submissionId, submissionStatus);
             root.add(new DefaultMutableTreeNode(node));
         }
 

@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.List;
 
 import static plugin.gui.Utils.PsiKeys.*;
+import static plugin.gui.Utils.Strings.DISPLAY;
 
 @Data
 public class CommentsTab {
@@ -30,11 +31,15 @@ public class CommentsTab {
     private Comments comments;
 
     public CommentsTab() {
-   }
+
+    }
 
     public void loadComments() {
+        long submissionId = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_CURRENT_SUBMISSION_ID));
 
-        List<Comment> commentList = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+        Map<Long, List<Comment>> map = Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_COMMENT_LIST));
+
+        List<Comment> commentList = map.get(submissionId);
 
         Map<Pair<String, Long>, List<Comment>> structuredComments = getStructuredComments(commentList);
         List<CommentTreeItem> commentItemsList = new ArrayList<>();
@@ -54,10 +59,10 @@ public class CommentsTab {
 
         fileComentTree.setCellRenderer(new CommentTreeRenderer());
 
-        fileComentTree.addTreeSelectionListener(evt -> nodeSelected(evt));
+        fileComentTree.addTreeSelectionListener(this::nodeSelected);
         this.comentView.setLayout(new BorderLayout());
 
-        KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, "Display");
+        KotoedContext.project.putUserData(DISPLAY_GUTTER_ICONS, DISPLAY);
     }
 
     private void setCurrentFileAndLine(@NotNull String sourceFile,
@@ -80,7 +85,6 @@ public class CommentsTab {
         this.comentView.add(p);
         this.comentView.revalidate();
         this.comentView.repaint();
-
     }
 
     private Map<Pair<String, Long>, List<Comment>> getStructuredComments(List<Comment> commentList) {
