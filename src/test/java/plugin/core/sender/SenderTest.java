@@ -41,6 +41,7 @@ public class SenderTest {
         String password = RandomStringUtils.randomAlphanumeric(15);
         String response = sender.signUp(denizen, password);
         assert sender.isSuccessSignUp(response);
+
         String cookie = singInHelper(denizen, password);
         assert !cookie.isEmpty();
     }
@@ -56,6 +57,5 @@ public class SenderTest {
         String test2 = "qaz";
         String response2 = sender.signUp(test2, test2);
         assert !sender.isSuccessSignUp(response2);
-
     }
 }

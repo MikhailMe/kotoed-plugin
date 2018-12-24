@@ -42,6 +42,7 @@ public class Main {
         createInformer.createComment(8615, 446, 2, "Task1_1.hs", "oops");*/
 
         GetInformer getInformer = new GetInformer(CONFIGURATION, headers);
+        //List<StringBuffer> subs = getInformer.getSubs();
 
 
         /*List<Course> courses = getInformer.getCourses();
@@ -57,7 +58,6 @@ public class Main {
         System.out.println(submissions.isEmpty());
         //List<Comment> comments = getInformer.getComments(9255);
         //comments.forEach(System.out::println);
-
 
 
     }

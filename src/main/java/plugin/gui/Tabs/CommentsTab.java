@@ -31,7 +31,6 @@ public class CommentsTab {
     private Comments comments;
 
     public CommentsTab() {
-
     }
 
     public void loadComments() {
@@ -51,6 +50,7 @@ public class CommentsTab {
         for (Map.Entry<Pair<String, Long>, List<Comment>> i:structuredComments.entrySet()) {
             commentItemsList.add(new CommentTreeItem(i.getKey().getSecond(), i.getKey().getFirst(),i.getValue()));
         }
+
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         for (CommentTreeItem commentTreeItem : commentItemsList) {
             root.add(new DefaultMutableTreeNode(commentTreeItem));

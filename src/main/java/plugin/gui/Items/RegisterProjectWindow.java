@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static plugin.gui.Utils.PsiKeys.*;
 import static plugin.gui.Utils.Strings.CONFIGURATION;
@@ -77,36 +76,29 @@ public class RegisterProjectWindow extends JDialog {
     }
 
     private void onOK() {
-        try {
-            String repoType = this.group.getSelection().getActionCommand();
-            String projectName = this.projectName.getText();
-            String projectURL = this.repoUrl.getText();
-            Course selectedCourse = null;
+        String repoType = this.group.getSelection().getActionCommand();
+        String projectName = this.projectName.getText();
+        String projectURL = this.repoUrl.getText();
+        Course selectedCourse = null;
 
-            for (Course course : courses)
-                if (course.getName().equals(courseList.getSelectedItem()))
-                    selectedCourse = course;
+        for (Course course : courses)
+            if (course.getName().equals(courseList.getSelectedItem()))
+                selectedCourse = course;
 
 
-            CreateInformer informer = new CreateInformer(
-                    CONFIGURATION,
-                    Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
+        CreateInformer informer = new CreateInformer(
+                CONFIGURATION,
+                Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_HEADERS)));
 
-            // TODO РАБОТАЕТ, НО НЕ БУДЕМ ЗАСОРЯТЬ КОТОЕД :)
+        // TODO РАБОТАЕТ, НО НЕ БУДЕМ ЗАСОРЯТЬ КОТОЕД :)
             /*informer.createProject(projectName,
                     Objects.requireNonNull(KotoedContext.project.getUserData(PSI_KEY_DENIZEN_ID)),
                     Objects.requireNonNull(selectedCourse).getId(),
                     repoType,
                     projectURL);*/
 
-            dispose();
-            status = true;
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,
-                    "Project registration error occurred, please try again.",
-                    "Project registration",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        dispose();
+        status = true;
     }
 
     private void onCancel() {
