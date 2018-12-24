@@ -17,6 +17,7 @@ public class RegisterProjectWindow extends JDialog {
     private JRadioButton gitRadioButton;
     private JRadioButton mercurialRadioButton;
     private ButtonGroup group;
+    private boolean status = false;
 
     public RegisterProjectWindow() {
         setContentPane(contentPane);
@@ -59,10 +60,16 @@ public class RegisterProjectWindow extends JDialog {
         String projectURL = this.repoUrl.getText();
         System.out.println(repoType + " " + projectName + " " + projectURL);
         dispose();
+        status = true;
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
+        status = false;
+    }
+
+    public boolean getStatus(){
+        return status;
     }
 }

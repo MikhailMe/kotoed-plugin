@@ -90,9 +90,8 @@ public class KotoedContext implements ToolWindowFactory {
 
         if (click != JOptionPane.NO_OPTION)
             if (result) synchronizeWithKotoed();
-            else new RegisterProjectWindow();
-
-        loadTabs();
+            else if(new RegisterProjectWindow().getStatus())
+                    loadTabs();
     }
 
     private static boolean getProjectInfo() {
