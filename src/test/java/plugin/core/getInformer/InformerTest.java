@@ -8,8 +8,6 @@ import plugin.core.eventbus.InformersImpl.GetInformer;
 import plugin.core.parser.GetParser;
 import plugin.core.project.Project;
 import plugin.core.rest.Sender;
-import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.RandomStringUtils;
 import plugin.core.sumbission.Submission;
 import plugin.gui.KotoedContext;
 

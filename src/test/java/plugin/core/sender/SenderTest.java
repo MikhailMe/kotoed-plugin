@@ -1,23 +1,9 @@
 package plugin.core.sender;
 
-import io.vertx.core.MultiMap;
 import org.junit.Test;
-import plugin.core.comment.Comment;
-import plugin.core.course.Course;
-import plugin.core.eventbus.InformersImpl.GetInformer;
-import plugin.core.parser.GetParser;
-import plugin.core.project.Project;
 import plugin.core.rest.Sender;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.RandomStringUtils;
-import plugin.core.sumbission.Submission;
-import plugin.gui.KotoedContext;
-
-import java.util.List;
-import java.util.Objects;
-
-import static plugin.gui.Utils.PsiKeys.PSI_KEY_HEADERS;
-import static plugin.gui.Utils.Strings.CONFIGURATION;
 
 public class SenderTest {
 
@@ -55,6 +41,7 @@ public class SenderTest {
         String password = RandomStringUtils.randomAlphanumeric(15);
         String response = sender.signUp(denizen, password);
         assert sender.isSuccessSignUp(response);
+
         String cookie = singInHelper(denizen, password);
         assert !cookie.isEmpty();
     }
