@@ -39,7 +39,7 @@ public class KotoedContext implements ToolWindowFactory {
     private static CommentsTab commentsTab;
     private static SubmissionTab submissionTab;
 
-    static {
+    public static void initTabs() {
         buildTab = new BuildTab();
         commentsTab = new CommentsTab();
         submissionTab = new SubmissionTab();
@@ -48,6 +48,7 @@ public class KotoedContext implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project,
                                         @NotNull ToolWindow toolWindow) {
+        initTabs();
         KotoedContext.toolWindow = toolWindow;
         //Clears toolWindow
         toolWindow.getContentManager().removeAllContents(true);

@@ -49,6 +49,7 @@ public class SignOutAction extends DumbAwareAction {
             Content user = contentFactory.createContent(noUserWindow, AUTH, false);
             toolWindow.getContentManager().addContent(user);
 
+            KotoedContext.initTabs();
             PsiKeys.clearKeys(KotoedContext.project);
         }
     }
